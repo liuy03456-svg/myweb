@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>端砚 - 中国四大名砚之首</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 页面背景与基础样式 */
+        body {
+            background-color: #f5f2eb; /* 仿宣纸底色，贴合文房四宝氛围 */
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏样式 */
+        header {
+            background-color: #8b5a2b; /* 仿砚台木质纹理色 */
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #f8e1c0;
+        }
+
+        /* 轮播图区域 */
+        .banner {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        .banner-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            position: relative;
+        }
+        .banner-img.active {
+            display: block;
+            animation: fade 1s ease;
+        }
+        @keyframes fade {
+            from {opacity: 0.4;}
+            to {opacity: 1;}
+        }
+        .banner-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0,0,0,0.3);
+            color: #fff;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 10;
+        }
+        .prev-btn {
+            left: 20px;
+        }
+        .next-btn {
+            right: 20px;
+        }
+        .banner-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            text-align: center;
+            z-index: 5;
+        }
+        .banner-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.8rem;
+            z-index: 5;
+        }
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .indicator.active {
+            background-color: #fff;
+            transform: scale(1.2);
+        }
+
+        /* 端砚介绍区域 */
+        .intro {
+            width: 90%;
+            margin: 4rem auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #8b5a2b;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #8b5a2b;
+            margin: 0.5rem auto;
+        }
+        .intro-content {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .intro-img {
+            flex: 1;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .intro-text {
+            flex: 1;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* 端砚品类展示 */
+        .products {
+            width: 90%;
+            margin: 4rem auto;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .product-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .product-name {
+            font-size: 1.3rem;
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .product-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* 分页控件 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            padding: 0.8rem 1.2rem;
+            background-color: #fff;
+            border: 2px solid #e0d8c8;
+            color: #8b5a2b;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .pagination button:hover:not(:disabled) {
+            background-color: #8b5a2b;
+            color: #fff;
+            border-color: #8b5a2b;
+        }
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .pagination .page-number {
+            padding: 0.8rem 1.2rem;
+            background-color: #faf8f5;
+            border: 2px solid #e0d8c8;
+            border-radius: 4px;
+            color: #8b5a2b;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .pagination .page-number:hover:not(.active) {
+            background-color: #e0d8c8;
+        }
+        .pagination .page-number.active {
+            background-color: #8b5a2b;
+            color: #fff;
+            border-color: #8b5a2b;
+        }
+        .pagination-info {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* 端砚大师展示 */
+        .masters {
+            width: 90%;
+            margin: 4rem auto;
+            padding-bottom: 2rem;
+        }
+        .master-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        .master-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .master-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .master-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 1.5rem;
+            border: 3px solid #8b5a2b;
+        }
+        .master-info {
+            flex: 1;
+            padding-right: 1.5rem;
+        }
+        .master-name {
+            font-size: 1.4rem;
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .master-title {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .master-bio {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #8b5a2b;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .modal-content {
+            background-color: #f5f2eb;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 900px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-modal:hover {
+            color: #000;
+        }
+        .modal-title {
+            color: #8b5a2b;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .modal-img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .modal-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .modal-fullwidth {
+            grid-column: 1 / -1;
+        }
+        .vr-viewer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 3rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .intro-content {
+                flex-direction: column;
+            }
+            .nav-container {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 1rem;
+            }
+            .nav-links li {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .banner {
+                height: 300px;
+            }
+            .banner-caption {
+                font-size: 1rem;
+                padding: 0.8rem 1.5rem;
+            }
+            .banner-indicators {
+                gap: 0.5rem;
+            }
+            .indicator {
+                width: 10px;
+                height: 10px;
+            }
+            .master-grid {
+                grid-template-columns: 1fr;
+            }
+            .master-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+            .product-list {
+                grid-template-columns: 1fr;
+            }
+            .pagination {
+                gap: 0.5rem;
+            }
+            .pagination button,
+            .pagination .page-number {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">端砚文化</div>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#intro">端砚介绍</a></li>
+                <li><a href="#products">精品展示</a></li>
+                <li><a href="#masters">端砚大师</a></li>
+                <li><a href="端砚定制.html" target="_blank">端砚定制</a></li>
+                <li id="loginLink"><a href="用户登录.html">登录</a></li>
+                <li id="userInfo" style="display: none; color: #fff; font-size: 1.1rem;">
+                    欢迎，<span id="username"></span>
+                    <button id="logoutBtn" style="margin-left: 1rem; padding: 0.5rem 1rem; background-color: #6b4520; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
+                        退出登录
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 轮播图区域 -->
+    <div class="banner" id="home">
+        <div class="banner-img active" data-target="laokeng">
+            <img src="images/laokeng.jpg" alt="老坑端砚" style="width:100%;height:100%;object-fit:cover;">
+            <div class="banner-caption">老坑 - 端砚之首，石质温润如玉</div>
+        </div>
+        <div class="banner-img" data-target="mazikeng">
+            <img src="images/mazikeng.jpg" alt="麻子坑端砚" style="width:100%;height:100%;object-fit:cover;">
+            <div class="banner-caption">麻子坑 - 石质坚实，纹理丰富</div>
+        </div>
+        <div class="banner-img" data-target="kengzai">
+            <img src="images/kengzai.jpg" alt="坑仔岩端砚" style="width:100%;height:100%;object-fit:cover;">
+            <div class="banner-caption">坑仔岩 - 石眼圆正，高洁细腻</div>
+        </div>
+        <div class="banner-img" data-target="songhua">
+            <img src="images/songhua.jpg" alt="宋坑端砚" style="width:100%;height:100%;object-fit:cover;">
+            <div class="banner-caption">宋坑 - 石色紫红，发墨如油</div>
+        </div>
+        <div class="banner-img" data-target="feicui">
+            <img src="images/feicui.jpg" alt="翡翠端砚" style="width:100%;height:100%;object-fit:cover;">
+            <div class="banner-caption">翡翠端砚 - 色泽翠绿，质地细腻</div>
+        </div>
+        <div class="banner-img" data-target="hongshi">
+            <img src="images/hongshi.jpg" alt="红石端砚" style="width:100%;height:100%;object-fit:cover;">
+            <div class="banner-caption">红石端砚 - 色泽红润，古朴典雅</div>
+        </div>
+        <button class="banner-btn prev-btn">&lt;</button>
+        <button class="banner-btn next-btn">&gt;</button>
+        <div class="banner-indicators">
+            <span class="indicator active" data-index="0"></span>
+            <span class="indicator" data-index="1"></span>
+            <span class="indicator" data-index="2"></span>
+            <span class="indicator" data-index="3"></span>
+            <span class="indicator" data-index="4"></span>
+            <span class="indicator" data-index="5"></span>
+        </div>
+    </div>
+
+    <!-- 端砚介绍 -->
+    <section class="intro" id="intro">
+        <h2 class="section-title">端砚简介</h2>
+        <div class="intro-content">
+            <img src="images/duanyan-intro.jpg" alt="端砚细节图" class="intro-img">
+            <div class="intro-text">
+                <p>端砚，广东省肇庆市特产，中国国家地理标志产品，与甘肃洮砚、安徽歙砚、山西澄泥砚并称为中国四大名砚，且位列之首。</p>
+                <br>
+                <p>端砚始于唐、盛于宋，距今已有一千三百多年历史。其石质坚实、润滑、细腻、娇嫩，研墨不滞，发墨快，研出之墨汁细滑，书写流畅不损毫，字迹颜色经久不变，素有“群砚之首”“天下第一砚”的美誉。</p>
+                <br>
+                <p>端砚的制作过程十分复杂，从采石到成砚，要经过选料、维料、制璞、雕刻、打磨、配盒等数十道工序，每一步都凝聚着工匠的心血与智慧。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 端砚品类展示 -->
+    <section class="products" id="products">
+        <h2 class="section-title">精品端砚展示</h2>
+        <div id="productList" class="product-list">
+            <!-- 产品将通过JavaScript动态生成 -->
+        </div>
+        
+        <!-- 分页控件 -->
+        <div id="pagination" class="pagination">
+            <button id="prevBtn" disabled>上一页</button>
+            <!-- 页码将通过JavaScript动态生成 -->
+            <button id="nextBtn">下一页</button>
+        </div>
+        <div id="paginationInfo" class="pagination-info">
+            显示第 1-8 条，共 56 条记录
+        </div>
+    </section>
+
+    <!-- 端砚大师展示 -->
+    <section class="masters" id="masters">
+        <h2 class="section-title">端砚大师</h2>
+        <div class="master-grid">
+            <div class="master-card" data-master="li">
+                <img src="images/master1.jpg" alt="李文田大师" class="master-img">
+                <div class="master-info">
+                    <h3 class="master-name">李文田</h3>
+                    <p class="master-title">国家级非遗传承人</p>
+                    <p class="master-bio">从事端砚雕刻40余年，擅长传统题材创作，作品多次获国家级奖项</p>
+                </div>
+            </div>
+            <div class="master-card" data-master="wang">
+                <img src="images/master2.jpg" alt="王建华大师" class="master-img">
+                <div class="master-info">
+                    <h3 class="master-name">王建华</h3>
+                    <p class="master-title">中国工艺美术大师</p>
+                    <p class="master-bio">创新派代表，将现代设计融入传统端砚，作品兼具艺术性与实用性</p>
+                </div>
+            </div>
+            <div class="master-card" data-master="zhang">
+                <img src="images/master3.jpg" alt="张三峰大师" class="master-img">
+                <div class="master-info">
+                    <h3 class="master-name">张三峰</h3>
+                    <p class="master-title">端砚雕刻艺术大师</p>
+                    <p class="master-bio">专注于山水题材雕刻，作品意境深远，被多家博物馆收藏</p>
+                </div>
+            </div>
+            <div class="master-card" data-master="chen">
+                <img src="images/master4.jpg" alt="陈美华大师" class="master-img">
+                <div class="master-info">
+                    <h3 class="master-name">陈美华</h3>
+                    <p class="master-title">省级非遗传承人</p>
+                    <p class="master-bio">女性端砚雕刻家代表，擅长精细雕刻，作品细腻传神</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 端砚文化网 版权所有 | 传承千年文房瑰宝</p>
+    </footer>
+
+    <!-- 模态框 - 石材详情 -->
+    <div id="laokeng-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">老坑端砚石</h2>
+            <div class="modal-body">
+                <img src="images/laokeng-detail.jpg" alt="老坑端砚石" class="modal-img">
+                <div class="modal-text">
+                    <p><strong>产地：</strong>肇庆市羚羊峡南岸斧柯山端溪水东侧</p>
+                    <p><strong>石质特点：</strong>老坑砚石质地温润、细腻、致密、坚实，色泽青紫带蓝。</p>
+                    <p><strong>石品花纹：</strong>常见冰纹、金线、银线、青花、鱼脑冻、蕉叶白、天青等。</p>
+                    <p><strong>价值：</strong>老坑砚石极为稀缺，自清代已基本枯竭，现存砚石多为古坑遗存，价值连城。</p>
+                    <p><strong>特点：</strong>研墨不滞，发墨快，墨汁细滑，书写流畅不损毫，字迹颜色经久不变。</p>
+                </div>
+                <div class="vr-viewer modal-fullwidth">
+                    🎥 老坑端砚720°全景展示
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mazikeng-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">麻子坑端砚石</h2>
+            <div class="modal-body">
+                <img src="images/laokeng-detail.jpg" alt="麻子坑端砚石" class="modal-img">
+                <div class="modal-text">
+                    <p><strong>产地：</strong>肇庆市羚羊峡南岸斧柯山端溪水东侧</p>
+                    <p><strong>石质特点：</strong>老坑砚石质地温润、细腻、致密、坚实，色泽青紫带蓝。</p>
+                    <p><strong>石品花纹：</strong>常见冰纹、金线、银线、青花、鱼脑冻、蕉叶白、天青等。</p>
+                    <p><strong>价值：</strong>老坑砚石极为稀缺，自清代已基本枯竭，现存砚石多为古坑遗存，价值连城。</p>
+                    <p><strong>特点：</strong>研墨不滞，发墨快，墨汁细滑，书写流畅不损毫，字迹颜色经久不变。</p>
+                </div>
+                <div class="vr-viewer modal-fullwidth">
+                    🎥 麻子坑端砚720°全景展示
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 其他模态框省略... -->
+
+    <script>
+        // 轮播图功能实现
+        const bannerImgs = document.querySelectorAll('.banner-img');
+        const bannerIndicators = document.querySelectorAll('.indicator');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        let currentIndex = 0;
+
+        // 切换轮播图函数
+        function changeBanner(index) {
+            bannerImgs.forEach(img => img.classList.remove('active'));
+            bannerIndicators.forEach(indicator => indicator.classList.remove('active'));
+            bannerImgs[index].classList.add('active');
+            bannerIndicators[index].classList.add('active');
+            currentIndex = index;
+        }
+
+        // 下一张
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % bannerImgs.length;
+            changeBanner(currentIndex);
+        });
+
+        // 上一张
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + bannerImgs.length) % bannerImgs.length;
+            changeBanner(currentIndex);
+        });
+
+        // 点击指示器切换
+        bannerIndicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                changeBanner(index);
+            });
+        });
+
+        // 自动轮播
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % bannerImgs.length;
+            changeBanner(currentIndex);
+        }, 5000); // 增加到5秒切换一次
+
+        // 轮播图点击事件
+        document.querySelector('.banner').addEventListener('click', (e) => {
+            if (e.target.classList.contains('banner-img')) {
+                const target = e.target.dataset.target;
+                document.getElementById(`${target}-modal`).style.display = 'block';
+            } else if (e.target.closest('.banner-img')) {
+                const target = e.target.closest('.banner-img').dataset.target;
+                document.getElementById(`${target}-modal`).style.display = 'block';
+            }
+        });
+
+        // 产品卡片点击事件
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.product-card')) {
+                const card = e.target.closest('.product-card');
+                const product = card.dataset.product;
+                const modal = document.getElementById(`${product}-modal`);
+                if (modal) {
+                    modal.style.display = 'block';
+                }
+            }
+        });
+
+        // 大师卡片点击事件
+        document.querySelectorAll('.master-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const master = card.dataset.master;
+                const modal = document.getElementById(`${master}-modal`);
+                if (modal) {
+                    modal.style.display = 'block';
+                }
+            });
+        });
+
+        // 关闭模态框
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // 点击模态框外部关闭
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // 检查用户登录状态
+        window.addEventListener('load', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                // 显示用户信息，隐藏登录链接
+                document.getElementById('loginLink').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'block';
+                document.getElementById('username').textContent = currentUser.username;
+                
+                // 绑定退出登录事件
+                document.getElementById('logoutBtn').addEventListener('click', function() {
+                    localStorage.removeItem('currentUser');
+                    window.location.reload();
+                });
+            }
+        });
+
+        // 分页功能实现
+        document.addEventListener('DOMContentLoaded', function() {
+            // 模拟56个端砚产品数据
+            const products = [
+                { id: 'wenfang', name: '文房四宝套砚', desc: '精选老坑石料，传统工艺雕刻，文房收藏佳品', image: 'images/product1.jpg' },
+                { id: 'shanshui', name: '山水意境砚', desc: '麻子坑石料，浮雕山水图案，意境悠远', image: 'images/product2.jpg' },
+                { id: 'shouxing', name: '寿星贺寿砚', desc: '坑仔岩石料，立体雕刻寿星形象，寓意吉祥', image: 'images/product3.jpg' },
+                { id: 'lingzhi', name: '灵芝献瑞砚', desc: '宋坑石料，镂空雕刻灵芝图案，工艺精湛', image: 'images/product4.jpg' },
+                { id: 'dragon', name: '龙腾四海砚', desc: '老坑石料，高浮雕龙纹，气势磅礴', image: 'images/product5.jpg' },
+                { id: 'phoenix', name: '凤舞九天砚', desc: '麻子坑石料，阴刻凤凰图案，线条优美', image: 'images/product6.jpg' },
+                { id: 'chrysanthemum', name: '菊花砚', desc: '坑仔岩石料，自然菊花纹理，浑然天成', image: 'images/product7.jpg' },
+                { id: 'bamboo', name: '竹节砚', desc: '宋坑石料，仿生竹节造型，清雅脱俗', image: 'images/product8.jpg' },
+                { id: 'hanmei', name: '寒梅傲雪砚', desc: '老坑石料，浮雕梅花图案，冰清玉洁', image: 'images/product9.jpg' },
+                { id: 'lanhua', name: '兰花幽香砚', desc: '麻子坑石料，线刻兰花图案，清雅脱俗', image: 'images/product10.jpg' },
+                { id: 'zhuju', name: '竹菊双清砚', desc: '坑仔岩石料，浮雕竹菊图案，君子之风', image: 'images/product11.jpg' },
+                { id: 'meilan', name: '梅兰竹菊砚', desc: '宋坑石料，四君子图案，文人雅趣', image: 'images/product12.jpg' },
+                { id: 'longfeng', name: '龙凤呈祥砚', desc: '老坑石料，龙凤浮雕图案，吉祥如意', image: 'images/product13.jpg' },
+                { id: 'shuanglong', name: '双龙戏珠砚', desc: '麻子坑石料，双龙浮雕图案，气势非凡', image: 'images/product14.jpg' },
+                { id: 'panchi', name: '蟠螭纹砚', desc: '坑仔岩石料，传统蟠螭纹饰，古朴典雅', image: 'images/product15.jpg' },
+                { id: 'xiezhi', name: '獬豸神兽砚', desc: '宋坑石料，神兽雕刻图案，公正严明', image: 'images/product16.jpg' },
+                { id: 'taishan', name: '泰山日出砚', desc: '老坑石料，山水浮雕图案，壮丽山河', image: 'images/product17.jpg' },
+                { id: 'huanghe', name: '黄河颂砚', desc: '麻子坑石料，黄河壶口瀑布图案，气势磅礴', image: 'images/product18.jpg' },
+                { id: 'changjiang', name: '长江三峡砚', desc: '坑仔岩石料，三峡风光图案，鬼斧神工', image: 'images/product19.jpg' },
+                { id: 'huashan', name: '华山险峻砚', desc: '宋坑石料，华山风光图案，奇险天下', image: 'images/product20.jpg' },
+                { id: 'guanyin', name: '观音送子砚', desc: '老坑石料，观音浮雕图案，吉祥如意', image: 'images/product21.jpg' },
+                { id: 'fuxing', name: '福星高照砚', desc: '麻子坑石料，福星雕刻图案，好运连连', image: 'images/product22.jpg' },
+                { id: 'luxing', name: '禄星献瑞砚', desc: '坑仔岩石料，禄星雕刻图案，功名利禄', image: 'images/product23.jpg' },
+                { id: 'caishen', name: '财神到砚', desc: '宋坑石料，财神雕刻图案，财源广进', image: 'images/product24.jpg' },
+                { id: 'kongzi', name: '孔子问道砚', desc: '老坑石料，孔子浮雕图案，尊师重道', image: 'images/product25.jpg' },
+                { id: 'laozi', name: '老子出关砚', desc: '麻子坑石料，老子骑牛图案，道法自然', image: 'images/product26.jpg' },
+                { id: 'zhuangzi', name: '庄子梦蝶砚', desc: '坑仔岩石料，庄子梦蝶图案，哲学意境', image: 'images/product27.jpg' },
+                { id: 'mengzi', name: '孟子讲学砚', desc: '宋坑石料，孟子讲学图案，儒家思想', image: 'images/product28.jpg' },
+                { id: 'taichi', name: '太极八卦砚', desc: '老坑石料，太极八卦图案，阴阳平衡', image: 'images/product29.jpg' },
+                { id: 'bagua', name: '八卦方位砚', desc: '麻子坑石料，八卦方位图案，传统智慧', image: 'images/product30.jpg' },
+                { id: 'wuxing', name: '五行相生砚', desc: '坑仔岩石料，五行图案，相生相克', image: 'images/product31.jpg' },
+                { id: 'bajing', name: '八宝吉祥砚', desc: '宋坑石料，八宝图案，吉祥如意', image: 'images/product32.jpg' },
+                { id: 'shierxiao', name: '十二生肖砚', desc: '老坑石料，十二生肖图案，生肖文化', image: 'images/product33.jpg' },
+                { id: 'shenxiao', name: '子鼠献瑞砚', desc: '麻子坑石料，老鼠图案，聪明机智', image: 'images/product34.jpg' },
+                { id: 'niushou', name: '丑牛耕耘砚', desc: '坑仔岩石料，黄牛图案，勤劳致富', image: 'images/product35.jpg' },
+                { id: 'huying', name: '寅虎啸山砚', desc: '宋坑石料，老虎图案，虎虎生威', image: 'images/product36.jpg' },
+                { id: 'tuma', name: '卯兔迎春砚', desc: '老坑石料，兔子图案，玉兔呈祥', image: 'images/product37.jpg' },
+                { id: 'longzhao', name: '辰龙戏水砚', desc: '麻子坑石料，龙图案，龙腾四海', image: 'images/product38.jpg' },
+                { id: 'shehui', name: '巳蛇吐信砚', desc: '坑仔岩石料，蛇图案，灵蛇献瑞', image: 'images/product39.jpg' },
+                { id: 'mawang', name: '午马奔腾砚', desc: '宋坑石料，马图案，马到成功', image: 'images/product40.jpg' },
+                { id: 'yangchun', name: '未羊开泰砚', desc: '老坑石料，羊图案，三阳开泰', image: 'images/product41.jpg' },
+                { id: 'housheng', name: '申猴献桃砚', desc: '麻子坑石料，猴子图案，聪明伶俐', image: 'images/product42.jpg' },
+                { id: 'jigong', name: '酉鸡报晓砚', desc: '坑仔岩石料，公鸡图案，金鸡报晓', image: 'images/product43.jpg' },
+                { id: 'goufu', name: '戌狗旺财砚', desc: '宋坑石料，狗图案，旺财守家', image: 'images/product44.jpg' },
+                { id: 'zhuhu', name: '亥猪送福砚', desc: '老坑石料，猪图案，肥猪拱门', image: 'images/product45.jpg' },
+                { id: 'chunqiu', name: '春秋五霸砚', desc: '麻子坑石料，春秋五霸图案，历史风云', image: 'images/product46.jpg' },
+                { id: 'zhanguo', name: '战国七雄砚', desc: '坑仔岩石料，战国七雄图案，诸侯争霸', image: 'images/product47.jpg' },
+                { id: 'hanwu', name: '汉武雄风砚', desc: '宋坑石料，汉武帝图案，雄才大略', image: 'images/product48.jpg' },
+                { id: 'taizong', name: '贞观之治砚', desc: '老坑石料，唐太宗图案，盛世华章', image: 'images/product49.jpg' },
+                { id: 'kangxi', name: '康熙南巡砚', desc: '麻子坑石料，康熙图案，康乾盛世', image: 'images/product50.jpg' },
+                { id: 'qianlong', name: '乾隆御题砚', desc: '坑仔岩石料，乾隆图案，文人皇帝', image: 'images/product51.jpg' },
+                { id: 'shiji', name: '史记千秋砚', desc: '宋坑石料，司马迁图案，史家之绝唱', image: 'images/product52.jpg' },
+                { id: 'sanguo', name: '三国演义砚', desc: '老坑石料，三国人物图案，乱世英雄', image: 'images/product53.jpg' },
+                { id: 'huachuan', name: '水浒传砚', desc: '麻子坑石料，梁山好汉图案，替天行道', image: 'images/product54.jpg' },
+                { id: 'xiyou', name: '西游记砚', desc: '坑仔岩石料，唐僧师徒图案，西天取经', image: 'images/product55.jpg' },
+                { id: 'honglou', name: '红楼梦砚', desc: '宋坑石料，金陵十二钗图案，红楼一梦', image: 'images/product56.jpg' }
+            ];
+
+            // 分页配置
+            const pageSize = 20; // 每页显示8个，2行×4列
+            let currentPage = 1;
+            const totalPages = Math.ceil(products.length / pageSize);
+
+            // 获取DOM元素
+            const productList = document.getElementById('productList');
+            const pagination = document.getElementById('pagination');
+            const paginationInfo = document.getElementById('paginationInfo');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            // 渲染产品列表
+            function renderProducts(page) {
+                const startIndex = (page - 1) * pageSize;
+                const endIndex = startIndex + pageSize;
+                const currentProducts = products.slice(startIndex, endIndex);
+
+                productList.innerHTML = '';
+                currentProducts.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.dataset.product = product.id;
+                    card.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}" class="product-img">
+                        <div class="product-info">
+                            <h3 class="product-name">${product.name}</h3>
+                            <p class="product-desc">${product.desc}</p>
+                        </div>
+                    `;
+                    productList.appendChild(card);
+                });
+
+                // 更新分页信息
+                const startRecord = startIndex + 1;
+                const endRecord = Math.min(endIndex, products.length);
+                paginationInfo.textContent = `显示第 ${startRecord}-${endRecord} 条，共 ${products.length} 条记录`;
+            }
+
+            // 渲染页码
+            function renderPageNumbers() {
+                // 清除现有页码
+                const existingPageNumbers = document.querySelectorAll('.page-number');
+                existingPageNumbers.forEach(num => num.remove());
+
+                // 计算显示的页码范围
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, currentPage + 2);
+
+                // 如果总页数较少，显示所有页码
+                if (totalPages <= 5) {
+                    startPage = 1;
+                    endPage = totalPages;
+                }
+
+                // 添加省略号
+                if (startPage > 1) {
+                    const firstPage = document.createElement('span');
+                    firstPage.className = 'page-number';
+                    firstPage.textContent = '1';
+                    firstPage.addEventListener('click', () => goToPage(1));
+                    if (1 === currentPage) firstPage.classList.add('active');
+                    pagination.insertBefore(firstPage, nextBtn);
+
+                    if (startPage > 2) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.textContent = '...';
+                        ellipsis.style.padding = '0 0.5rem';
+                        pagination.insertBefore(ellipsis, nextBtn);
+                    }
+                }
+
+                // 添加页码
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageNumber = document.createElement('span');
+                    pageNumber.className = 'page-number';
+                    pageNumber.textContent = i;
+                    pageNumber.addEventListener('click', () => goToPage(i));
+                    if (i === currentPage) pageNumber.classList.add('active');
+                    pagination.insertBefore(pageNumber, nextBtn);
+                }
+
+                // 添加省略号
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.textContent = '...';
+                        ellipsis.style.padding = '0 0.5rem';
+                        pagination.insertBefore(ellipsis, nextBtn);
+                    }
+
+                    const lastPage = document.createElement('span');
+                    lastPage.className = 'page-number';
+                    lastPage.textContent = totalPages;
+                    lastPage.addEventListener('click', () => goToPage(totalPages));
+                    if (totalPages === currentPage) lastPage.classList.add('active');
+                    pagination.insertBefore(lastPage, nextBtn);
+                }
+
+                // 更新按钮状态
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+            }
+
+            // 跳转到指定页
+            function goToPage(page) {
+                if (page < 1 || page > totalPages || page === currentPage) return;
+                
+                currentPage = page;
+                renderProducts(currentPage);
+                renderPageNumbers();
+                
+                // 滚动到产品区域
+                document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // 绑定事件
+            prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
+            nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+
+            // 初始化
+            renderProducts(currentPage);
+            renderPageNumbers();
+        });
+    </script>
+</body>
+</html>

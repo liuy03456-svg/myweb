@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>端砚定制 - 专属您的文房瑰宝</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 页面背景与基础样式 */
+        body {
+            background-color: #f5f2eb; /* 仿宣纸底色，贴合文房四宝氛围 */
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏样式 */
+        header {
+            background-color: #8b5a2b; /* 仿砚台木质纹理色 */
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #f8e1c0;
+        }
+
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #8b5a2b;
+            margin: 3rem 0;
+            position: relative;
+        }
+        .page-title::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background-color: #8b5a2b;
+            margin: 0.5rem auto;
+        }
+
+        /* 端砚定制区域 */
+        .customize-container {
+            width: 90%;
+            margin: 0 auto 4rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* 定制表单 */
+        .customize-form-section {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-title {
+            font-size: 1.5rem;
+            color: #8b5a2b;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .customize-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-size: 1.1rem;
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            padding: 0.8rem;
+            border: 2px solid #e0d8c8;
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: #faf8f5;
+        }
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8b5a2b;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .submit-btn {
+            grid-column: 1 / -1;
+            padding: 1.2rem 2rem;
+            background-color: #8b5a2b;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+        .submit-btn:hover {
+            background-color: #6b4520;
+        }
+
+        /* 定制说明 */
+        .customize-info {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+        .info-title {
+            font-size: 1.3rem;
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+        }
+        .info-list {
+            list-style: none;
+        }
+        .info-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .info-list li::before {
+            content: "✓";
+            color: #8b5a2b;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        .customize-process {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0d8c8;
+        }
+        .process-title {
+            font-size: 1.2rem;
+            color: #8b5a2b;
+            margin-bottom: 1rem;
+        }
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+        }
+        .step-number {
+            background-color: #8b5a2b;
+            color: #fff;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* 推荐结果区域 */
+        .recommendations {
+            width: 90%;
+            margin: 0 auto 4rem;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .recommendations.active {
+            display: block;
+        }
+        .recommendation-title {
+            font-size: 1.5rem;
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .recommendation-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .recommendation-item {
+            background-color: #faf8f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e0d8c8;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .recommendation-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .recommendation-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        .recommendation-item h4 {
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .match-rating {
+            display: inline-block;
+            background-color: #8b5a2b;
+            color: #fff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+        .recommendation-item p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .product-meta {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0d8c8;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #8b5a2b;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 1rem;
+            }
+            .nav-links li {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .page-title {
+                font-size: 2rem;
+                margin: 2rem 0;
+            }
+            .customize-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .customize-form {
+                grid-template-columns: 1fr;
+            }
+            .recommendation-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">端砚文化</div>
+            <ul class="nav-links">
+                <li><a href="端砚首页.html">返回首页</a></li>
+                <li><a href="#customize">定制流程</a></li>
+                <li><a href="#recommendations">推荐方案</a></li>
+                <li><a href="#contact">联系我们</a></li>
+                <li id="loginLink"><a href="用户登录.html">登录</a></li>
+                <li id="userInfo" style="display: none; color: #fff; font-size: 1.1rem;">
+                    欢迎，<span id="username"></span>
+                    <button id="logoutBtn" style="margin-left: 1rem; padding: 0.5rem 1rem; background-color: #6b4520; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
+                        退出登录
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 页面标题 -->
+    <h1 class="page-title">端砚定制</h1>
+    <p style="text-align: center; font-size: 1.3rem; color: #666; margin-bottom: 3rem;">根据您的需求，为您量身定制专属文房瑰宝</p>
+
+    <!-- 定制内容区域 -->
+    <div class="customize-container" id="customize">
+        <!-- 定制表单 -->
+        <div class="customize-form-section">
+            <h2 class="form-title">定制您的专属端砚</h2>
+            <form id="customizeForm" class="customize-form">
+                <div class="form-group">
+                    <label for="shape">砚台形状</label>
+                    <select id="shape" name="shape">
+                        <option value="">请选择形状</option>
+                        <option value="长方形">长方形</option>
+                        <option value="正方形">正方形</option>
+                        <option value="圆形">圆形</option>
+                        <option value="椭圆形">椭圆形</option>
+                        <option value="自然形">自然形</option>
+                        <option value="异形">异形</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="pattern">雕刻图案</label>
+                    <select id="pattern" name="pattern">
+                        <option value="">请选择图案</option>
+                        <option value="山水风景">山水风景</option>
+                        <option value="花鸟虫鱼">花鸟虫鱼</option>
+                        <option value="龙凤神兽">龙凤神兽</option>
+                        <option value="人物典故">人物典故</option>
+                        <option value="吉祥图案">吉祥图案</option>
+                        <option value="简约素面">简约素面</option>
+                        <option value="自定义">自定义图案</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="stoneType">坑口选择</label>
+                    <select id="stoneType" name="stoneType">
+                        <option value="">请选择坑口</option>
+                        <option value="老坑">老坑</option>
+                        <option value="麻子坑">麻子坑</option>
+                        <option value="坑仔岩">坑仔岩</option>
+                        <option value="宋坑">宋坑</option>
+                        <option value="其他坑口">其他坑口</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="size">尺寸大小 (cm)</label>
+                    <input type="text" id="size" name="size" placeholder="例如：20×15×3">
+                </div>
+                
+                <div class="form-group">
+                    <label for="craft">工艺要求</label>
+                    <select id="craft" name="craft">
+                        <option value="">请选择工艺</option>
+                        <option value="浅浮雕">浅浮雕</option>
+                        <option value="高浮雕">高浮雕</option>
+                        <option value="透雕">透雕</option>
+                        <option value="线刻">线刻</option>
+                        <option value="立体雕刻">立体雕刻</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="usage">使用场景</label>
+                    <select id="usage" name="usage">
+                        <option value="">请选择场景</option>
+                        <option value="日常使用">日常使用</option>
+                        <option value="收藏鉴赏">收藏鉴赏</option>
+                        <option value="礼品赠送">礼品赠送</option>
+                        <option value="文化传承">文化传承</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="budget">预算范围</label>
+                    <select id="budget" name="budget">
+                        <option value="">请选择预算</option>
+                        <option value="5000以下">5000元以下</option>
+                        <option value="5000-10000">5000-10000元</option>
+                        <option value="10000-20000">10000-20000元</option>
+                        <option value="20000-50000">20000-50000元</option>
+                        <option value="50000以上">50000元以上</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">特殊要求</label>
+                    <textarea id="description" name="description" placeholder="请描述您的特殊要求、设计想法或个性化需求..."></textarea>
+                </div>
+                
+                <button type="button" class="submit-btn" onclick="generateRecommendations()">生成推荐方案</button>
+            </form>
+        </div>
+        
+        <!-- 定制说明 -->
+        <div class="customize-info">
+            <h2 class="info-title">定制优势</h2>
+            <ul class="info-list">
+                <li>精选优质端砚石料，确保砚台品质</li>
+                <li>国家级非遗传承人亲自指导设计</li>
+                <li>传统手工雕刻工艺，传承千年文化</li>
+                <li>个性化定制，满足您的独特需求</li>
+                <li>提供设计方案确认，确保符合预期</li>
+                <li>专业包装，适合收藏与馈赠</li>
+            </ul>
+            
+            <div class="customize-process">
+                <h3 class="process-title">定制流程</h3>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <span>提交定制需求与设计想法</span>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <span>专业团队设计方案与报价</span>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <span>客户确认设计方案与价格</span>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <span>大师团队精心雕刻制作</span>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <span>成品打磨、抛光、包装</span>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <span>产品交付与售后服务</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 推荐结果区域 -->
+    <div id="recommendations" class="recommendations">
+        <h2 class="recommendation-title">为您推荐以下相似端砚</h2>
+        <div id="recommendationList" class="recommendation-list">
+            <!-- 推荐结果将通过JavaScript动态生成 -->
+        </div>
+    </div>
+
+    <!-- 联系我们 -->
+    <div class="customize-info" style="width: 90%; margin: 0 auto 4rem;" id="contact">
+        <h2 class="info-title">联系我们</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div>
+                <h3 style="color: #8b5a2b; margin-bottom: 1rem;">定制热线</h3>
+                <p>📞 400-123-4567</p>
+                <p>⏰ 周一至周日 9:00-18:00</p>
+            </div>
+            <div>
+                <h3 style="color: #8b5a2b; margin-bottom: 1rem;">电子邮箱</h3>
+                <p>📧 custom@duanyan.com</p>
+                <p>我们将在24小时内回复您</p>
+            </div>
+            <div>
+                <h3 style="color: #8b5a2b; margin-bottom: 1rem;">线下体验</h3>
+                <p>📍 广东省肇庆市端州区端砚文化街88号</p>
+                <p>欢迎莅临体验端砚制作工艺</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 端砚文化网 版权所有 | 传承千年文房瑰宝</p>
+    </footer>
+
+    <script>
+        // 生成推荐方案功能
+        function generateRecommendations() {
+            // 检查用户是否登录
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('请先登录后再进行端砚定制！');
+                window.location.href = '用户登录.html';
+                return;
+            }
+            
+            // 获取用户选择
+            const shape = document.getElementById('shape').value;
+            const pattern = document.getElementById('pattern').value;
+            const stoneType = document.getElementById('stoneType').value;
+            const size = document.getElementById('size').value;
+            const craft = document.getElementById('craft').value;
+            const usage = document.getElementById('usage').value;
+            const budget = document.getElementById('budget').value;
+            const description = document.getElementById('description').value;
+            
+            // 验证用户输入
+            if (!shape && !pattern && !stoneType && !craft) {
+                alert('请至少选择一项定制条件！');
+                return;
+            }
+            
+            // 保存定制信息到localStorage
+            const customizationInfo = {
+                userId: currentUser.username,
+                shape: shape,
+                pattern: pattern,
+                stoneType: stoneType,
+                size: size,
+                craft: craft,
+                usage: usage,
+                budget: budget,
+                description: description,
+                timestamp: new Date().toISOString()
+            };
+            
+            // 保存到localStorage
+            let customizations = JSON.parse(localStorage.getItem('customizations')) || [];
+            customizations.push(customizationInfo);
+            localStorage.setItem('customizations', JSON.stringify(customizations));
+            
+            // 模拟推荐数据
+            const recommendations = [
+                {
+                    name: '山水意境砚',
+                    image: 'images/product2.jpg',
+                    match: '高',
+                    description: '麻子坑石料，浮雕山水图案，与您选择的山水风景图案匹配度高',
+                    stone: '麻子坑',
+                    pattern: '山水风景',
+                    craft: '浮雕',
+                    price: '12800元'
+                },
+                {
+                    name: '寿星贺寿砚',
+                    image: 'images/product3.jpg',
+                    match: '中',
+                    description: '坑仔岩石料，立体雕刻人物形象，与您选择的人物典故风格接近',
+                    stone: '坑仔岩',
+                    pattern: '人物典故',
+                    craft: '立体雕刻',
+                    price: '16800元'
+                },
+                {
+                    name: '龙腾四海砚',
+                    image: 'images/product5.jpg',
+                    match: '中',
+                    description: '老坑石料，高浮雕龙纹图案，与您选择的龙凤神兽风格匹配',
+                    stone: '老坑',
+                    pattern: '龙凤神兽',
+                    craft: '高浮雕',
+                    price: '28800元'
+                },
+                {
+                    name: '竹节砚',
+                    image: 'images/product8.jpg',
+                    match: '低',
+                    description: '宋坑石料，仿生竹节造型，简约素面设计，与您的需求有一定相似度',
+                    stone: '宋坑',
+                    pattern: '简约素面',
+                    craft: '线刻',
+                    price: '6800元'
+                }
+            ];
+            
+            // 过滤和排序推荐结果
+            let filteredRecommendations = [...recommendations];
+            
+            // 根据用户选择过滤
+            if (stoneType) {
+                filteredRecommendations = filteredRecommendations.filter(item => 
+                    item.stone.includes(stoneType) || stoneType === '其他坑口'
+                );
+            }
+            
+            if (pattern) {
+                filteredRecommendations = filteredRecommendations.filter(item => 
+                    item.pattern.includes(pattern) || pattern === '自定义'
+                );
+            }
+            
+            if (craft) {
+                filteredRecommendations = filteredRecommendations.filter(item => 
+                    item.craft.includes(craft)
+                );
+            }
+            
+            // 按匹配度排序
+            filteredRecommendations.sort((a, b) => {
+                const matchOrder = { '高': 3, '中': 2, '低': 1 };
+                return matchOrder[b.match] - matchOrder[a.match];
+            });
+            
+            // 显示推荐结果
+            const recommendationList = document.getElementById('recommendationList');
+            recommendationList.innerHTML = '';
+            
+            if (filteredRecommendations.length === 0) {
+                recommendationList.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #666; font-size: 1.1rem;">暂无匹配的端砚推荐，请尝试其他组合或联系客服定制。</p>';
+            } else {
+                filteredRecommendations.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'recommendation-item';
+                    itemElement.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}">
+                        <h4>${item.name}</h4>
+                        <span class="match-rating">匹配度：${item.match}</span>
+                        <p>${item.description}</p>
+                        <div class="product-meta">
+                            <p><strong>材质：</strong>${item.stone}</p>
+                            <p><strong>工艺：</strong>${item.craft}</p>
+                            <p><strong>参考价格：</strong>${item.price}</p>
+                        </div>
+                    `;
+                    recommendationList.appendChild(itemElement);
+                });
+            }
+            
+            // 显示推荐区域并滚动到该区域
+            const recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.classList.add('active');
+            recommendationsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 检查用户登录状态
+        window.addEventListener('load', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                // 显示用户信息，隐藏登录链接
+                document.getElementById('loginLink').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'block';
+                document.getElementById('username').textContent = currentUser.username;
+                
+                // 绑定退出登录事件
+                document.getElementById('logoutBtn').addEventListener('click', function() {
+                    localStorage.removeItem('currentUser');
+                    window.location.reload();
+                });
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

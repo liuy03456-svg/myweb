@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>端砚文化 - 管理员后台</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 页面背景与基础样式 */
+        body {
+            background-color: #f5f2eb;
+            color: #333;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #8b5a2b;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        /* 数据统计卡片 */
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-title {
+            font-size: 1.2rem;
+            color: #666;            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            color: #8b5a2b;
+            font-weight: bold;
+        }
+
+        /* 订单表格 */
+        .orders-container {
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        .orders-title {
+            font-size: 1.8rem;
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #8b5a2b;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .orders-table th,
+        .orders-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0d8c8;
+        }
+
+        .orders-table th {
+            background-color: #8b5a2b;
+            color: #fff;            font-weight: bold;
+        }
+
+        .orders-table tr:hover {
+            background-color: #f9f5f0;
+        }
+
+        /* 状态标签 */
+        .status-tag {
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            background-color: #8b5a2b;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: #6b4520;
+        }
+
+        /* 订单详情卡片 */
+        .order-detail-card {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .detail-title {
+            font-size: 1.5rem;
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #8b5a2b;
+        }
+
+        .detail-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0d8c8;
+        }
+
+        .detail-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #8b5a2b;
+            margin-bottom: 1rem;
+        }
+
+        .detail-item {
+            margin-bottom: 0.8rem;            display: flex;
+            gap: 1rem;        }
+
+        .detail-label {
+            font-weight: bold;            color: #666;            min-width: 120px;        }
+
+        .detail-value {
+            color: #333;        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .orders-table {
+                font-size: 0.9rem;
+            }
+            
+            .orders-table th,
+            .orders-table td {
+                padding: 0.8rem 0.5rem;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="page-title">端砚文化 - 管理员后台</h1>
+
+    <!-- 数据统计卡片 -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-title">总点单量</div>
+            <div class="stat-value">1,245</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">今日点击量</div>
+            <div class="stat-value">89</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">已确定订单</div>
+            <div class="stat-value">1,120</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">待确定订单</div>
+            <div class="stat-value">125</div>
+        </div>
+    </div>
+
+    <!-- 已确定订单 -->
+    <div class="orders-container">
+        <h2 class="orders-title">已确定订单</h2>
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>订单编号</th>
+                    <th>客户姓名</th>
+                    <th>端砚类型</th>
+                    <th>数量</th>
+                    <th>订单日期</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ORD-001</td>
+                    <td>张三</td>
+                    <td>老坑端砚</td>
+                    <td>1</td>
+                    <td>2026-01-15</td>
+                    <td><span class="status-tag status-approved">已确定</span></td>
+                    <td><button class="btn" onclick="showOrderDetail('ORD-001')">查看详情</button></td>
+                </tr>
+                <tr>
+                    <td>ORD-002</td>
+                    <td>李四</td>
+                    <td>麻子坑端砚</td>
+                    <td>2</td>
+                    <td>2026-01-16</td>
+                    <td><span class="status-tag status-approved">已确定</span></td>
+                    <td><button class="btn" onclick="showOrderDetail('ORD-002')">查看详情</button></td>
+                </tr>
+                <tr>
+                    <td>ORD-003</td>
+                    <td>王五</td>
+                    <td>宋坑端砚</td>
+                    <td>1</td>
+                    <td>2026-01-17</td>
+                    <td><span class="status-tag status-approved">已确定</span></td>
+                    <td><button class="btn" onclick="showOrderDetail('ORD-003')">查看详情</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 待确定订单 -->
+    <div class="orders-container">
+        <h2 class="orders-title">待确定订单</h2>
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>订单编号</th>
+                    <th>客户姓名</th>
+                    <th>端砚类型</th>
+                    <th>数量</th>
+                    <th>订单日期</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ORD-004</td>
+                    <td>赵六</td>
+                    <td>梅花坑端砚</td>
+                    <td>1</td>
+                    <td>2026-01-17</td>
+                    <td><span class="status-tag status-pending">待确定</span></td>
+                    <td><button class="btn">确认订单</button></td>
+                </tr>
+                <tr>
+                    <td>ORD-005</td>
+                    <td>孙七</td>
+                    <td>绿端砚</td>
+                    <td>3</td>
+                    <td>2026-01-17</td>
+                    <td><span class="status-tag status-pending">待确定</span></td>
+                    <td><button class="btn">确认订单</button></td>
+                </tr>
+                <tr>
+                    <td>ORD-006</td>
+                    <td>周八</td>
+                    <td>白线岩端砚</td>
+                    <td>1</td>
+                    <td>2026-01-17</td>
+                    <td><span class="status-tag status-pending">待确定</span></td>
+                    <td><button class="btn">确认订单</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 订单详情卡片 -->
+    <div id="orderDetailCard" class="order-detail-card">
+        <h2 class="detail-title">订单详情</h2>
+        <div class="detail-section">
+            <h3 class="section-title">基本信息</h3>
+            <div class="detail-item">
+                <span class="detail-label">订单编号:</span>
+                <span class="detail-value" id="detailOrderId"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">客户姓名:</span>
+                <span class="detail-value" id="detailCustomerName"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">联系电话:</span>
+                <span class="detail-value" id="detailPhone"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">订单日期:</span>
+                <span class="detail-value" id="detailOrderDate"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">状态:</span>
+                <span class="detail-value" id="detailStatus"></span>
+            </div>
+        </div>
+        <div class="detail-section">
+            <h3 class="section-title">端砚信息</h3>
+            <div class="detail-item">
+                <span class="detail-label">端砚类型:</span>
+                <span class="detail-value" id="detailInkstoneType"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">尺寸:</span>
+                <span class="detail-value" id="detailSize"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">材质:</span>
+                <span class="detail-value" id="detailMaterial"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">雕刻图案:</span>
+                <span class="detail-value" id="detailPattern"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">数量:</span>
+                <span class="detail-value" id="detailQuantity"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">单价:</span>
+                <span class="detail-value" id="detailPrice"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">总价:</span>
+                <span class="detail-value" id="detailTotalPrice"></span>
+            </div>
+        </div>
+        <div class="detail-section">
+            <h3 class="section-title">备注信息</h3>
+            <div class="detail-item">
+                <span class="detail-label">客户备注:</span>
+                <span class="detail-value" id="detailNote"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 订单详情数据
+        const orderDetails = {
+            'ORD-001': {
+                customerName: '张三',
+                phone: '13800138001',
+                orderDate: '2026-01-15',
+                status: '已确定',
+                inkstoneType: '老坑端砚',
+                size: '20cm x 15cm x 5cm',
+                material: '老坑石材',
+                pattern: '龙凤呈祥',
+                quantity: '1',
+                price: '¥12,000',
+                totalPrice: '¥12,000',
+                note: '要求雕刻精细，注重细节'
+            },
+            'ORD-002': {
+                customerName: '李四',
+                phone: '13800138002',
+                orderDate: '2026-01-16',
+                status: '已确定',
+                inkstoneType: '麻子坑端砚',
+                size: '18cm x 12cm x 4cm',
+                material: '麻子坑石材',
+                pattern: '山水风景',
+                quantity: '2',
+                price: '¥8,000',
+                totalPrice: '¥16,000',
+                note: '需要定制礼盒包装'
+            },
+            'ORD-003': {
+                customerName: '王五',
+                phone: '13800138003',
+                orderDate: '2026-01-17',
+                status: '已确定',
+                inkstoneType: '宋坑端砚',
+                size: '15cm x 10cm x 3cm',
+                material: '宋坑石材',
+                pattern: '花鸟图案',
+                quantity: '1',
+                price: '¥5,000',
+                totalPrice: '¥5,000',
+                note: '无特殊要求'
+            }
+        };
+
+        // 显示订单详情
+        function showOrderDetail(orderId) {
+            const detail = orderDetails[orderId];
+            if (detail) {
+                document.getElementById('detailOrderId').textContent = orderId;
+                document.getElementById('detailCustomerName').textContent = detail.customerName;
+                document.getElementById('detailPhone').textContent = detail.phone;
+                document.getElementById('detailOrderDate').textContent = detail.orderDate;
+                document.getElementById('detailStatus').textContent = detail.status;
+                document.getElementById('detailInkstoneType').textContent = detail.inkstoneType;
+                document.getElementById('detailSize').textContent = detail.size;
+                document.getElementById('detailMaterial').textContent = detail.material;
+                document.getElementById('detailPattern').textContent = detail.pattern;
+                document.getElementById('detailQuantity').textContent = detail.quantity;
+                document.getElementById('detailPrice').textContent = detail.price;
+                document.getElementById('detailTotalPrice').textContent = detail.totalPrice;
+                document.getElementById('detailNote').textContent = detail.note;
+            }
+        }
+
+        // 页面加载完成后默认显示第一个订单详情
+        window.addEventListener('load', function() {
+            showOrderDetail('ORD-001');
+        });
+    </script>
+</body>
+</html>
