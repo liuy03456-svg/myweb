@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>端砚文化 - 用户社群</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 页面背景与基础样式 */
+        body {
+            background-color: #f5f2eb;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏样式 */
+        header {
+            background-color: #8b5a2b;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #f8e1c0;
+        }
+
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #8b5a2b;
+            margin: 3rem 0;
+            position: relative;
+        }
+        .page-title::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background-color: #8b5a2b;
+            margin: 0.5rem auto;
+        }
+
+        /* 社群介绍区域 */
+        .community-intro {
+            width: 90%;
+            margin: 0 auto 3rem;
+            text-align: center;
+        }
+        .intro-text {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* 核心功能介绍 */
+        .features-section {
+            width: 90%;
+            margin: 0 auto 4rem;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .feature-card {
+            background-color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(139, 90, 43, 0.2);
+        }
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .feature-title {
+            font-size: 1.4rem;
+            color: #8b5a2b;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        .feature-desc {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* 讨论区区域 */
+        .forum-section {
+            width: 90%;
+            margin: 0 auto 4rem;
+        }
+        .section-title {
+            font-size: 2rem;
+            color: #8b5a2b;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .forum-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+        .forum-item {
+            background-color: #fff;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .forum-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(139, 90, 43, 0.15);
+        }
+        .forum-info h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .forum-info p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .forum-stats {
+            text-align: right;
+            color: #8b5a2b;
+        }
+        .stat-item {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* 活动预告区域 */
+        .events-section {
+            width: 90%;
+            margin: 0 auto 4rem;
+        }
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .event-card {
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(139, 90, 43, 0.2);
+        }
+        .event-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 3rem;
+        }
+        .event-content {
+            padding: 1.5rem;
+        }
+        .event-date {
+            color: #8b5a2b;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .event-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 0.8rem;
+        }
+        .event-desc {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .event-btn {
+            margin-top: 1rem;
+            padding: 0.6rem 1.5rem;
+            background-color: #8b5a2b;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .event-btn:hover {
+            background-color: #6b4520;
+        }
+
+        /* 加入社群按钮区域 */
+        .join-section {
+            width: 90%;
+            margin: 0 auto 4rem;
+            text-align: center;
+        }
+        .join-btn {
+            padding: 1.2rem 4rem;
+            background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(139, 90, 43, 0.3);
+        }
+        .join-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 90, 43, 0.4);
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #8b5a2b;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .nav-links li {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">砚韵智脉——非遗文化数字传承平台</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../index.html#intro">端砚介绍</a></li>
+                <li><a href="../index.html#products">精品展示</a></li>
+                <li><a href="../index.html#masters">端砚大师</a></li>
+                <li><a href="../dingzhi.html" target="_blank">端砚定制</a></li>
+                <li><a href="community.html" style="color: #f8e1c0;">用户社群</a></li>
+                <li><a href="contact.html">联系我们</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 页面标题 -->
+    <h1 class="page-title">用户社群</h1>
+
+    <!-- 社群介绍 -->
+    <div class="community-intro">
+        <p class="intro-text">欢迎加入端砚爱好者社群！这里汇聚了来自全国各地的端砚收藏家、研究者、艺术家和爱好者。我们共同探讨端砚的历史文化、鉴赏技巧、收藏心得，一起传承千年文房瑰宝，让端砚文化在新时代焕发出更加璀璨的光芒。</p>
+    </div>
+
+    <!-- 核心功能介绍 -->
+    <div class="features-section">
+        <h2 class="section-title">核心功能</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3 class="feature-title">讨论交流</h3>
+                <p class="feature-desc">与其他端砚爱好者畅所欲言，分享收藏经验与心得，结交志同道合的朋友</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3 class="feature-title">知识分享</h3>
+                <p class="feature-desc">学习端砚鉴赏知识，了解传统文化与制作工艺，提升收藏专业水平</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">作品展示</h3>
+                <p class="feature-desc">展示您的端砚收藏，获得专家与同好的点评，提高收藏价值认知</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">活动参与</h3>
+                <p class="feature-desc">参与线下展览、讲座、拍卖等活动，拓展人脉圈，丰富收藏体验</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 讨论区 -->
+    <div class="forum-section">
+        <h2 class="section-title">热门讨论</h2>
+        <div class="forum-list">
+            <div class="forum-item">
+                <div class="forum-info">
+                    <h3>如何鉴别老坑端砚的真伪？</h3>
+                    <p>作者：端砚收藏家张三 | 发布时间：2026-01-15</p>
+                </div>
+                <div class="forum-stats">
+                    <div class="stat-item">👁️ 1,234 次浏览</div>
+                    <div class="stat-item">💬 56 条回复</div>
+                </div>
+            </div>
+            <div class="forum-item">
+                <div class="forum-info">
+                    <h3>我的第一方端砚收藏分享</h3>
+                    <p>作者：端砚爱好者李四 | 发布时间：2026-01-14</p>
+                </div>
+                <div class="forum-stats">
+                    <div class="stat-item">👁️ 890 次浏览</div>
+                    <div class="stat-item">💬 32 条回复</div>
+                </div>
+            </div>
+            <div class="forum-item">
+                <div class="forum-info">
+                    <h3>端砚保养的小技巧分享</h3>
+                    <p>作者：文房雅士王五 | 发布时间：2026-01-13</p>
+                </div>
+                <div class="forum-stats">
+                    <div class="stat-item">👁️ 2,156 次浏览</div>
+                    <div class="stat-item">💬 89 条回复</div>
+                </div>
+            </div>
+            <div class="forum-item">
+                <div class="forum-info">
+                    <h3>端砚雕刻艺术的传承与创新</h3>
+                    <p>作者：艺术评论家赵六 | 发布时间：2026-01-12</p>
+                </div>
+                <div class="forum-stats">
+                    <div class="stat-item">👁️ 1,567 次浏览</div>
+                    <div class="stat-item">💬 45 条回复</div>
+                </div>
+            </div>
+            <div class="forum-item">
+                <div class="forum-info">
+                    <h3>邀请大家参加广州端砚文化展</h3>
+                    <p>作者：文化推广者孙七 | 发布时间：2026-01-11</p>
+                </div>
+                <div class="forum-stats">
+                    <div class="stat-item">👁️ 3,456 次浏览</div>
+                    <div class="stat-item">💬 123 条回复</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 活动预告 -->
+    <div class="events-section">
+        <h2 class="section-title">近期活动</h2>
+        <div class="events-grid">
+            <div class="event-card">
+                <div class="event-image">🎭</div>
+                <div class="event-content">
+                    <div class="event-date">2026-02-15</div>
+                    <h3 class="event-title">端砚文化讲座</h3>
+                    <p class="event-desc">特邀国家级非遗传承人李文田大师分享端砚雕刻技艺与文化内涵，现场互动交流。</p>
+                    <button class="event-btn">立即报名</button>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="event-image">🎪</div>
+                <div class="event-content">
+                    <div class="event-date">2026-03-01</div>
+                    <h3 class="event-title">春季端砚展览</h3>
+                    <p class="event-desc">展出百件精品端砚，涵盖各大名坑作品，免费参观，现场专家答疑。</p>
+                    <button class="event-btn">了解更多</button>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="event-image">🎨</div>
+                <div class="event-content">
+                    <div class="event-date">2026-03-15</div>
+                    <h3 class="event-title">端砚鉴赏培训班</h3>
+                    <p class="event-desc">为期三天的专业培训，从端砚历史到鉴赏技巧，全面提升收藏水平。</p>
+                    <button class="event-btn">查看详情</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加入社群按钮 -->
+    <div class="join-section">
+        <button class="join-btn">加入社群</button>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 端砚文化网 版权所有 | 传承千年文房瑰宝</p>
+    </footer>
+</body>
+</html>
