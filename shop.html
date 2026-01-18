@@ -1059,8 +1059,8 @@
             }
         });
 
-        // 立即购买按钮
-        document.querySelectorAll('.btn-primary').forEach(btn => {
+        // 立即购买按钮（只选择商品卡片中的按钮）
+        document.querySelectorAll('.product-card .btn-primary').forEach(btn => {
             btn.addEventListener('click', function() {
                 alert('购物车功能正在开发中，敬请期待！');
             });
