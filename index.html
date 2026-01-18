@@ -330,78 +330,6 @@
             line-height: 1.6;
         }
 
-        /* 用户社群板块 */
-        .community {
-            width: 90%;
-            margin: 4rem auto;
-            padding: 3rem 0;
-            background: linear-gradient(135deg, #fff 0%, #faf8f5 100%);
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(139, 90, 43, 0.1);
-        }
-        .community-intro {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #666;
-            max-width: 800px;
-            margin: 0 auto 3rem;
-            line-height: 1.8;
-        }
-        .community-features {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-bottom: 3rem;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .feature-card {
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: all 0.3s;
-        }
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 20px rgba(139, 90, 43, 0.2);
-        }
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        .feature-title {
-            font-size: 1.3rem;
-            color: #8b5a2b;
-            margin-bottom: 0.8rem;
-            font-weight: bold;
-        }
-        .feature-desc {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        .community-action {
-            text-align: center;
-        }
-        .join-btn {
-            padding: 1rem 3rem;
-            background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px rgba(139, 90, 43, 0.3);
-        }
-        .join-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(139, 90, 43, 0.4);
-        }
-
         /* 页脚样式 */
         footer {
             background-color: #8b5a2b;
@@ -409,6 +337,102 @@
             text-align: center;
             padding: 2rem 0;
             margin-top: 4rem;
+        }
+
+        /* 侧边悬浮图标栏 */
+        .floating-sidebar {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-main {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%);
+            border-radius: 8px 0 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: -2px 0 10px rgba(139, 90, 43, 0.3);
+            transition: all 0.3s;
+        }
+
+        .sidebar-main:hover {
+            box-shadow: -4px 0 15px rgba(139, 90, 43, 0.5);
+        }
+
+        .sidebar-menu {
+            display: none;
+            position: absolute;
+            right: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #fff;
+            border-radius: 8px 0 0 8px;
+            box-shadow: -2px 0 15px rgba(0,0,0,0.1);
+            padding: 10px 0;
+        }
+
+        .floating-sidebar:hover .sidebar-menu {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s;
+            gap: 10px;
+        }
+
+        .sidebar-item:hover {
+            background-color: #f5f2eb;
+            color: #8b5a2b;
+        }
+
+        .sidebar-item-icon {
+            font-size: 1.5rem;
+        }
+
+        .sidebar-item-text {
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .sidebar-item::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #8b5a2b;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .sidebar-item:hover::before {
+            opacity: 1;
         }
 
         /* 模态框样式 */
@@ -529,24 +553,6 @@
                 padding: 0.6rem 0.8rem;
                 font-size: 0.9rem;
             }
-            .community-features {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-            .feature-icon {
-                font-size: 2.5rem;
-            }
-            .feature-title {
-                font-size: 1.1rem;
-            }
-            .feature-desc {
-                font-size: 0.9rem;
-            }
-        }
-        @media (max-width: 480px) {
-            .community-features {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -560,7 +566,6 @@
                 <li><a href="#intro">端砚介绍</a></li>
                 <li><a href="#products">精品展示</a></li>
                 <li><a href="#masters">端砚大师</a></li>
-                <li><a href="#community">用户社群</a></li>
                 <li><a href="dingzhi.html" target="_blank">端砚定制</a></li>
                 <li id="loginLink"><a href="denglu.html">登录</a></li>
                 <li id="userInfo" style="display: none; color: #fff; font-size: 1.1rem;">
@@ -686,45 +691,33 @@
         </div>
     </section>
 
-    <!-- 用户社群板块 -->
-    <section class="community" id="community">
-        <h2 class="section-title">用户社群</h2>
-        <div class="community-intro">
-            <p>欢迎加入端砚爱好者社群，与志同道合的朋友一起交流端砚文化，分享收藏心得，传承千年文房瑰宝。</p>
-        </div>
-        
-        <div class="community-features">
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3 class="feature-title">讨论交流</h3>
-                <p class="feature-desc">与其他端砚爱好者畅所欲言，分享收藏经验与心得</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📚</div>
-                <h3 class="feature-title">知识分享</h3>
-                <p class="feature-desc">学习端砚鉴赏知识，了解传统文化与制作工艺</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3 class="feature-title">作品展示</h3>
-                <p class="feature-desc">展示您的端砚收藏，获得专家与同好的点评</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3 class="feature-title">活动参与</h3>
-                <p class="feature-desc">参与线下展览、讲座、拍卖等活动，拓展人脉圈</p>
-            </div>
-        </div>
-        
-        <div class="community-action">
-            <button class="join-btn">加入社群</button>
-        </div>
-    </section>
-
     <!-- 页脚 -->
     <footer>
         <p>© 2026 端砚文化网 版权所有 | 传承千年文房瑰宝</p>
     </footer>
+
+    <!-- 侧边悬浮图标栏 -->
+    <div class="floating-sidebar">
+        <div class="sidebar-main">📌</div>
+        <div class="sidebar-menu">
+            <a href="assets/community.html" class="sidebar-item">
+                <div class="sidebar-item-icon">💬</div>
+                <span class="sidebar-item-text">用户社群</span>
+            </a>
+            <a href="assets/contact.html" class="sidebar-item">
+                <div class="sidebar-item-icon">📞</div>
+                <span class="sidebar-item-text">联系我们</span>
+            </a>
+            <a href="assets/service.html" class="sidebar-item">
+                <div class="sidebar-item-icon">💁</div>
+                <span class="sidebar-item-text">在线客服</span>
+            </a>
+            <a href="#home" class="sidebar-item">
+                <div class="sidebar-item-icon">🏠</div>
+                <span class="sidebar-item-text">返回顶部</span>
+            </a>
+        </div>
+    </div>
 
     <!-- 大师详情模态框 -->
     <div id="li-modal" class="modal">
