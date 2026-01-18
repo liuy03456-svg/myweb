@@ -416,12 +416,11 @@
         <div class="nav-container">
             <div class="logo">砚韵智脉——网上商城</div>
             <ul class="nav-links">
-                <li><a href="../index.html">首页</a></li>
+                <li><a href="index.html">首页</a></li>
                 <li><a href="#cultural">文创潮品</a></li>
                 <li><a href="#souvenir">文旅伴手礼</a></li>
                 <li><a href="#customize">端砚定制</a></li>
                 <li><a href="museum.html">云游博物馆</a></li>
-                <li><a href="../index.html">返回网站</a></li>
             </ul>
         </div>
     </header>
@@ -676,52 +675,96 @@
                 <div class="customize-form-section">
                     <div class="customize-form">
                         <div class="form-group">
-                            <label>选择坑口类型</label>
-                            <select>
+                            <label for="shape">砚台形状</label>
+                            <select id="shape" name="shape">
+                                <option value="">请选择形状</option>
+                                <option value="长方形">长方形</option>
+                                <option value="正方形">正方形</option>
+                                <option value="圆形">圆形</option>
+                                <option value="椭圆形">椭圆形</option>
+                                <option value="自然形">自然形</option>
+                                <option value="异形">异形</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pattern">雕刻图案</label>
+                            <select id="pattern" name="pattern">
+                                <option value="">请选择图案</option>
+                                <option value="山水风景">山水风景</option>
+                                <option value="花鸟虫鱼">花鸟虫鱼</option>
+                                <option value="龙凤神兽">龙凤神兽</option>
+                                <option value="人物典故">人物典故</option>
+                                <option value="吉祥图案">吉祥图案</option>
+                                <option value="简约素面">简约素面</option>
+                                <option value="自定义">自定义图案</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="stoneType">坑口选择</label>
+                            <select id="stoneType" name="stoneType">
                                 <option value="">请选择坑口</option>
-                                <option value="laokeng">老坑 - 温润如玉</option>
-                                <option value="mazikeng">麻子坑 - 石质坚实</option>
-                                <option value="kengzai">坑仔岩 - 石眼圆正</option>
-                                <option value="songkeng">宋坑 - 发墨如油</option>
+                                <option value="老坑">老坑</option>
+                                <option value="麻子坑">麻子坑</option>
+                                <option value="坑仔岩">坑仔岩</option>
+                                <option value="宋坑">宋坑</option>
+                                <option value="其他坑口">其他坑口</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label>选择尺寸</label>
-                            <select>
-                                <option value="">请选择尺寸</option>
-                                <option value="small">小号（15×10×2cm）</option>
-                                <option value="medium">中号（20×15×3cm）</option>
-                                <option value="large">大号（25×18×4cm）</option>
-                                <option value="xlarge">特大号（30×22×5cm）</option>
+                            <label for="size">尺寸大小 (cm)</label>
+                            <input type="text" id="size" name="size" placeholder="例如：20×15×3">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="craft">工艺要求</label>
+                            <select id="craft" name="craft">
+                                <option value="">请选择工艺</option>
+                                <option value="浅浮雕">浅浮雕</option>
+                                <option value="高浮雕">高浮雕</option>
+                                <option value="透雕">透雕</option>
+                                <option value="线刻">线刻</option>
+                                <option value="立体雕刻">立体雕刻</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label>选择主题</label>
-                            <select>
-                                <option value="">请选择主题</option>
-                                <option value="landscape">山水意境</option>
-                                <option value="animal">动物生肖</option>
-                                <option value="flower">梅兰竹菊</option>
-                                <option value="myth">神话传说</option>
-                                <option value="history">历史人物</option>
-                                <option value="custom">自定义图案</option>
+                            <label for="usage">使用场景</label>
+                            <select id="usage" name="usage">
+                                <option value="">请选择场景</option>
+                                <option value="日常使用">日常使用</option>
+                                <option value="收藏鉴赏">收藏鉴赏</option>
+                                <option value="礼品赠送">礼品赠送</option>
+                                <option value="文化传承">文化传承</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label>联系方式</label>
-                            <input type="tel" placeholder="请输入手机号码">
+                            <label for="budget">预算范围</label>
+                            <select id="budget" name="budget">
+                                <option value="">请选择预算</option>
+                                <option value="5000以下">5000元以下</option>
+                                <option value="5000-10000">5000-10000元</option>
+                                <option value="10000-20000">10000-20000元</option>
+                                <option value="20000-50000">20000-50000元</option>
+                                <option value="50000以上">50000元以上</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact">联系方式</label>
+                            <input type="tel" id="contact" name="contact" placeholder="请输入手机号码">
                         </div>
 
                         <div class="form-group" style="grid-column: 1 / -1;">
-                            <label>定制需求说明</label>
-                            <textarea placeholder="请详细描述您的定制需求，包括图案、寓意、特殊要求等..."></textarea>
+                            <label for="description">特殊要求</label>
+                            <textarea id="description" name="description" placeholder="请详细描述您的定制需求，包括图案、寓意、特殊要求等..."></textarea>
                         </div>
 
                         <div class="form-group" style="grid-column: 1 / -1;">
-                            <button class="btn btn-primary" style="padding: 1.2rem; font-size: 1.1rem;">提交定制需求</button>
+                            <button type="button" class="btn btn-primary" style="padding: 1.2rem; font-size: 1.1rem;" onclick="alert('定制需求已提交！我们的专业设计师将在3个工作日内与您联系。')">提交定制需求</button>
                         </div>
                     </div>
 
