@@ -381,6 +381,75 @@
             display: block;
         }
 
+        /* 推荐结果区域 */
+        .recommendations {
+            margin-top: 3rem;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .recommendations.active {
+            display: block;
+        }
+        .recommendation-title {
+            font-size: 1.5rem;
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .recommendation-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .recommendation-item {
+            background-color: #faf8f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e0d8c8;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .recommendation-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .recommendation-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        .recommendation-item h4 {
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .match-rating {
+            display: inline-block;
+            background-color: #8b5a2b;
+            color: #fff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+        .recommendation-item p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .product-meta {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0d8c8;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
         /* 响应式适配 */
         @media (max-width: 768px) {
             .nav-container {
@@ -764,7 +833,7 @@
                         </div>
 
                         <div class="form-group" style="grid-column: 1 / -1;">
-                            <button type="button" class="btn btn-primary" style="padding: 1.2rem; font-size: 1.1rem;" onclick="alert('定制需求已提交！我们的专业设计师将在3个工作日内与您联系。')">提交定制需求</button>
+                            <button type="button" class="btn btn-primary" style="padding: 1.2rem; font-size: 1.1rem;" onclick="generateRecommendations()">生成推荐方案</button>
                         </div>
                     </div>
 
@@ -781,6 +850,14 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 推荐结果区域 -->
+            <div id="recommendations" class="recommendations">
+                <h2 class="recommendation-title">为您推荐以下相似端砚</h2>
+                <div id="recommendationList" class="recommendation-list">
+                    <!-- 推荐结果将通过JavaScript动态生成 -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -790,6 +867,171 @@
     </button>
 
     <script>
+        // 端砚产品数据库（与dingzhi.html同步）
+        const products = [
+            { id: 'wenfang-sibao', name: '文房四宝套砚', desc: '精选老坑石料，传统工艺雕刻，文房收藏佳品', image: '../造型意境类/文房四宝套砚.PNG', stone: '老坑' },
+            { id: 'shanshui-yijing', name: '山水意境砚', desc: '麻子坑石料，浮雕山水图案，意境悠远', image: '../造型意境类/山水意境砚.PNG', stone: '麻子坑' },
+            { id: 'longfeng-chengxiang', name: '龙凤呈祥砚', desc: '老坑石料，高浮雕龙纹，气势磅礴', image: '../造型意境类/龙凤呈祥砚.jpg', stone: '老坑' },
+            { id: 'hanmei-aoxue', name: '寒梅傲雪砚', desc: '老坑石料，浮雕梅花图案，冰清玉洁', image: '../造型意境类/寒梅傲雪砚.jpg', stone: '老坑' },
+            { id: 'lanhua-youxiang', name: '兰花幽香砚', desc: '麻子坑石料，线刻兰花图案，清雅脱俗', image: '../造型意境类/兰花幽香砚.jpg', stone: '麻子坑' },
+            { id: 'zhuju-shuangqing', name: '竹菊双清砚', desc: '坑仔岩石料，浮雕竹菊图案，君子之风', image: '../造型意境类/竹菊双清砚.jpg', stone: '坑仔岩' },
+            { id: 'meilanzhuju', name: '梅兰竹菊砚', desc: '宋坑石料，四君子图案，文人雅趣', image: '../造型意境类/梅兰竹菊砚.jpg', stone: '宋坑' },
+            { id: 'shuanglong-xizhu', name: '双龙戏珠砚', desc: '麻子坑石料，双龙浮雕图案，气势非凡', image: '../造型意境类/双龙戏珠砚.jpg', stone: '麻子坑' },
+            { id: 'panchi-wen', name: '蟠螭纹砚', desc: '坑仔岩石料，传统蟠螭纹饰，古朴典雅', image: '../造型意境类/蟠螭纹砚.jpg', stone: '坑仔岩' },
+            { id: 'xiezhi-shenshou', name: '獬豸神兽砚', desc: '宋坑石料，神兽雕刻图案，公正严明', image: '../造型意境类/獬豸神兽砚.jpg', stone: '宋坑' },
+            { id: 'taishan-richu', name: '泰山日出砚', desc: '老坑石料，山水浮雕图案，壮丽山河', image: '../造型意境类/泰山日出砚.jpg', stone: '老坑' },
+            { id: 'huanghe', name: '黄河砚', desc: '麻子坑石料，黄河口瀑布图案，气势磅礴', image: '../造型意境类/黄河砚.jpg', stone: '麻子坑' },
+            { id: 'changjiang-sanxia', name: '长江三峡砚', desc: '坑仔岩石料，三峡风光图案，鬼斧神工', image: '../造型意境类/长江三峡砚.jpg', stone: '坑仔岩' },
+            { id: 'huashan-junxian', name: '华山险峻砚', desc: '宋坑石料，华山风光图案，奇险天下', image: '../造型意境类/华山险峻砚.jpg', stone: '宋坑' },
+            { id: 'guanyin-songzi', name: '观音送子砚', desc: '老坑石料，观音浮雕图案，吉祥如意', image: '../造型意境类/观音送子砚.jpg', stone: '老坑' },
+            { id: 'fuxing-gaozhao', name: '福星高照砚', desc: '麻子坑石料，福星雕刻图案，好运连连', image: '../造型意境类/福星高照砚.jpg', stone: '麻子坑' },
+            { id: 'luxing-xianrui', name: '禄星献瑞砚', desc: '坑仔岩石料，禄星雕刻图案，功名利禄', image: '../造型意境类/禄星献瑞砚.jpg', stone: '坑仔岩' },
+            { id: 'caishen-dao', name: '财神到砚', desc: '宋坑石料，财神雕刻图案，财源广进', image: '../造型意境类/财神到砚.jpg', stone: '宋坑' },
+            { id: 'kongzi-wendao', name: '孔子问道砚', desc: '老坑石料，孔子浮雕图案，尊师重道', image: '../造型意境类/孔子问道砚.jpg', stone: '老坑' },
+            { id: 'laozi-chuguan', name: '老子出关砚', desc: '麻子坑石料，老子骑牛图案，道法自然', image: '../造型意境类/老子出关砚.jpg', stone: '麻子坑' },
+            { id: 'zhuangzi-mengdie', name: '庄子梦蝶砚', desc: '坑仔岩石料，庄子梦蝶图案，哲学意境', image: '../造型意境类/庄子梦蝶砚.jpg', stone: '坑仔岩' },
+            { id: 'mengzi-jiangxue', name: '孟子讲学砚', desc: '宋坑石料，孟子讲学图案，儒家思想', image: '../造型意境类/孟子讲学砚.jpg', stone: '宋坑' },
+            { id: 'taiji-bagua', name: '太极八卦砚', desc: '老坑石料，太极八卦图案，阴阳平衡', image: '../造型意境类/太极八卦砚.jpg', stone: '老坑' },
+            { id: 'bagua-fangwei', name: '八卦方位砚', desc: '麻子坑石料，八卦方位图案，传统智慧', image: '../造型意境类/八卦方位砚.jpg', stone: '麻子坑' },
+            { id: 'wuxing-xiangsheng', name: '五行相生砚', desc: '坑仔岩石料，五行图案，相生相克', image: '../造型意境类/五行相生砚.jpg', stone: '坑仔岩' },
+            { id: 'babao-jixiang', name: '八宝吉祥砚', desc: '宋坑石料，八宝图案，吉祥如意', image: '../造型意境类/八宝吉祥砚.jpg', stone: '宋坑' },
+            { id: 'shiershengxiao', name: '十二生肖砚', desc: '老坑石料，十二生肖图案，生肖文化', image: '../造型意境类/十二生肖砚.jpg', stone: '老坑' },
+            { id: 'zishu-xianrui', name: '子鼠献瑞砚', desc: '麻子坑石料，老鼠图案，聪明机智', image: '../造型意境类/子鼠献瑞砚.jpg', stone: '麻子坑' },
+            { id: 'chouniu-gengyun', name: '丑牛耕耘砚', desc: '坑仔岩石料，黄牛图案，勤劳致富', image: '../造型意境类/丑牛耕耘砚.jpg', stone: '坑仔岩' },
+            { id: 'yinhu-xiaoshan', name: '寅虎啸山砚', desc: '宋坑石料，老虎图案，虎虎生威', image: '../造型意境类/寅虎啸山砚.jpg', stone: '宋坑' },
+            { id: 'maotu-yingchun', name: '卯兔迎春砚', desc: '老坑石料，兔子图案，玉兔呈祥', image: '../造型意境类/卯兔迎春砚.jpg', stone: '老坑' },
+            { id: 'chenlong-xishui', name: '辰龙戏水砚', desc: '麻子坑石料，龙图案，龙腾四海', image: '../造型意境类/辰龙戏水砚.jpg', stone: '麻子坑' },
+            { id: 'sisi-tuxin', name: '巳蛇吐信砚', desc: '坑仔岩石料，蛇图案，灵蛇献瑞', image: '../造型意境类/巳蛇吐信砚.jpg', stone: '坑仔岩' },
+            { id: 'wuma-benteng', name: '午马奔腾砚', desc: '宋坑石料，马图案，马到成功', image: '../造型意境类/午马奔腾砚.jpg', stone: '宋坑' },
+            { id: 'weiyang-kaitai', name: '未羊开泰砚', desc: '麻子坑石料，羊图案，三阳开泰', image: '../造型意境类/未羊开泰砚.jpg', stone: '麻子坑' },
+            { id: 'shenhou-xiantao', name: '申猴献桃砚', desc: '坑仔岩石料，猴子图案，聪明伶俐', image: '../造型意境类/申猴献桃砚.jpg', stone: '坑仔岩' },
+            { id: 'youji-baoxiao', name: '酉鸡报晓砚', desc: '宋坑石料，公鸡图案，金鸡报晓', image: '../造型意境类/酉鸡报晓砚.jpg', stone: '宋坑' },
+            { id: 'xugou-wangcai', name: '戌狗旺财砚', desc: '老坑石料，狗图案，旺财守家', image: '../造型意境类/戌狗旺财砚.jpg', stone: '老坑' },
+            { id: 'haizhu-songfu', name: '亥猪送福砚', desc: '麻子坑石料，猪图案，肥猪拱门', image: '../造型意境类/亥猪送福砚.jpg', stone: '麻子坑' },
+            { id: 'chunqiu-wuba', name: '春秋五霸砚', desc: '坑仔岩石料，春秋五霸图案，历史风云', image: '../造型意境类/春秋五霸砚.jpg', stone: '坑仔岩' },
+            { id: 'zhanguo-qixiong', name: '战国七雄砚', desc: '宋坑石料，战国七雄图案，诸侯争霸', image: '../造型意境类/战国七雄砚.jpg', stone: '宋坑' },
+            { id: 'hanwu-xiongfeng', name: '汉武雄风砚', desc: '老坑石料，汉武帝图案，雄才大略', image: '../造型意境类/汉武雄风砚.jpg', stone: '老坑' },
+            { id: 'zhenguan-zhizhi', name: '贞观之治砚', desc: '老坑石料，唐太宗图案，盛世华章', image: '../造型意境类/贞观之治砚.jpg', stone: '老坑' },
+            { id: 'kangxi-nanxun', name: '康熙南巡砚', desc: '麻子坑石料，康熙南巡图案，帝王气度', image: '../造型意境类/康熙南巡砚.jpg', stone: '麻子坑' },
+            { id: 'qianlong-yuti', name: '乾隆御题砚', desc: '坑仔岩石料，乾隆御题图案，皇家风范', image: '../造型意境类/乾隆御题砚.jpg', stone: '坑仔岩' },
+            { id: 'shiji-qianqiu', name: '史记千秋砚', desc: '宋坑石料，司马迁图案，史家绝唱', image: '../造型意境类/史记千秋砚.jpg', stone: '宋坑' },
+            { id: 'sanguo-yanyi', name: '三国演义砚', desc: '老坑石料，三国人物图案，英雄辈出', image: '../造型意境类/三国演义砚.jpg', stone: '老坑' },
+            { id: 'shuihuzhuan', name: '水浒传砚', desc: '麻子坑石料，梁山好汉图案，义薄云天', image: '../造型意境类/水浒传砚.jpg', stone: '麻子坑' },
+            { id: 'xiyouji', name: '西游记砚', desc: '坑仔岩石料，唐僧师徒图案，西天取经', image: '../造型意境类/西游记砚.jpg', stone: '坑仔岩' },
+            { id: 'hongloumeng', name: '红楼梦砚', desc: '宋坑石料，金陵十二钗图案，红楼一梦', image: '../造型意境类/红楼梦砚.jpg', stone: '宋坑' }
+        ];
+
+        // 生成推荐方案功能
+        function generateRecommendations() {
+            // 获取用户选择
+            const pattern = document.getElementById('pattern').value;
+            const stoneType = document.getElementById('stoneType').value;
+            const craft = document.getElementById('craft').value;
+            
+            // 验证用户输入
+            if (!pattern && !stoneType && !craft) {
+                alert('请至少选择一项定制条件！');
+                return;
+            }
+            
+            // 从产品数据库生成推荐
+            let recommendations = [...products];
+            
+            // 计算匹配度并过滤
+            recommendations = recommendations.map(product => {
+                let matchScore = 0;
+                let matchReasons = [];
+                
+                // 匹配坑口类型
+                if (stoneType && product.desc.includes(stoneType)) {
+                    matchScore += 3;
+                    matchReasons.push(`${stoneType}石料`);
+                }
+                
+                // 匹配图案类型
+                if (pattern) {
+                    if (pattern === '山水风景' && (product.name.includes('山水') || product.name.includes('泰山') || product.name.includes('黄河') || product.name.includes('长江') || product.name.includes('华山'))) {
+                        matchScore += 2;
+                        matchReasons.push('山水题材');
+                    } else if (pattern === '花鸟虫鱼' && (product.name.includes('梅') || product.name.includes('兰') || product.name.includes('竹') || product.name.includes('菊') || product.name.includes('鱼'))) {
+                        matchScore += 2;
+                        matchReasons.push('花鸟类题材');
+                    } else if (pattern === '龙凤神兽' && (product.name.includes('龙') || product.name.includes('凤') || product.name.includes('神兽') || product.name.includes('蟠螭'))) {
+                        matchScore += 2;
+                        matchReasons.push('龙凤神兽题材');
+                    } else if (pattern === '人物典故' && (product.name.includes('孔子') || product.name.includes('老子') || product.name.includes('庄子') || product.name.includes('孟子') || product.name.includes('汉武') || product.name.includes('贞观') || product.name.includes('康熙') || product.name.includes('乾隆') || product.name.includes('史记') || product.name.includes('三国') || product.name.includes('水浒') || product.name.includes('西游记') || product.name.includes('红楼梦'))) {
+                        matchScore += 2;
+                        matchReasons.push('人物典故题材');
+                    } else if (pattern === '吉祥图案' && (product.name.includes('福') || product.name.includes('禄') || product.name.includes('财神') || product.name.includes('观音') || product.name.includes('吉祥') || product.name.includes('呈祥') || product.name.includes('献瑞'))) {
+                        matchScore += 2;
+                        matchReasons.push('吉祥寓意');
+                    }
+                }
+                
+                // 匹配工艺类型
+                if (craft) {
+                    if (craft === '浅浮雕' || craft === '高浮雕') {
+                        matchScore += 1;
+                        matchReasons.push('浮雕工艺');
+                    } else if (craft === '线刻') {
+                        matchScore += 1;
+                        matchReasons.push('线刻工艺');
+                    } else if (craft === '透雕' || craft === '立体雕刻') {
+                        matchScore += 1;
+                        matchReasons.push('立体雕刻');
+                    }
+                }
+                
+                return {
+                    ...product,
+                    matchScore: matchScore,
+                    matchReasons: matchReasons
+                };
+            });
+            
+            // 过滤出有匹配度的产品
+            recommendations = recommendations.filter(item => item.matchScore > 0);
+            
+            // 按匹配度排序
+            recommendations.sort((a, b) => b.matchScore - a.matchScore);
+            
+            // 取前6个推荐结果
+            recommendations = recommendations.slice(0, 6);
+            
+            // 显示推荐结果
+            const recommendationList = document.getElementById('recommendationList');
+            recommendationList.innerHTML = '';
+            
+            if (recommendations.length === 0) {
+                recommendationList.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #666; font-size: 1.1rem;">暂无匹配的端砚推荐，请尝试其他组合或联系客服定制。</p>';
+            } else {
+                recommendations.forEach(item => {
+                    const matchLevel = item.matchScore >= 4 ? '高' : (item.matchScore >= 2 ? '中' : '低');
+                    const matchColor = matchLevel === '高' ? '#8b5a2b' : (matchLevel === '中' ? '#a67c52' : '#c9a66b');
+                    
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'recommendation-item';
+                    itemElement.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}">
+                        <h4>${item.name}</h4>
+                        <span class="match-rating" style="background-color: ${matchColor};">匹配度：${matchLevel}</span>
+                        <p>${item.desc}</p>
+                        ${item.matchReasons.length > 0 ? `<div class="product-meta">
+                            <p><strong>匹配原因：</strong>${item.matchReasons.join('、')}</p>
+                        </div>` : ''}
+                    `;
+                    recommendationList.appendChild(itemElement);
+                });
+            }
+            
+            // 显示推荐区域并滚动到该区域
+            const recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.classList.add('active');
+            recommendationsDiv.scrollIntoView({ behavior: 'smooth' });
+            
+            alert('推荐方案已生成！您还可以联系我们的设计师进行进一步沟通。');
+        }
+
         // 分类切换功能
         const categoryTabs = document.querySelectorAll('.category-tab');
         const productsSections = document.querySelectorAll('.products-section');
@@ -829,11 +1071,6 @@
             btn.addEventListener('click', function() {
                 alert('已加入购物车！');
             });
-        });
-
-        // 提交定制需求
-        document.querySelector('.customize-form .btn-primary').addEventListener('click', function() {
-            alert('定制需求已提交！我们的专业设计师将在3个工作日内与您联系。');
         });
 
         // 虚拟场景按钮（待开发）
