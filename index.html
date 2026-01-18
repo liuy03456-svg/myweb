@@ -330,6 +330,78 @@
             line-height: 1.6;
         }
 
+        /* 用户社群板块 */
+        .community {
+            width: 90%;
+            margin: 4rem auto;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, #fff 0%, #faf8f5 100%);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(139, 90, 43, 0.1);
+        }
+        .community-intro {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+        .community-features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .feature-card {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(139, 90, 43, 0.2);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .feature-title {
+            font-size: 1.3rem;
+            color: #8b5a2b;
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+        .feature-desc {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .community-action {
+            text-align: center;
+        }
+        .join-btn {
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(139, 90, 43, 0.3);
+        }
+        .join-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(139, 90, 43, 0.4);
+        }
+
         /* 页脚样式 */
         footer {
             background-color: #8b5a2b;
@@ -415,6 +487,8 @@
             }
             .nav-links {
                 margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
             }
             .nav-links li {
                 margin-left: 1rem;
@@ -455,6 +529,24 @@
                 padding: 0.6rem 0.8rem;
                 font-size: 0.9rem;
             }
+            .community-features {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            .feature-icon {
+                font-size: 2.5rem;
+            }
+            .feature-title {
+                font-size: 1.1rem;
+            }
+            .feature-desc {
+                font-size: 0.9rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .community-features {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -468,6 +560,7 @@
                 <li><a href="#intro">端砚介绍</a></li>
                 <li><a href="#products">精品展示</a></li>
                 <li><a href="#masters">端砚大师</a></li>
+                <li><a href="#community">用户社群</a></li>
                 <li><a href="dingzhi.html" target="_blank">端砚定制</a></li>
                 <li id="loginLink"><a href="denglu.html">登录</a></li>
                 <li id="userInfo" style="display: none; color: #fff; font-size: 1.1rem;">
@@ -475,6 +568,9 @@
                     <button id="logoutBtn" style="margin-left: 1rem; padding: 0.5rem 1rem; background-color: #6b4520; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
                         退出登录
                     </button>
+                </li>
+                <li id="adminBtn" style="display: none;">
+                    <a href="guanliyuan.html" style="background-color: #6b4520; padding: 0.5rem 1rem; border-radius: 4px;">管理后台</a>
                 </li>
             </ul>
         </div>
@@ -590,10 +686,116 @@
         </div>
     </section>
 
+    <!-- 用户社群板块 -->
+    <section class="community" id="community">
+        <h2 class="section-title">用户社群</h2>
+        <div class="community-intro">
+            <p>欢迎加入端砚爱好者社群，与志同道合的朋友一起交流端砚文化，分享收藏心得，传承千年文房瑰宝。</p>
+        </div>
+        
+        <div class="community-features">
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3 class="feature-title">讨论交流</h3>
+                <p class="feature-desc">与其他端砚爱好者畅所欲言，分享收藏经验与心得</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3 class="feature-title">知识分享</h3>
+                <p class="feature-desc">学习端砚鉴赏知识，了解传统文化与制作工艺</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">作品展示</h3>
+                <p class="feature-desc">展示您的端砚收藏，获得专家与同好的点评</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">活动参与</h3>
+                <p class="feature-desc">参与线下展览、讲座、拍卖等活动，拓展人脉圈</p>
+            </div>
+        </div>
+        
+        <div class="community-action">
+            <button class="join-btn">加入社群</button>
+        </div>
+    </section>
+
     <!-- 页脚 -->
     <footer>
         <p>© 2026 端砚文化网 版权所有 | 传承千年文房瑰宝</p>
     </footer>
+
+    <!-- 大师详情模态框 -->
+    <div id="li-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">李文田 - 国家级非遗传承人</h2>
+            <div class="modal-body">
+                <img src="images/master1.jpg" alt="李文田大师" class="modal-img">
+                <div class="modal-text">
+                    <p><strong>大师简介：</strong>李文田,1958年生于端砚之乡肇庆,从事端砚雕刻40余年,是端砚制作技艺国家级非物质文化遗产代表性传承人。</p>
+                    <p><strong>艺术风格：</strong>擅长传统题材创作,特别是山水、花鸟、人物等传统图案。作品线条流畅,刀法细腻,既保持了端砚的传统韵味,又融入了个人独特的艺术理解。</p>
+                    <p><strong>代表作品：</strong>《山水意境砚》《寒梅傲雪砚》《文房四宝套砚》等多次获国家级奖项,多件作品被国家级博物馆收藏。</p>
+                    <p><strong>荣誉成就：</strong>2008年获"中国工艺美术大师"称号,2010年获"国家级非物质文化遗产传承人"称号,2015年获"广东省文化名人"称号。</p>
+                    <p><strong>艺术理念：</strong>坚持"以石为本,因材施艺"的创作理念,每一块砚台都力求展现端石的自然之美与人文内涵。</p>
+                </div>
+                <div class="modal-fullwidth">
+                    <h3 style="color: #8b5a2b; margin-top: 1.5rem; margin-bottom: 1rem;">大师作品展示</h3>
+                    <img src="assets/8464185f-7dc0-4c0a-81c1-63dc7900514d.png" alt="李文田大师作品" style="width: 100%; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="wang-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">王建华 - 中国工艺美术大师</h2>
+            <div class="modal-body">
+                <img src="./大师/王建华.jpg" alt="王建华大师" class="modal-img">
+                <div class="modal-text">
+                    <p><strong>大师简介：</strong>王建华,1965年出生于端砚世家,祖上三代均为端砚雕刻师。自幼受家庭熏陶,精通端砚雕刻技艺。</p>
+                    <p><strong>艺术风格：</strong>创新派代表,将现代设计理念融入传统端砚制作。作品在保留传统工艺的同时,大胆运用几何构图、抽象造型等现代艺术元素,形成独特的"新派端砚"风格。</p>
+                    <p><strong>代表作品：</strong>《龙凤呈祥砚》《太极八卦砚》《双龙戏珠砚》等,多次在国内外工艺美术展览中获奖。</p>
+                    <p><strong>荣誉成就：</strong>2012年获"中国工艺美术大师"称号,2014年获"端砚创新设计大师"称号,2018年获"广东省工艺美术终身成就奖"。</p>
+                    <p><strong>艺术理念：</strong>主张"传统与创新的完美融合",认为端砚不仅要传承千年技艺,更要与时俱进,让古老艺术焕发新的生命力。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="zhang-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">张三峰 - 端砚雕刻艺术大师</h2>
+            <div class="modal-body">
+                <img src="images/master3.jpg" alt="张三峰大师" class="modal-img">
+                <div class="modal-text">
+                    <p><strong>大师简介：</strong>张三峰,1970年生于肇庆,师从李文田大师学习端砚雕刻,是李文田的得意门生。从事端砚创作30余年。</p>
+                    <p><strong>艺术风格：</strong>专注于山水题材雕刻,擅长运用端砚的天然纹理与石品,营造出"砚中有画,画中有诗"的深远意境。作品既有北方的雄浑大气,又有南方的秀丽婉约。</p>
+                    <p><strong>代表作品：</strong>《泰山日出砚》《黄河砚》《长江三峡砚》《华山险峻砚》等,多件作品被国内外知名美术馆收藏。</p>
+                    <p><strong>荣誉成就：</strong>2015年获"端砚雕刻艺术大师"称号,2017年获"广东省工艺美术大师"称号,2020年获"中国文房四宝艺术大师"称号。</p>
+                    <p><strong>艺术理念：</strong>坚信"天人合一"的艺术境界,善于将自然山水之美与人文情怀巧妙结合,让每一方砚台都成为凝固的诗篇。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="chen-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">陈美华 - 省级非遗传承人</h2>
+            <div class="modal-body">
+                <img src="./大师/陈美华.jpg" alt="陈美华大师" class="modal-img">
+                <div class="modal-text">
+                    <p><strong>大师简介：</strong>陈美华,1975年出生于肇庆,是端砚行业少有的女性雕刻家,也是省级非物质文化遗产代表性传承人。</p>
+                    <p><strong>艺术风格：</strong>擅长精细雕刻,作品以细腻传神著称。特别是花卉、植物等题材的雕刻,笔触轻灵,栩栩如生,展现出女性艺术家特有的柔美与细腻。同时在传统题材中也融入了更多女性视角的审美。</p>
+                    <p><strong>代表作品：</strong>《兰花幽香砚》《菊花砚》《竹菊双清砚》《梅花砚》等,多次在国内外女性工艺美术展览中获奖。</p>
+                    <p><strong>荣誉成就：</strong>2018年获"省级非物质文化遗产传承人"称号,2019年获"广东省杰出女性工艺美术师"称号,2021年获"中国女性工艺美术大师"称号。</p>
+                    <p><strong>艺术理念：</strong>倡导"柔性创新",认为女性艺术家的细腻与敏感能为传统端砚注入新的活力,让古老艺术展现出更多元的艺术魅力。</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="wenfang-sibao-modal" class="modal">
         <div class="modal-content">
@@ -2663,6 +2865,33 @@
     <!-- 其他模态框省略... -->
 
     <script>
+        // 检查登录状态并更新导航栏
+        window.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const loginLink = document.getElementById('loginLink');
+            const userInfo = document.getElementById('userInfo');
+            const usernameSpan = document.getElementById('username');
+            const adminBtn = document.getElementById('adminBtn');
+            
+            if (currentUser) {
+                // 显示用户信息
+                loginLink.style.display = 'none';
+                userInfo.style.display = 'block';
+                usernameSpan.textContent = currentUser.username;
+                
+                // 如果是管理员，显示管理后台按钮
+                if (currentUser.role === 'admin') {
+                    adminBtn.style.display = 'block';
+                }
+            }
+        });
+        
+        // 退出登录
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            window.location.reload();
+        });
+
         // 轮播图功能实现
         const bannerImgs = document.querySelectorAll('.banner-img');
         const bannerIndicators = document.querySelectorAll('.indicator');
