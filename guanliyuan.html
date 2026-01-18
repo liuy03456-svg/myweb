@@ -30,6 +30,33 @@
             position: relative;
         }
 
+        /* 返回按钮 */
+        .back-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            padding: 0.8rem 1.5rem;
+            background-color: #8b5a2b;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(139, 90, 43, 0.3);
+        }
+
+        .back-btn:hover {
+            background-color: #6b4520;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 90, 43, 0.4);
+        }
+
         /* 数据统计卡片 */
         .stats-container {
             display: flex;
@@ -184,6 +211,57 @@
             color: #333;
         }
 
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: #f5f2eb;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            color: #999;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: #8b5a2b;
+        }
+
         /* 响应式设计 */
         @media (max-width: 768px) {
             body {
@@ -210,6 +288,8 @@
     </style>
 </head>
 <body>
+    <a href="index.html" class="back-btn">← 返回首页</a>
+
     <h1 class="page-title">端砚文化 - 管理员后台</h1>
 
     <!-- 数据统计卡片 -->
@@ -326,9 +406,11 @@
         </table>
     </div>
 
-    <!-- 订单详情卡片 -->
-    <div id="orderDetailCard" class="order-detail-card">
-        <h2 class="detail-title">订单详情</h2>
+    <!-- 订单详情模态框 -->
+    <div id="orderDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeOrderDetail()">&times;</span>
+            <h2 class="detail-title">订单详情</h2>
         <div class="detail-section">
             <h3 class="section-title">基本信息</h3>
             <div class="detail-item">
@@ -389,6 +471,7 @@
                 <span class="detail-label">客户备注:</span>
                 <span class="detail-value" id="detailNote"></span>
             </div>
+        </div>
         </div>
     </div>
 
@@ -456,13 +539,23 @@
                 document.getElementById('detailPrice').textContent = detail.price;
                 document.getElementById('detailTotalPrice').textContent = detail.totalPrice;
                 document.getElementById('detailNote').textContent = detail.note;
+                // 显示模态框
+                document.getElementById('orderDetailModal').style.display = 'block';
             }
         }
 
-        // 页面加载完成后默认显示第一个订单详情
-        window.addEventListener('load', function() {
-            showOrderDetail('ORD-001');
-        });
+        // 关闭订单详情模态框
+        function closeOrderDetail() {
+            document.getElementById('orderDetailModal').style.display = 'none';
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('orderDetailModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
