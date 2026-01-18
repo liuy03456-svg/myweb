@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云游端砚博物馆 - 在线全景参观</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 页面背景与基础样式 */
+        body {
+            background-color: #f5f2eb;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 导航栏样式 */
+        header {
+            background-color: #8b5a2b;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #f8e1c0;
+        }
+
+        /* 页面标题 */
+        .page-header {
+            background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%);
+            color: #fff;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* 720云全景容器 */
+        .panorama-container {
+            width: 100%;
+            height: 600px;
+            background-color: #2c3e50;
+            position: relative;
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        /* 720云全景占位提示 */
+        .panorama-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+            color: #fff;
+        }
+        .panorama-placeholder-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+        .panorama-placeholder-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .panorama-placeholder-desc {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 600px;
+            padding: 0 1rem;
+        }
+        .panorama-placeholder-hint {
+            background-color: rgba(255,255,255,0.1);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .panorama-placeholder-hint code {
+            background-color: rgba(255,255,255,0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* 720云 iframe 嵌入示例（取消注释使用） */
+        /* 
+        .panorama-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        */
+
+        /* 博物馆介绍 */
+        .museum-intro {
+            width: 90%;
+            margin: 0 auto 4rem;
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .intro-title {
+            font-size: 2rem;
+            color: #8b5a2b;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        .intro-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #8b5a2b;
+            margin: 0.5rem auto;
+        }
+        .intro-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+        .intro-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .feature-card {
+            background-color: #faf8f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e0d8c8;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .feature-title {
+            font-size: 1.3rem;
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .feature-desc {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        /* 展厅导航 */
+        .halls-nav {
+            width: 90%;
+            margin: 0 auto 3rem;
+        }
+        .halls-nav h2 {
+            font-size: 1.8rem;
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .halls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .hall-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .hall-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .hall-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #e0d8c8;
+        }
+        .hall-info {
+            padding: 1.5rem;
+        }
+        .hall-name {
+            font-size: 1.3rem;
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .hall-desc {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* 使用说明 */
+        .usage-guide {
+            width: 90%;
+            margin: 0 auto 4rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 2.5rem;
+            border-radius: 8px;
+        }
+        .usage-guide h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .guide-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .guide-step {
+            text-align: center;
+        }
+        .step-number {
+            background-color: #fff;
+            color: #667eea;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+        .step-text {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #8b5a2b;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .nav-links li {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .page-title {
+                font-size: 2rem;
+            }
+            .panorama-container {
+                height: 400px;
+            }
+            .intro-features {
+                grid-template-columns: 1fr;
+            }
+            .guide-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">砚韵智脉——云游端砚博物馆</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="shop.html">网上商城</a></li>
+                <li><a href="#intro">博物馆介绍</a></li>
+                <li><a href="#halls">展厅导航</a></li>
+                <li><a href="../index.html">返回网站</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 页面头部 -->
+    <div class="page-header">
+        <h1 class="page-title">🏛️ 云游端砚博物馆</h1>
+        <p class="page-subtitle">足不出户，全景欣赏端砚文化瑰宝</p>
+    </div>
+
+    <!-- 720云全景展示区域 -->
+    <div class="panorama-container">
+        <!-- 占位提示（720云全景图未嵌入前显示） -->
+        <div class="panorama-placeholder">
+            <div class="panorama-placeholder-icon">🖼️</div>
+            <h2 class="panorama-placeholder-title">720云全景展示区域</h2>
+            <p class="panorama-placeholder-desc">
+                这里将嵌入720云端砚博物馆全景图，让您身临其境参观端砚文化展览
+            </p>
+          <!-- 云景图 
+            <div class="panorama-placeholder-hint">
+                <strong>使用说明：</strong><br>
+                1. 在720云平台创建全景项目并获取分享链接<br>
+                2. 将720云提供的 iframe 代码嵌入此处<br>
+                3. 示例代码格式：<code>&lt;iframe src="https://720yun.com/t/xxxxx" ...&gt;&lt;/iframe&gt;</code>
+            </div>
+          -->
+        </div>
+
+        <!-- 720云 iframe 嵌入示例（获得全景链接后取消注释使用） -->
+        <!-- 
+        <iframe 
+            class="panorama-iframe" 
+            src="https://720yun.com/t/你的全景ID" 
+            allowfullscreen>
+        </iframe>
+        -->
+    </div>
+
+    <!-- 博物馆介绍 -->
+    <div class="museum-intro" id="intro">
+        <h2 class="intro-title">博物馆简介</h2>
+        <p class="intro-content">
+            端砚博物馆坐落于端砚之乡广东省肇庆市，是集收藏、展示、研究、教育于一体的专业博物馆。
+            馆内收藏了从唐代至今各时期的珍贵端砚，以及端砚制作工具、历史文献等珍贵文物。
+        </p>
+        <p class="intro-content">
+            通过720云全景技术，我们实现了线上虚拟参观，让全球观众足不出户即可欣赏端砚文化瑰宝，
+            感受千年端砚制作工艺的博大精深。
+        </p>
+
+        <div class="intro-features">
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">珍贵藏品</h3>
+                <p class="feature-desc">馆藏端砚千余方，涵盖各时期精品</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3 class="feature-title">制作工艺</h3>
+                <p class="feature-desc">完整展示端砚制作的数十道工序</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3 class="feature-title">文化传承</h3>
+                <p class="feature-desc">传承千年文房瑰宝，弘扬非遗文化</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">虚拟体验</h3>
+                <p class="feature-desc">720全景技术，沉浸式云参观体验</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 展厅导航 -->
+    <div class="halls-nav" id="halls">
+        <h2>📍 展厅导航</h2>
+        <div class="halls-grid">
+            <div class="hall-card">
+                <div class="hall-image" style="background: linear-gradient(135deg, #f5f2eb 0%, #e0d8c8 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem;">📜</div>
+                <div class="hall-info">
+                    <h3 class="hall-name">历史展厅</h3>
+                    <p class="hall-desc">展示端砚的起源与发展历程，从唐代至今的历史变迁</p>
+                </div>
+            </div>
+
+            <div class="hall-card">
+                <div class="hall-image" style="background: linear-gradient(135deg, #d4af37 0%, #c4a030 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🪨</div>
+                <div class="hall-info">
+                    <h3 class="hall-name">珍品展厅</h3>
+                    <p class="hall-desc">馆藏珍贵端砚，包含老坑、麻子坑等顶级砚台</p>
+                </div>
+            </div>
+
+            <div class="hall-card">
+                <div class="hall-image" style="background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🔨</div>
+                <div class="hall-info">
+                    <h3 class="hall-name">工艺展厅</h3>
+                    <p class="hall-desc">展示端砚制作工具和传统雕刻工艺流程</p>
+                </div>
+            </div>
+
+            <div class="hall-card">
+                <div class="hall-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🎭</div>
+                <div class="hall-info">
+                    <h3 class="hall-name">文化展厅</h3>
+                    <p class="hall-desc">端砚与文房四宝、文人墨客的历史文化故事</p>
+                </div>
+            </div>
+
+            <div class="hall-card">
+                <div class="hall-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem;">👨‍🎨</div>
+                <div class="hall-info">
+                    <h3 class="hall-name">大师展厅</h3>
+                    <p class="hall-desc">展示端砚大师的生平事迹和代表作品</p>
+                </div>
+            </div>
+
+            <div class="hall-card">
+                <div class="hall-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🎁</div>
+                <div class="hall-info">
+                    <h3 class="hall-name">文创展厅</h3>
+                    <p class="hall-desc">端砚文创产品和文旅伴手礼展示</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 使用说明 -->
+    <div class="usage-guide">
+        <h2>📖 云参观使用指南</h2>
+        <div class="guide-steps">
+            <div class="guide-step">
+                <div class="step-number">1</div>
+                <p class="step-text">拖动鼠标或手指旋转视角，全方位参观展厅</p>
+            </div>
+            <div class="guide-step">
+                <div class="step-number">2</div>
+                <p class="step-text">点击展厅内的热点图标查看详细信息</p>
+            </div>
+            <div class="guide-step">
+                <div class="step-number">3</div>
+                <p class="step-text">使用导航菜单快速切换到不同展厅</p>
+            </div>
+            <div class="guide-step">
+                <div class="step-number">4</div>
+                <p class="step-text">点击"全屏"按钮获得最佳沉浸体验</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 端砚文化网 版权所有 | 云游端砚博物馆，传承千年文房瑰宝</p>
+    </footer>
+</body>
+</html>
