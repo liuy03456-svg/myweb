@@ -208,12 +208,8 @@
                 // 保存用户信息到localStorage
                 localStorage.setItem('currentUser', JSON.stringify({ username, role }));
                 
-                // 根据角色跳转到不同页面
-                if (role === 'user') {
-                    window.location.href = 'index.html';
-                } else if (role === 'admin') {
-                    window.location.href = 'guanliyuan.html';
-                }
+                // 所有角色都跳转到首页
+                window.location.href = 'index.html';
             }
         });
         
