@@ -531,7 +531,7 @@
         <div id="productList" class="product-list">
             <!-- 产品将通过JavaScript动态生成 -->
         </div>
-        
+    
         <!-- 分页控件 -->
         <div id="pagination" class="pagination">
             <button id="prevBtn" disabled>上一页</button>
@@ -664,6 +664,8 @@
             </div>
         </div>
     </div>
+
+    <!-- 模态框 - 产品详情 -->
     <div id="feicui-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -1779,68 +1781,70 @@
 
         // 分页功能实现
         document.addEventListener('DOMContentLoaded', function() {
-            // 模拟56个端砚产品数据
+            // 模拟56个端砚产品数据 - 修复：全部匹配模态框ID + 修正图片真实路径
             const products = [
-                { id: 'wenfang', name: '文房四宝套砚', desc: '精选老坑石料，传统工艺雕刻，文房收藏佳品', image: './造型意境类/文房四宝套砚.PNG' },
-                { id: 'shanshui', name: '山水意境砚', desc: '麻子坑石料，浮雕山水图案，意境悠远', image: './造型意境类/山水意境砚.PNG' },
-                { id: 'shouxing', name: '寿星贺寿砚', desc: '坑仔岩石料，立体雕刻寿星形象，寓意吉祥', image: './造型意境类/寿星贺寿砚.JPG' },
-                { id: 'lingzhi', name: '灵芝献瑞砚', desc: '宋坑石料，镂空雕刻灵芝图案，工艺精湛', image: './造型意境类/灵芝献瑞砚.PNG' },
-                { id: 'dragon', name: '龙腾四海砚', desc: '老坑石料，高浮雕龙纹，气势磅礴', image: './造型意境类/龙腾四海砚.JPG' },
-                { id: 'phoenix', name: '凤舞九天砚', desc: '麻子坑石料，阴刻凤凰图案，线条优美', image: './造型意境类/凤舞九天砚.PNG' },
-                { id: 'chrysanthemum', name: '菊花砚', desc: '坑仔岩石料，自然菊花纹理，浑然天成', image: './造型意境类/菊花砚.PNG' },
-                { id: 'bamboo', name: '竹节砚', desc: '宋坑石料，仿生竹节造型，清雅脱俗', image: './造型意境类/竹节砚.PNG' },
-                { id: 'hanmei', name: '寒梅傲雪砚', desc: '老坑石料，浮雕梅花图案，冰清玉洁', image: './造型意境类/寒梅傲雪砚.JPG' },
-                { id: 'lanhua', name: '兰花幽香砚', desc: '麻子坑石料，线刻兰花图案，清雅脱俗', image: './造型意境类/兰花幽香砚.JPG' },
-                { id: 'zhuju', name: '竹菊双清砚', desc: '坑仔岩石料，浮雕竹菊图案，君子之风', image: './造型意境类/竹菊双清砚.JPG' },
-                { id: 'meilan', name: '梅兰竹菊砚', desc: '宋坑石料，四君子图案，文人雅趣', image: './造型意境类/梅兰竹菊砚.JPG' },
-                { id: 'longfeng', name: '龙凤呈祥砚', desc: '老坑石料，龙凤浮雕图案，吉祥如意', image: './造型意境类/龙凤呈祥砚.JPG' },
-                { id: 'shuanglong', name: '双龙戏珠砚', desc: '麻子坑石料，双龙浮雕图案，气势非凡', image: './造型意境类/双龙戏珠砚.JPG' },
-                { id: 'panchi', name: '蟠螭纹砚', desc: '坑仔岩石料，传统蟠螭纹饰，古朴典雅', image: './造型意境类/蟠螭纹砚.JPG' },
-                { id: 'xiezhi', name: '獬豸神兽砚', desc: '宋坑石料，神兽雕刻图案，公正严明', image: './造型意境类/獬豸神兽砚.JPG' },
-                { id: 'taishan', name: '泰山日出砚', desc: '老坑石料，山水浮雕图案，壮丽山河', image: './造型意境类/泰山日出砚.JPG' },
-                { id: 'huanghe', name: '黄河砚', desc: '麻子坑石料，黄河口瀑布图案，气势磅礴', image: './造型意境类/黄河砚.JPG' },
-                { id: 'changjiang', name: '长江三峡砚', desc: '坑仔岩石料，三峡风光图案，鬼斧神工', image: './造型意境类/长江三峡砚.JPG' },
-                { id: 'huashan', name: '华山险峻砚', desc: '宋坑石料，华山风光图案，奇险天下', image: './造型意境类/华山险峻砚.JPG' },
-                { id: 'guanyin', name: '观音送子砚', desc: '老坑石料，观音浮雕图案，吉祥如意', image: './造型意境类/观音送子砚.JPG' },
-                { id: 'fuxing', name: '福星高照砚', desc: '麻子坑石料，福星雕刻图案，好运连连', image: './造型意境类/福星高照砚.JPG' },
-                { id: 'luxing', name: '禄星献瑞砚', desc: '坑仔岩石料，禄星雕刻图案，功名利禄', image: './造型意境类/禄星献瑞砚.JPG' },
-                { id: 'caishen', name: '财神到砚', desc: '宋坑石料，财神雕刻图案，财源广进', image: './造型意境类/财神到砚.JPG' },
-                { id: 'kongzi', name: '孔子问道砚', desc: '老坑石料，孔子浮雕图案，尊师重道', image: './造型意境类/孔子问道砚.JPG' },
-                { id: 'laozi', name: '老子出关砚', desc: '麻子坑石料，老子骑牛图案，道法自然', image: './造型意境类/老子出关砚.JPG' },
-                { id: 'zhuangzi', name: '庄子梦蝶砚', desc: '坑仔岩石料，庄子梦蝶图案，哲学意境', image: './造型意境类/庄子梦蝶砚.JPG' },
-                { id: 'mengzi', name: '孟子讲学砚', desc: '宋坑石料，孟子讲学图案，儒家思想', image: './造型意境类/孟子讲学砚.JPG' },
-                { id: 'taichi', name: '太极八卦砚', desc: '老坑石料，太极八卦图案，阴阳平衡', image: './造型意境类/太极八卦砚.JPG' },
-                { id: 'bagua', name: '八卦方位砚', desc: '麻子坑石料，八卦方位图案，传统智慧', image: './造型意境类/八卦方位砚.JPG' },
-                { id: 'wuxing', name: '五行相生砚', desc: '坑仔岩石料，五行图案，相生相克', image: './造型意境类/五行相生砚.JPG' },
-                { id: 'bajing', name: '八宝吉祥砚', desc: '宋坑石料，八宝图案，吉祥如意', image: './造型意境类/八宝吉祥砚.JPG' },
-                { id: 'shierxiao', name: '十二生肖砚', desc: '老坑石料，十二生肖图案，生肖文化', image: './造型意境类/十二生肖砚.JPG' },
-                { id: 'shenxiao', name: '子鼠献瑞砚', desc: '麻子坑石料，老鼠图案，聪明机智', image: './造型意境类/子鼠献瑞砚.JPG' },
-                { id: 'niushou', name: '丑牛耕耘砚', desc: '坑仔岩石料，黄牛图案，勤劳致富', image: './造型意境类/丑牛耕耘砚.JPG' },
-                { id: 'huying', name: '寅虎啸山砚', desc: '宋坑石料，老虎图案，虎虎生威', image: './造型意境类/寅虎啸山砚.JPG' },
-                { id: 'tuma', name: '卯兔迎春砚', desc: '老坑石料，兔子图案，玉兔呈祥', image: './造型意境类/卯兔迎春砚.JPG' },
-                { id: 'longzhao', name: '辰龙戏水砚', desc: '麻子坑石料，龙图案，龙腾四海', image: './造型意境类/辰龙戏水砚.JPG' },
-                { id: 'shehui', name: '巳蛇吐信砚', desc: '坑仔岩石料，蛇图案，灵蛇献瑞', image: './造型意境类/巳蛇吐信砚.JPG' },
-                { id: 'mawang', name: '午马奔腾砚', desc: '宋坑石料，马图案，马到成功', image: './造型意境类/午马奔腾砚.JPG' },
-                { id: 'yangchun', name: '未羊开泰砚', desc: '麻子坑石料，羊图案，三阳开泰', image: './造型意境类/未羊开泰砚.JPG' },
-                { id: 'housheng', name: '申猴献桃砚', desc: '坑仔岩石料，猴子图案，聪明伶俐', image: './造型意境类/申猴献桃砚.JPG' },
-                { id: 'jigong', name: '酉鸡报晓砚', desc: '宋坑石料，公鸡图案，金鸡报晓', image: './造型意境类/酉鸡报晓砚.JPG' },
-                { id: 'goufu', name: '戌狗旺财砚', desc: '老坑石料，狗图案，旺财守家', image: './造型意境类/戌狗旺财砚.JPG' },
-                { id: 'zhuhu', name: '亥猪送福砚', desc: '麻子坑石料，猪图案，肥猪拱门', image: './造型意境类/亥猪送福砚.JPG' },
-                { id: 'chunqiu', name: '春秋五霸砚', desc: '坑仔岩石料，春秋五霸图案，历史风云', image: './造型意境类/春秋五霸砚.JPG' },
-                { id: 'zhanguo', name: '战国七雄砚', desc: '宋坑石料，战国七雄图案，诸侯争霸', image: './造型意境类/战国七雄砚.JPG' },
-                { id: 'hanwu', name: '汉武雄风砚', desc: '老坑石料，汉武帝图案，雄才大略', image: './造型意境类/汉武雄风砚.JPG' },
-                { id: 'taizong', name: '贞观之治砚', desc: '老坑石料，唐太宗图案，盛世华章', image: './造型意境类/贞观之治砚.JPG' },
-                { id: 'kangxi', name: '康熙南巡砚', desc: '麻子坑石料，康熙南巡图案，帝王气度', image: './造型意境类/康熙南巡砚.JPG' },
-                { id: 'qianlong', name: '乾隆御题砚', desc: '坑仔岩石料，乾隆御题图案，皇家风范', image: './造型意境类/乾隆御题砚.JPG' },
-                { id: 'shiji', name: '史记千秋砚', desc: '宋坑石料，司马迁图案，史家绝唱', image: './造型意境类/史记千秋砚.JPG' },
-                { id: 'sanguo', name: '三国演义砚', desc: '老坑石料，三国人物图案，英雄辈出', image: './造型意境类/三国演义砚.JPG' },
-                { id: 'huachuan', name: '水浒传砚', desc: '麻子坑石料，梁山好汉图案，义薄云天', image: './造型意境类/水浒传砚.JPG' },
-                { id: 'xiyou', name: '西游记砚', desc: '坑仔岩石料，唐僧师徒图案，西天取经', image: './造型意境类/西游记砚.JPG' },
-                { id: 'honglou', name: '红楼梦砚', desc: '宋坑石料，金陵十二钗图案，红楼一梦', image: './造型意境类/红楼梦砚.JPG' }
+                { id: 'wenfang-sibao', name: '文房四宝套砚', desc: '精选老坑石料，传统工艺雕刻，文房收藏佳品', image: './造型意境类/文房四宝套砚.PNG' },
+                { id: 'shanshui-yijing', name: '山水意境砚', desc: '麻子坑石料，浮雕山水图案，意境悠远', image: './造型意境类/山水意境砚.PNG' },
+                { id: 'shoutao-yan', name: '寿桃砚', desc: '坑仔岩石料，立体雕刻寿桃形象，寓意吉祥', image: './造型意境类/寿桃砚.PNG' },
+                { id: 'lingzhi-xianrui', name: '灵芝献瑞砚', desc: '宋坑石料，镂空雕刻灵芝图案，工艺精湛', image: './造型意境类/灵芝献瑞砚.PNG' },
+                { id: 'longfeng-chengxiang', name: '龙凤呈祥砚', desc: '老坑石料，高浮雕龙纹，气势磅礴', image: './造型意境类/龙凤呈祥砚.jpg' },
+                { id: 'fengwu-jiutian', name: '凤舞九天砚', desc: '麻子坑石料，阴刻凤凰图案，线条优美', image: './造型意境类/凤舞九天砚.PNG' },
+                { id: 'juhua-yan', name: '菊花砚', desc: '坑仔岩石料，自然菊花纹理，浑然天成', image: './造型意境类/菊花砚.PNG' },
+                { id: 'zhujie-yan', name: '竹节砚', desc: '宋坑石料，仿生竹节造型，清雅脱俗', image: './造型意境类/竹节砚.PNG' },
+                { id: 'hanmei-aoxue', name: '寒梅傲雪砚', desc: '老坑石料，浮雕梅花图案，冰清玉洁', image: './造型意境类/寒梅傲雪砚.jpg' },
+                { id: 'lanhua-youxiang', name: '兰花幽香砚', desc: '麻子坑石料，线刻兰花图案，清雅脱俗', image: './造型意境类/兰花幽香砚.jpg' },
+                { id: 'zhuju-shuangqing', name: '竹菊双清砚', desc: '坑仔岩石料，浮雕竹菊图案，君子之风', image: './造型意境类/竹菊双清砚.jpg' },
+                { id: 'meilanzhuju', name: '梅兰竹菊砚', desc: '宋坑石料，四君子图案，文人雅趣', image: './造型意境类/梅兰竹菊砚.jpg' },
+                { id: 'longfeng-chengxiang', name: '龙凤呈祥砚', desc: '老坑石料，龙凤浮雕图案，吉祥如意', image: './造型意境类/龙凤呈祥砚.jpg' },
+                { id: 'shuanglong-xizhu', name: '双龙戏珠砚', desc: '麻子坑石料，双龙浮雕图案，气势非凡', image: './造型意境类/双龙戏珠砚.jpg' },
+                { id: 'panchi-wen', name: '蟠螭纹砚', desc: '坑仔岩石料，传统蟠螭纹饰，古朴典雅', image: './造型意境类/蟠螭纹砚.jpg' },
+                { id: 'xiezhi-shenshou', name: '獬豸神兽砚', desc: '宋坑石料，神兽雕刻图案，公正严明', image: './造型意境类/獬豸神兽砚.jpg' },
+                { id: 'taishan-richu', name: '泰山日出砚', desc: '老坑石料，山水浮雕图案，壮丽山河', image: './造型意境类/泰山日出砚.jpg' },
+                { id: 'huanghe', name: '黄河砚', desc: '麻子坑石料，黄河口瀑布图案，气势磅礴', image: './造型意境类/黄河砚.jpg' },
+                { id: 'changjiang-sanxia', name: '长江三峡砚', desc: '坑仔岩石料，三峡风光图案，鬼斧神工', image: './造型意境类/长江三峡砚.jpg' },
+                { id: 'huashan-junxian', name: '华山险峻砚', desc: '宋坑石料，华山风光图案，奇险天下', image: './造型意境类/华山险峻砚.jpg' },
+                { id: 'guanyin-songzi', name: '观音送子砚', desc: '老坑石料，观音浮雕图案，吉祥如意', image: './造型意境类/观音送子砚.jpg' },
+                { id: 'fuxing-gaozhao', name: '福星高照砚', desc: '麻子坑石料，福星雕刻图案，好运连连', image: './造型意境类/福星高照砚.jpg' },
+                { id: 'luxing-xianrui', name: '禄星献瑞砚', desc: '坑仔岩石料，禄星雕刻图案，功名利禄', image: './造型意境类/禄星献瑞砚.jpg' },
+                { id: 'caishen-dao', name: '财神到砚', desc: '宋坑石料，财神雕刻图案，财源广进', image: './造型意境类/财神到砚.jpg' },
+                { id: 'kongzi-wendao', name: '孔子问道砚', desc: '老坑石料，孔子浮雕图案，尊师重道', image: './造型意境类/孔子问道砚.jpg' },
+                { id: 'laozi-chuguan', name: '老子出关砚', desc: '麻子坑石料，老子骑牛图案，道法自然', image: './造型意境类/老子出关砚.jpg' },
+                { id: 'zhuangzi-mengdie', name: '庄子梦蝶砚', desc: '坑仔岩石料，庄子梦蝶图案，哲学意境', image: './造型意境类/庄子梦蝶砚.jpg' },
+                { id: 'mengzi-jiangxue', name: '孟子讲学砚', desc: '宋坑石料，孟子讲学图案，儒家思想', image: './造型意境类/孟子讲学砚.jpg' },
+                { id: 'taiji-bagua', name: '太极八卦砚', desc: '老坑石料，太极八卦图案，阴阳平衡', image: './造型意境类/太极八卦砚.jpg' },
+                { id: 'bagua-fangwei', name: '八卦方位砚', desc: '麻子坑石料，八卦方位图案，传统智慧', image: './造型意境类/八卦方位砚.jpg' },
+                { id: 'wuxing-xiangsheng', name: '五行相生砚', desc: '坑仔岩石料，五行图案，相生相克', image: './造型意境类/五行相生砚.jpg' },
+                { id: 'babao-jixiang', name: '八宝吉祥砚', desc: '宋坑石料，八宝图案，吉祥如意', image: './造型意境类/八宝吉祥砚.jpg' },
+                { id: 'shiershengxiao', name: '十二生肖砚', desc: '老坑石料，十二生肖图案，生肖文化', image: './造型意境类/十二生肖砚.jpg' },
+                { id: 'zishu-xianrui', name: '子鼠献瑞砚', desc: '麻子坑石料，老鼠图案，聪明机智', image: './造型意境类/子鼠献瑞砚.jpg' },
+                { id: 'chouniu-gengyun', name: '丑牛耕耘砚', desc: '坑仔岩石料，黄牛图案，勤劳致富', image: './造型意境类/丑牛耕耘砚.jpg' },
+                { id: 'yinhu-xiaoshan', name: '寅虎啸山砚', desc: '宋坑石料，老虎图案，虎虎生威', image: './造型意境类/寅虎啸山砚.jpg' },
+                { id: 'maotu-yingchun', name: '卯兔迎春砚', desc: '老坑石料，兔子图案，玉兔呈祥', image: './造型意境类/卯兔迎春砚.jpg' },
+                { id: 'chenlong-xishui', name: '辰龙戏水砚', desc: '麻子坑石料，龙图案，龙腾四海', image: './造型意境类/辰龙戏水砚.jpg' },
+                { id: 'sisi-tuxin', name: '巳蛇吐信砚', desc: '坑仔岩石料，蛇图案，灵蛇献瑞', image: './造型意境类/巳蛇吐信砚.jpg' },
+                { id: 'wuma-benteng', name: '午马奔腾砚', desc: '宋坑石料，马图案，马到成功', image: './造型意境类/午马奔腾砚.jpg' },
+                { id: 'weiyang-kaitai', name: '未羊开泰砚', desc: '麻子坑石料，羊图案，三阳开泰', image: './造型意境类/未羊开泰砚.jpg' },
+                { id: 'shenhou-xiantao', name: '申猴献桃砚', desc: '坑仔岩石料，猴子图案，聪明伶俐', image: './造型意境类/申猴献桃砚.jpg' },
+                { id: 'youji-baoxiao', name: '酉鸡报晓砚', desc: '宋坑石料，公鸡图案，金鸡报晓', image: './造型意境类/酉鸡报晓砚.jpg' },
+                { id: 'xugou-wangcai', name: '戌狗旺财砚', desc: '老坑石料，狗图案，旺财守家', image: './造型意境类/戌狗旺财砚.jpg' },
+                { id: 'haizhu-songfu', name: '亥猪送福砚', desc: '麻子坑石料，猪图案，肥猪拱门', image: './造型意境类/亥猪送福砚.jpg' },
+                { id: 'chunqiu-wuba', name: '春秋五霸砚', desc: '坑仔岩石料，春秋五霸图案，历史风云', image: './造型意境类/春秋五霸砚.jpg' },
+                { id: 'zhanguo-qixiong', name: '战国七雄砚', desc: '宋坑石料，战国七雄图案，诸侯争霸', image: './造型意境类/战国七雄砚.jpg' },
+                { id: 'hanwu-xiongfeng', name: '汉武雄风砚', desc: '老坑石料，汉武帝图案，雄才大略', image: './造型意境类/汉武雄风砚.jpg' },
+                { id: 'zhenguan-zhizhi', name: '贞观之治砚', desc: '老坑石料，唐太宗图案，盛世华章', image: './造型意境类/贞观之治砚.jpg' },
+                { id: 'kangxi-nanxun', name: '康熙南巡砚', desc: '麻子坑石料，康熙南巡图案，帝王气度', image: './造型意境类/康熙南巡砚.jpg' },
+                { id: 'qianlong-yuti', name: '乾隆御题砚', desc: '坑仔岩石料，乾隆御题图案，皇家风范', image: './造型意境类/乾隆御题砚.jpg' },
+                { id: 'shiji-qianqiu', name: '史记千秋砚', desc: '宋坑石料，司马迁图案，史家绝唱', image: './造型意境类/史记千秋砚.jpg' },
+                { id: 'sanguo-yanyi', name: '三国演义砚', desc: '老坑石料，三国人物图案，英雄辈出', image: './造型意境类/三国演义砚.jpg' },
+                { id: 'shuihuzhuan', name: '水浒传砚', desc: '麻子坑石料，梁山好汉图案，义薄云天', image: './造型意境类/水浒传砚.jpg' },
+                { id: 'xiyouji', name: '西游记砚', desc: '坑仔岩石料，唐僧师徒图案，西天取经', image: './造型意境类/西游记砚.jpg' },
+                { id: 'hongloumeng', name: '红楼梦砚', desc: '宋坑石料，金陵十二钗图案，红楼一梦', image: './造型意境类/红楼梦砚.jpg' },
+                { id: 'lianian-youyu', name: '连年有余砚', desc: '宋坑石料，莲花游鱼图案，富贵吉祥', image: './造型意境类/连年有余砚.PNG' },
+                { id: 'songhe-yannian', name: '松鹤延年砚', desc: '老坑石料，松鹤图案，福寿安康', image: './造型意境类/松鹤延年砚.PNG' }
             ];
 
-            // 分页配置
-            const pageSize = 20; // 每页显示8个，2行×4列
+            // 分页配置 - 修复：每页显示8个，完美适配页面布局
+            const pageSize = 8; 
             let currentPage = 1;
             const totalPages = Math.ceil(products.length / pageSize);
 
@@ -1966,4 +1970,5 @@
     </script>
 </body>
 </html>
+
 
