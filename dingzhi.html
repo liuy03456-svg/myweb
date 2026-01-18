@@ -207,6 +207,71 @@
             font-weight: bold;
         }
 
+        /* 虚拟场景预览 */
+        .vr-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .vr-preview h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .vr-preview p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .vr-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .vr-feature {
+            background-color: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        .vr-feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .vr-feature-title {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        .vr-feature-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .btn-vr {
+            padding: 1rem 2rem;
+            background-color: #fff;
+            color: #667eea;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-vr:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .coming-soon {
+            display: inline-block;
+            margin-left: 1rem;
+            padding: 0.3rem 0.8rem;
+            background-color: #f39c12;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
         /* 推荐结果区域 */
         .recommendations {
             width: 90%;
@@ -322,9 +387,10 @@
             <div class="logo">端砚文化</div>
             <ul class="nav-links">
                 <li><a href="index.html">返回首页</a></li>
+                <li><a href="shop.html">网上商城</a></li>
+                <li><a href="museum.html">云游博物馆</a></li>
                 <li><a href="#customize">定制流程</a></li>
                 <li><a href="#recommendations">推荐方案</a></li>
-                <li><a href="#contact">联系我们</a></li>
                 <li id="loginLink"><a href="denglu.html">登录</a></li>
                 <li id="userInfo" style="display: none; color: #fff; font-size: 1.1rem;">
                     欢迎，<span id="username"></span>
@@ -344,6 +410,40 @@
     <div class="customize-container" id="customize">
         <!-- 定制表单 -->
         <div class="customize-form-section">
+            <!-- 虚拟场景预览（待开发） -->
+            <div class="vr-preview">
+                <h3>🌐 虚拟场景端砚定制</h3>
+                <p>通过AR/VR技术，在虚拟场景中亲自体验端砚雕刻，选择原材料，设计图案，打造属于您的专属端砚！</p>
+
+                <div class="vr-features">
+                    <div class="vr-feature">
+                        <div class="vr-feature-icon">🎨</div>
+                        <div class="vr-feature-title">原材料选择</div>
+                        <div class="vr-feature-desc">360°查看不同坑口的端石材质</div>
+                    </div>
+                    <div class="vr-feature">
+                        <div class="vr-feature-icon">✂️</div>
+                        <div class="vr-feature-title">虚拟雕刻</div>
+                        <div class="vr-feature-desc">亲手操作虚拟雕刻工具</div>
+                    </div>
+                    <div class="vr-feature">
+                        <div class="vr-feature-icon">🔍</div>
+                        <div class="vr-feature-title">细节预览</div>
+                        <div class="vr-feature-desc">放大查看雕刻细节效果</div>
+                    </div>
+                    <div class="vr-feature">
+                        <div class="vr-feature-icon">📱</div>
+                        <div class="vr-feature-title">AR实景</div>
+                        <div class="vr-feature-desc">在现实场景中预览端砚效果</div>
+                    </div>
+                </div>
+
+                <button class="btn-vr" onclick="alert('虚拟场景功能正在开发中，敬请期待！我们将采用WebXR技术，支持AR和VR双模式，让您身临其境体验端砚雕刻的乐趣。')">
+                    进入虚拟场景定制
+                    <span class="coming-soon">待开发</span>
+                </button>
+            </div>
+
             <h2 class="form-title">定制您的专属端砚</h2>
             <form id="customizeForm" class="customize-form">
                 <div class="form-group">
