@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>端砚文化 - 联系我们</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 页面背景与基础样式 */
+        body {
+            background-color: #f5f2eb;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏样式 */
+        header {
+            background-color: #8b5a2b;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #f8e1c0;
+        }
+
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #8b5a2b;
+            margin: 3rem 0;
+            position: relative;
+        }
+        .page-title::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background-color: #8b5a2b;
+            margin: 0.5rem auto;
+        }
+
+        /* 联系信息区域 */
+        .contact-container {
+            width: 90%;
+            margin: 0 auto 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+        }
+
+        /* 联系信息卡片 */
+        .contact-info {
+            background-color: #fff;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #8b5a2b;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #8b5a2b;
+        }
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            gap: 1.5rem;
+        }
+        .contact-icon {
+            font-size: 2rem;
+            color: #8b5a2b;
+            min-width: 50px;
+        }
+        .contact-details h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .contact-details p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* 联系表单 */
+        .contact-form {
+            background-color: #fff;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 1.1rem;
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0d8c8;
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: #faf8f5;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8b5a2b;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: #8b5a2b;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #6b4520;
+        }
+
+        /* 地图区域 */
+        .map-section {
+            width: 90%;
+            margin: 0 auto 4rem;
+            max-width: 1200px;
+        }
+        .map-container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #e0d8c8 0%, #d0c0b0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: #8b5a2b;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* 工作时间区域 */
+        .hours-section {
+            width: 90%;
+            margin: 0 auto 4rem;
+            max-width: 1200px;
+        }
+        .hours-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .hours-card {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .hours-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .hours-title {
+            font-size: 1.3rem;
+            color: #8b5a2b;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        .hours-text {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #8b5a2b;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .nav-links li {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            .hours-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">砚韵智脉——非遗文化数字传承平台</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../index.html#intro">端砚介绍</a></li>
+                <li><a href="../index.html#products">精品展示</a></li>
+                <li><a href="../index.html#masters">端砚大师</a></li>
+                <li><a href="../dingzhi.html" target="_blank">端砚定制</a></li>
+                <li><a href="community.html">用户社群</a></li>
+                <li><a href="contact.html" style="color: #f8e1c0;">联系我们</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 页面标题 -->
+    <h1 class="page-title">联系我们</h1>
+
+    <!-- 联系信息容器 -->
+    <div class="contact-container">
+        <!-- 联系信息 -->
+        <div class="contact-info">
+            <h2 class="section-title">联系方式</h2>
+            <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div class="contact-details">
+                    <h3>公司地址</h3>
+                    <p>广东省肇庆市端州区端砚文化创意产业园<br>A栋101室</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div class="contact-details">
+                    <h3>联系电话</h3>
+                    <p>办公电话：0758-1234567<br>手机号码：138-0000-8888</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-details">
+                    <h3>电子邮箱</h3>
+                    <p>info@duanyan.com<br>support@duanyan.com</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">🕐</div>
+                <div class="contact-details">
+                    <h3>工作邮箱</h3>
+                    <p>business@duanyan.com<br>media@duanyan.com</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">🌐</div>
+                <div class="contact-details">
+                    <h3>官方网站</h3>
+                    <p>www.duanyan.com</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 联系表单 -->
+        <div class="contact-form">
+            <h2 class="section-title">留言咨询</h2>
+            <form>
+                <div class="form-group">
+                    <label for="name">您的姓名</label>
+                    <input type="text" id="name" name="name" placeholder="请输入您的姓名" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">电子邮箱</label>
+                    <input type="email" id="email" name="email" placeholder="请输入您的邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">联系电话</label>
+                    <input type="tel" id="phone" name="phone" placeholder="请输入您的电话">
+                </div>
+                <div class="form-group">
+                    <label for="subject">咨询主题</label>
+                    <input type="text" id="subject" name="subject" placeholder="请输入咨询主题" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">留言内容</label>
+                    <textarea id="message" name="message" placeholder="请输入您的留言内容..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">提交留言</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 地图区域 -->
+    <div class="map-section">
+        <h2 class="section-title">位置导航</h2>
+        <div class="map-container">
+            <div class="map-placeholder">📍 广东省肇庆市端州区端砚文化创意产业园</div>
+        </div>
+    </div>
+
+    <!-- 工作时间 -->
+    <div class="hours-section">
+        <h2 class="section-title">营业时间</h2>
+        <div class="hours-grid">
+            <div class="hours-card">
+                <div class="hours-icon">🏢</div>
+                <div class="hours-title">展厅开放</div>
+                <div class="hours-text">
+                    周一至周五<br>09:00 - 18:00<br>周六至周日<br>10:00 - 17:00
+                </div>
+            </div>
+            <div class="hours-card">
+                <div class="hours-icon">📞</div>
+                <div class="hours-title">客服热线</div>
+                <div class="hours-text">
+                    周一至周五<br>08:30 - 18:00<br>周六至周日<br>09:00 - 17:00<br>节假日正常
+                </div>
+            </div>
+            <div class="hours-card">
+                <div class="hours-icon">📦</div>
+                <div class="hours-title">快递服务</div>
+                <div class="hours-text">
+                    全国包邮<br>下单后48小时内发货<br>支持货到付款<br>提供保险服务
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 端砚文化网 版权所有 | 传承千年文房瑰宝</p>
+    </footer>
+</body>
+</html>
