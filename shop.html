@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网上商城 - 端砚文创与定制</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 页面背景与基础样式 */
+        body {
+            background-color: #f5f2eb;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏样式 */
+        header {
+            background-color: #8b5a2b;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #f8e1c0;
+        }
+
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #8b5a2b;
+            margin: 3rem 0;
+            position: relative;
+        }
+        .page-title::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background-color: #8b5a2b;
+            margin: 0.5rem auto;
+        }
+
+        /* 商城分类导航 */
+        .category-nav {
+            width: 90%;
+            margin: 0 auto 3rem;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .category-nav h3 {
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+        }
+        .category-tab {
+            flex: 1;
+            padding: 1rem;
+            background-color: #faf8f5;
+            border: 2px solid #e0d8c8;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #8b5a2b;
+            transition: all 0.3s;
+        }
+        .category-tab:hover {
+            background-color: #e0d8c8;
+        }
+        .category-tab.active {
+            background-color: #8b5a2b;
+            color: #fff;
+            border-color: #8b5a2b;
+        }
+
+        /* 商城内容区域 */
+        .shop-container {
+            width: 90%;
+            margin: 0 auto 4rem;
+        }
+
+        /* 商品展示区域 */
+        .products-section {
+            display: none;
+        }
+        .products-section.active {
+            display: block;
+        }
+
+        /* 商品网格 */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* 商品卡片 */
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 1.5rem;
+        }
+        .product-name {
+            font-size: 1.3rem;
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .product-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .product-price {
+            font-size: 1.4rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .product-price del {
+            font-size: 0.9rem;
+            color: #999;
+            margin-left: 0.5rem;
+            font-weight: normal;
+        }
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background-color: #8b5a2b;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #6b4520;
+        }
+        .btn-secondary {
+            background-color: #e0d8c8;
+            color: #8b5a2b;
+        }
+        .btn-secondary:hover {
+            background-color: #d0c8b8;
+        }
+
+        /* 端砚定制区域 */
+        .customize-section {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* 虚拟场景预览 */
+        .vr-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .vr-preview h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .vr-preview p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .vr-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .vr-feature {
+            background-color: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        .vr-feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .vr-feature-title {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        .vr-feature-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .btn-vr {
+            padding: 1rem 2rem;
+            background-color: #fff;
+            color: #667eea;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-vr:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .coming-soon {
+            display: inline-block;
+            margin-left: 1rem;
+            padding: 0.3rem 0.8rem;
+            background-color: #f39c12;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* 定制表单 */
+        .customize-form-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+        .form-title {
+            font-size: 1.5rem;
+            color: #8b5a2b;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .customize-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-size: 1.1rem;
+            color: #8b5a2b;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            padding: 0.8rem;
+            border: 2px solid #e0d8c8;
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: #faf8f5;
+        }
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8b5a2b;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* 定制说明侧边栏 */
+        .customize-info {
+            background-color: #faf8f5;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #e0d8c8;
+        }
+        .info-title {
+            font-size: 1.3rem;
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+        }
+        .info-list {
+            list-style: none;
+        }
+        .info-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .info-list li::before {
+            content: "✓";
+            color: #8b5a2b;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #8b5a2b;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            z-index: 999;
+            transition: all 0.3s;
+        }
+        .back-to-top:hover {
+            background-color: #6b4520;
+            transform: translateY(-3px);
+        }
+        .back-to-top.show {
+            display: block;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .nav-links li {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .category-tabs {
+                flex-direction: column;
+            }
+            .customize-form-section {
+                grid-template-columns: 1fr;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .vr-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">砚韵智脉——网上商城</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="#cultural">文创潮品</a></li>
+                <li><a href="#souvenir">文旅伴手礼</a></li>
+                <li><a href="#customize">端砚定制</a></li>
+                <li><a href="museum.html">云游博物馆</a></li>
+                <li><a href="../index.html">返回网站</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 页面标题 -->
+    <h1 class="page-title">网上商城</h1>
+
+    <!-- 商城分类导航 -->
+    <div class="category-nav">
+        <h3>🛍️ 选择您感兴趣的品类</h3>
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="cultural">
+                🎨 文创潮品
+            </div>
+            <div class="category-tab" data-category="souvenir">
+                🎁 文旅伴手礼
+            </div>
+            <div class="category-tab" data-category="customize">
+                ✏️ 端砚定制
+            </div>
+        </div>
+    </div>
+
+    <!-- 商城内容区域 -->
+    <div class="shop-container">
+        <!-- 文创潮品板块 -->
+        <div class="products-section active" id="cultural">
+            <h2 style="color: #8b5a2b; font-size: 1.8rem; margin-bottom: 1.5rem;">🎨 文创潮品</h2>
+            <p style="color: #666; margin-bottom: 2rem;">融合传统端砚文化与现代设计理念，打造年轻人喜爱的文创产品</p>
+            
+            <div class="product-grid">
+                <!-- 文创潮品 1 -->
+                <div class="product-card">
+                    <img src="../造型意境类/文房四宝套砚.PNG" alt="端砚主题文创笔记本" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚主题文创笔记本</h3>
+                        <p class="product-desc">精选端砚元素，精美硬壳封面，内含端砚文化插画，适合书写与收藏</p>
+                        <div class="product-price">¥68.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文创潮品 2 -->
+                <div class="product-card">
+                    <img src="../造型意境类/梅兰竹菊砚.jpg" alt="端砚文化帆布袋" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚文化帆布袋</h3>
+                        <p class="product-desc">采用梅兰竹菊端砚元素设计，环保材质，时尚百搭</p>
+                        <div class="product-price">¥45.00 <del>¥58.00</del></div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文创潮品 3 -->
+                <div class="product-card">
+                    <img src="../造型意境类/龙凤呈祥砚.jpg" alt="端砚文创钥匙扣" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚文创钥匙扣</h3>
+                        <p class="product-desc">龙凤呈祥图案，精致金属工艺，随身携带端砚文化</p>
+                        <div class="product-price">¥29.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文创潮品 4 -->
+                <div class="product-card">
+                    <img src="../造型意境类/山水意境砚.jpg" alt="端砚主题明信片套装" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚主题明信片套装</h3>
+                        <p class="product-desc">12张精美端砚明信片，展现端砚艺术之美</p>
+                        <div class="product-price">¥35.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文创潮品 5 -->
+                <div class="product-card">
+                    <img src="../造型意境类/蟠螭纹砚.jpg" alt="端砚文化书签" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚文化书签</h3>
+                        <p class="product-desc">古青铜纹饰设计，金属质感，阅读好伴侣</p>
+                        <div class="product-price">¥18.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文创潮品 6 -->
+                <div class="product-card">
+                    <img src="../造型意境类/獬豸神兽砚.jpg" alt="端砚文创手机壳" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚文创手机壳</h3>
+                        <p class="product-desc">獬豸神兽图案，多种机型可选，个性时尚</p>
+                        <div class="product-price">¥49.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文旅伴手礼板块 -->
+        <div class="products-section" id="souvenir">
+            <h2 style="color: #8b5a2b; font-size: 1.8rem; margin-bottom: 1.5rem;">🎁 文旅伴手礼</h2>
+            <p style="color: #666; margin-bottom: 2rem;">端砚文化主题伴手礼，旅行纪念、馈赠亲友的绝佳选择</p>
+            
+            <div class="product-grid">
+                <!-- 伴手礼 1 -->
+                <div class="product-card">
+                    <img src="../造型意境类/泰山日出砚.jpg" alt="端砚文化伴手礼套装" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚文化伴手礼套装</h3>
+                        <p class="product-desc">包含端砚笔记本、书签、明信片，精美礼盒包装</p>
+                        <div class="product-price">¥128.00 <del>¥168.00</del></div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 伴手礼 2 -->
+                <div class="product-card">
+                    <img src="../造型意境类/黄河砚.jpg" alt="端砚主题茶具套装" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚主题茶具套装</h3>
+                        <p class="product-desc">端砚元素陶瓷茶具，典雅大气，适合商务馈赠</p>
+                        <div class="product-price">¥298.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 伴手礼 3 -->
+                <div class="product-card">
+                    <img src="../造型意境类/长江三峡砚.jpg" alt="端砚主题折扇" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚主题折扇</h3>
+                        <p class="product-desc">传统折扇工艺，端砚山水图案，夏日雅致之选</p>
+                        <div class="product-price">¥88.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 伴手礼 4 -->
+                <div class="product-card">
+                    <img src="../造型意境类/华山险峻砚.jpg" alt="端砚文化丝巾" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚文化丝巾</h3>
+                        <p class="product-desc">真丝材质，端砚元素印花，优雅时尚</p>
+                        <div class="product-price">¥168.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 伴手礼 5 -->
+                <div class="product-card">
+                    <img src="../造型意境类/观音送子砚.jpg" alt="端砚主题香薰礼盒" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚主题香薰礼盒</h3>
+                        <p class="product-desc">端砚元素香薰器，配套精油，禅意生活</p>
+                        <div class="product-price">¥198.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 伴手礼 6 -->
+                <div class="product-card">
+                    <img src="../造型意境类/福星高照砚.jpg" alt="端砚主题挂饰" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚主题挂饰</h3>
+                        <p class="product-desc">福星高照图案，金属材质，家居装饰佳品</p>
+                        <div class="product-price">¥68.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 端砚定制板块 -->
+        <div class="products-section" id="customize">
+            <h2 style="color: #8b5a2b; font-size: 1.8rem; margin-bottom: 1.5rem;">✏️ 端砚定制</h2>
+            <p style="color: #666; margin-bottom: 2rem;">专属定制，打造独一无二的端砚珍品</p>
+
+            <!-- 虚拟场景预览（待开发） -->
+            <div class="vr-preview">
+                <h3>🌐 虚拟场景端砚定制</h3>
+                <p>通过AR/VR技术，在虚拟场景中亲自体验端砚雕刻，选择原材料，设计图案，打造属于您的专属端砚！</p>
+                
+                <div class="vr-features">
+                    <div class="vr-feature">
+                        <div class="vr-feature-icon">🎨</div>
+                        <div class="vr-feature-title">原材料选择</div>
+                        <div class="vr-feature-desc">360°查看不同坑口的端石材质</div>
+                    </div>
+                    <div class="vr-feature">
+                        <div class="vr-feature-icon">✂️</div>
+                        <div class="vr-feature-title">虚拟雕刻</div>
+                        <div class="vr-feature-desc">亲手操作虚拟雕刻工具</div>
+                    </div>
+                    <div class="vr-feature">
+                        <div class="vr-feature-icon">🔍</div>
+                        <div class="vr-feature-title">细节预览</div>
+                        <div class="vr-feature-desc">放大查看雕刻细节效果</div>
+                    </div>
+                    <div class="vr-feature">
+                        <div class="vr-feature-icon">📱</div>
+                        <div class="vr-feature-title">AR实景</div>
+                        <div class="vr-feature-desc">在现实场景中预览端砚效果</div>
+                    </div>
+                </div>
+
+                <button class="btn-vr">
+                    进入虚拟场景定制
+                    <span class="coming-soon">待开发</span>
+                </button>
+            </div>
+
+            <!-- 定制表单 -->
+            <div class="customize-section">
+                <h3 class="form-title">在线定制表单</h3>
+                <div class="customize-form-section">
+                    <div class="customize-form">
+                        <div class="form-group">
+                            <label>选择坑口类型</label>
+                            <select>
+                                <option value="">请选择坑口</option>
+                                <option value="laokeng">老坑 - 温润如玉</option>
+                                <option value="mazikeng">麻子坑 - 石质坚实</option>
+                                <option value="kengzai">坑仔岩 - 石眼圆正</option>
+                                <option value="songkeng">宋坑 - 发墨如油</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>选择尺寸</label>
+                            <select>
+                                <option value="">请选择尺寸</option>
+                                <option value="small">小号（15×10×2cm）</option>
+                                <option value="medium">中号（20×15×3cm）</option>
+                                <option value="large">大号（25×18×4cm）</option>
+                                <option value="xlarge">特大号（30×22×5cm）</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>选择主题</label>
+                            <select>
+                                <option value="">请选择主题</option>
+                                <option value="landscape">山水意境</option>
+                                <option value="animal">动物生肖</option>
+                                <option value="flower">梅兰竹菊</option>
+                                <option value="myth">神话传说</option>
+                                <option value="history">历史人物</option>
+                                <option value="custom">自定义图案</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>联系方式</label>
+                            <input type="tel" placeholder="请输入手机号码">
+                        </div>
+
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>定制需求说明</label>
+                            <textarea placeholder="请详细描述您的定制需求，包括图案、寓意、特殊要求等..."></textarea>
+                        </div>
+
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <button class="btn btn-primary" style="padding: 1.2rem; font-size: 1.1rem;">提交定制需求</button>
+                        </div>
+                    </div>
+
+                    <!-- 定制说明 -->
+                    <div class="customize-info">
+                        <h4 class="info-title">定制说明</h4>
+                        <ul class="info-list">
+                            <li>提交需求后，专业设计师会在3个工作日内与您联系</li>
+                            <li>提供设计图稿，确认后进入制作流程</li>
+                            <li>制作周期根据复杂度，一般为15-30天</li>
+                            <li>支持全程跟踪，随时了解制作进度</li>
+                            <li>确保质量，不满意可免费修改</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        ↑
+    </button>
+
+    <script>
+        // 分类切换功能
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const productsSections = document.querySelectorAll('.products-section');
+
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有激活状态
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                productsSections.forEach(s => s.classList.remove('active'));
+
+                // 激活当前选中的分类
+                tab.classList.add('active');
+                const categoryId = tab.dataset.category;
+                document.getElementById(categoryId).classList.add('active');
+            });
+        });
+
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // 立即购买按钮
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('购物车功能正在开发中，敬请期待！');
+            });
+        });
+
+        // 加入购物车按钮
+        document.querySelectorAll('.btn-secondary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('已加入购物车！');
+            });
+        });
+
+        // 提交定制需求
+        document.querySelector('.customize-form .btn-primary').addEventListener('click', function() {
+            alert('定制需求已提交！我们的专业设计师将在3个工作日内与您联系。');
+        });
+
+        // 虚拟场景按钮（待开发）
+        document.querySelector('.btn-vr').addEventListener('click', function() {
+            alert('虚拟场景功能正在开发中，敬请期待！我们将采用WebXR技术，支持AR和VR双模式，让您身临其境体验端砚雕刻的乐趣。');
+        });
+    </script>
+</body>
+</html>
