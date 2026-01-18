@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>端砚文化 - 在线客服</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        /* 页面背景与基础样式 */
+        body {
+            background-color: #f5f2eb;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏样式 */
+        header {
+            background-color: #8b5a2b;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #f8e1c0;
+        }
+
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #8b5a2b;
+            margin: 3rem 0;
+            position: relative;
+        }
+        .page-title::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background-color: #8b5a2b;
+            margin: 0.5rem auto;
+        }
+
+        /* 客服介绍区域 */
+        .service-container {
+            width: 90%;
+            margin: 0 auto 4rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+        }
+
+        /* 在线客服窗口 */
+        .chat-window {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+        .chat-header {
+            background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%);
+            color: #fff;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .chat-header-avatar {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .chat-header-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+        .chat-header-info p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background-color: #faf8f5;
+        }
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+        .message.agent {
+            flex-direction: row;
+        }
+        .message.user {
+            flex-direction: row-reverse;
+        }
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .message.agent .message-avatar {
+            background-color: #8b5a2b;
+            color: #fff;
+        }
+        .message.user .message-avatar {
+            background-color: #6b4520;
+            color: #fff;
+        }
+        .message-content {
+            max-width: 70%;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+        .message.agent .message-content {
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .message.user .message-content {
+            background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%);
+            color: #fff;
+        }
+        .message-time {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 0.5rem;
+        }
+        .chat-input-area {
+            padding: 1.5rem;
+            background-color: #fff;
+            border-top: 1px solid #e0d8c8;
+        }
+        .chat-input-container {
+            display: flex;
+            gap: 1rem;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e0d8c8;
+            border-radius: 25px;
+            font-size: 1rem;
+            background-color: #faf8f5;
+            resize: none;
+            height: 50px;
+            font-family: inherit;
+        }
+        .chat-input:focus {
+            outline: none;
+            border-color: #8b5a2b;
+        }
+        .send-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5a2b 0%, #6b4520 100%);
+            color: #fff;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .send-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* 客服信息面板 */
+        .service-info {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+        .info-title {
+            font-size: 1.5rem;
+            color: #8b5a2b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #8b5a2b;
+        }
+        .service-item {
+            margin-bottom: 2rem;
+        }
+        .service-item h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .service-item p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            padding-left: 2rem;
+        }
+        .quick-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .quick-link {
+            padding: 0.8rem 1.2rem;
+            background-color: #faf8f5;
+            border: 2px solid #e0d8c8;
+            border-radius: 6px;
+            color: #8b5a2b;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .quick-link:hover {
+            background-color: #8b5a2b;
+            color: #fff;
+            border-color: #8b5a2b;
+        }
+
+        /* 常见问题区域 */
+        .faq-section {
+            width: 90%;
+            margin: 0 auto 4rem;
+            max-width: 1200px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #8b5a2b;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        .faq-item {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .faq-question {
+            font-size: 1.1rem;
+            color: #8b5a2b;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+        }
+        .faq-answer {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #8b5a2b;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .nav-links li {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .service-container {
+                grid-template-columns: 1fr;
+            }
+            .chat-window {
+                height: 500px;
+            }
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">砚韵智脉——非遗文化数字传承平台</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../index.html#intro">端砚介绍</a></li>
+                <li><a href="../index.html#products">精品展示</a></li>
+                <li><a href="../index.html#masters">端砚大师</a></li>
+                <li><a href="../dingzhi.html" target="_blank">端砚定制</a></li>
+                <li><a href="community.html">用户社群</a></li>
+                <li><a href="contact.html">联系我们</a></li>
+                <li><a href="service.html" style="color: #f8e1c0;">在线客服</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 页面标题 -->
+    <h1 class="page-title">在线客服</h1>
+
+    <!-- 客服容器 -->
+    <div class="service-container">
+        <!-- 在线客服窗口 -->
+        <div class="chat-window">
+            <div class="chat-header">
+                <div class="chat-header-avatar">💁</div>
+                <div class="chat-header-info">
+                    <h3>端砚客服 - 小端</h3>
+                    <p>在线中 | 响应时间 &lt; 30秒</p>
+                </div>
+            </div>
+            <div class="chat-messages">
+                <div class="message agent">
+                    <div class="message-avatar">💁</div>
+                    <div>
+                        <div class="message-content">您好！欢迎来到端砚文化网，我是客服小端。很高兴为您服务！请问有什么可以帮助您的吗？</div>
+                        <div class="message-time">刚刚</div>
+                    </div>
+                </div>
+                <div class="message user">
+                    <div class="message-avatar">👤</div>
+                    <div>
+                        <div class="message-content">你好，我想了解一下老坑端砚的特点。</div>
+                        <div class="message-time">刚刚</div>
+                    </div>
+                </div>
+                <div class="message agent">
+                    <div class="message-avatar">💁</div>
+                    <div>
+                        <div class="message-content">老坑端砚是端砚中的珍品，主要特点包括：1. 石质温润细腻，如玉般滑润；2. 发墨迅速，研出的墨汁细腻均匀；3. 石色紫红，质地坚实；4. 天然纹理丰富，常有翡翠纹、火捺等；5. 历史悠久，开采难度大，产量稀少。老坑端砚因其卓越品质被誉为"群砚之首"。</div>
+                        <div class="message-time">刚刚</div>
+                    </div>
+                </div>
+                <div class="message user">
+                    <div class="message-avatar">👤</div>
+                    <div>
+                        <div class="message-content">那么老坑端砚的价格大概是多少呢？</div>
+                        <div class="message-time">刚刚</div>
+                    </div>
+                </div>
+                <div class="message agent">
+                    <div class="message-avatar">💁</div>
+                    <div>
+                        <div class="message-content">老坑端砚的价格因大小、雕刻工艺、石品等因素差异较大。一般来说：小尺寸（15cm以下）约3000-8000元；中等尺寸（15-20cm）约8000-20000元；大尺寸（20cm以上）约20000-50000元甚至更高。名家作品或精品可能达到数十万元。我们提供不同价位的产品，可根据您的预算推荐合适的选择。</div>
+                        <div class="message-time">刚刚</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <div class="chat-input-container">
+                    <textarea class="chat-input" placeholder="请输入您的问题..."></textarea>
+                    <button class="send-btn">➤</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 客服信息 -->
+        <div class="service-info">
+            <h2 class="info-title">客服服务</h2>
+            <div class="service-item">
+                <h3>🕐 服务时间</h3>
+                <p>周一至周五：08:30 - 18:00<br>周六至周日：09:00 - 17:00<br>节假日：正常服务</p>
+            </div>
+            <div class="service-item">
+                <h3>📞 客服电话</h3>
+                <p>0758-1234567<br>138-0000-8888</p>
+            </div>
+            <div class="service-item">
+                <h3>✉️ 电子邮箱</h3>
+                <p>service@duanyan.com<br>support@duanyan.com</p>
+            </div>
+            <div class="service-item">
+                <h3>💬 微信客服</h3>
+                <p>添加客服微信：duanyan_kefu<br>扫码关注公众号</p>
+            </div>
+            <div class="quick-links">
+                <a href="../index.html#products" class="quick-link">浏览端砚产品</a>
+                <a href="community.html" class="quick-link">加入用户社群</a>
+                <a href="contact.html" class="quick-link">联系我们</a>
+                <a href="../dingzhi.html" class="quick-link" target="_blank">端砚定制</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 常见问题 -->
+    <div class="faq-section">
+        <h2 class="section-title">常见问题</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-question">Q: 端砚如何保养？</div>
+                <div class="faq-answer">A: 使用后及时清洗，避免墨汁干涸；避免与硬物碰撞；定期用微湿的软布擦拭；可涂抹少量砚油保养。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 端砚的鉴别方法？</div>
+                <div class="faq-answer">A: 从石质、色泽、纹理、雕刻工艺等方面综合判断。老坑端石质温润细腻，色泽紫红，有天然石品。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 如何选择适合自己的端砚？</div>
+                <div class="faq-answer">A: 根据用途（使用或收藏）、预算、尺寸需求等因素选择。初学者可从中等尺寸、工艺简洁的开始。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 端砚可以定制吗？</div>
+                <div class="faq-answer">A: 可以！我们提供端砚定制服务，可根据您的需求定制图案、尺寸、刻字等。请访问定制页面了解更多。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 端砚的收藏价值如何？</div>
+                <div class="faq-answer">A: 端砚是中国四大名砚之首，具有很高的收藏价值。老坑端砚、名家作品、工艺精湛的砚台更具升值空间。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 端砚的发货和售后？</div>
+                <div class="faq-answer">A: 全国包邮，48小时内发货。支持7天无理由退货，提供1年质保服务。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 端砚文化网 版权所有 | 传承千年文房瑰宝</p>
+    </footer>
+</body>
+</html>
