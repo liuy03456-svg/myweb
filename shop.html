@@ -386,7 +386,7 @@
             margin-top: 3rem;
             background-color: #fff;
             padding: 2rem;
-            border-radius: 8px;
+	border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             display: none;
         }
@@ -655,7 +655,7 @@
                     </div>
                 </div>
             </div>
-
+        </div>
 
         <!-- 端砚定制板块 -->
         <div class="products-section" id="customize">
@@ -961,7 +961,7 @@
             recommendationList.innerHTML = '';
             
             if (recommendations.length === 0) {
-                recommendationList.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #666; font-size: 1.1rem;">暂无匹配的端砚推荐，请尝试其他组合或联系客服定制。</p>';
+                recommendationList.innerHTML = '<p style=\"grid-column: 1 / -1; text-align: center; color: #666; font-size: 1.1rem;\">暂无匹配的端砚推荐，请尝试其他组合或联系客服定制。</p>';
             } else {
                 recommendations.forEach(item => {
                     const matchLevel = item.matchScore >= 4 ? '高' : (item.matchScore >= 2 ? '中' : '低');
