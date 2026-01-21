@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>端砚 - 中国四大名砚之首</title>
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
     <style>
         /* 全局样式重置 */
         * {
@@ -495,13 +504,84 @@
             grid-column: 1 / -1;
         }
         .vr-viewer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 3rem;
+            background: linear-gradient(180deg, #2c2c2c 0%, #1a1a1a 100%);
             border-radius: 8px;
-            font-size: 1.2rem;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/9;
             margin: 1rem 0;
+        }
+
+        .vr-viewer .canvas-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .vr-viewer .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .vr-viewer .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e0d8c8;
+            border-top-color: #8b5a2b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        .vr-viewer .loading-text {
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .vr-controls {
+            background-color: #faf8f5;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .vr-btn {
+            padding: 0.5rem 1rem;
+            background-color: #8b5a2b;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .vr-btn:hover {
+            background-color: #6b4520;
+        }
+
+        .vr-btn.secondary {
+            background-color: #e0d8c8;
+            color: #8b5a2b;
+        }
+
+        .vr-btn.secondary:hover {
+            background-color: #d0c8b8;
         }
 
         /* 响应式适配 */
@@ -563,7 +643,7 @@
     <!-- 导航栏 -->
     <header>
         <div class="nav-container">
-            <div class="logo">砚韵智脉——非遗文化数字传承</div>
+            <div class="logo">砚韵智脉——非遗文化数字传承平台</div>
             <ul class="nav-links">
                 <li><a href="#home">首页</a></li>
                 <li><a href="#intro">端砚介绍</a></li>
@@ -629,15 +709,11 @@
         <div class="intro-content">
             <img src="./坑口类/老坑2.PNG" alt="端砚细节图" class="intro-img">
             <div class="intro-text">
-                <p>端砚：紫云凝韵，千年文脉的石上载体。</p>
+                <p>端砚，广东省肇庆市特产，中国国家地理标志产品，与甘肃洮砚、安徽歙砚、山西澄泥砚并称为中国四大名砚，且位列之首。</p>
                 <br>
-                <p>端砚，广东省肇庆市（古称端州）独有瑰宝，中国国家地理标志产品，与甘肃洮砚、安徽歙砚、山西澄泥砚并尊“中国四大名砚”，且以“群砚之首”“天下第一砚”的至高美誉，跨越千年稳居文房珍品之巅。其得名于肇庆东郊西江羚羊峡南麓斧柯山端溪水畔的珍稀砚石，产区独特的地质条件，经亿万年绢云母泥质板岩自然淬炼，成就了无可复制的绝世品质。</p>
+                <p>端砚始于唐、盛于宋，距今已有一千三百多年历史。其石质坚实、润滑、细腻、娇嫩，研墨不滞，发墨快，研出之墨汁细滑，书写流畅不损毫，字迹颜色经久不变，素有“群砚之首”“天下第一砚”的美誉。</p>
                 <br>
-                <p>端砚历史可追溯至唐武德年间，距今已逾一千三百年。唐代李贺“端州石工巧如神，踏天磨刀割紫云”的诗句，生动勾勒出采石制砚的奇景，《国史补》中“端州紫石砚，天下无贵贱通用之”的记载，印证了其当时的风靡盛况。宋代为端砚发展巅峰，成为帝王贡品与文人挚爱，苏轼、米芾等文人纷纷为其著书立说，米芾盛赞其“发墨不乏，呵气即泽”。元明清三代工艺持续精进，明代形成“规矩方直”风格，清代集多种雕刻技法于一体，“千金猴王砚”等成为传世瑰宝。2006年端砚制作技艺入选国家级非物质文化遗产，2004年肇庆获评“中国砚都”，让这一古老工艺在当代焕发新生</p>
-                <br>
-                <p>端砚的核心魅力源于天生丽质的石质与自然奇珍的石品。斧柯山砚石经西江泉水浸润，质地坚实温润、细腻娇嫩，触感如婴孩肌肤，兼具“体重而轻，质刚而柔”的特性。实用性能堪称极致：研墨不滞、发墨如油，墨汁细滑醇厚，书写不损毫锋，字迹历久弥新，更有“贮水不耗”“呵气可研”的传奇特质。石品花纹更是天工造物，鱼脑冻洁白温润、蕉叶白娇嫩欲滴、青花星点沉浮、天青澄澈如洗，石眼灵动有神，尤以翠绿晕重的活眼最为珍贵，每方砚石的花纹皆独一无二。</p>
-                <br>
-                <p>一块端砚的诞生，是匠人精神与自然灵性的交融。从采石到成砚，需历经采石、选料、维料、制璞、雕刻、打磨等数十道工序。采石曾极为艰险，匠人攀崖凿石；选料考验慧眼，去粗取精；雕刻则“因石造型，因材施艺”，融合多种技法，将题材与石形石纹巧妙结合。千百年来，端砚早已超越文房用具，成为承载中华文脉的文化符号，既是帝王将相的御用珍品、文人墨客的精神寄托，更是中华文明绵延不绝的鲜活见证，值得永久珍视与传承</p>
+                <p>端砚的制作过程十分复杂，从采石到成砚，要经过选料、维料、制璞、雕刻、打磨、配盒等数十道工序，每一步都凝聚着工匠的心血与智慧。</p>
             </div>
         </div>
     </section>
@@ -665,9 +741,9 @@
         <h2 class="section-title">端砚大师</h2>
         <div class="master-grid">
             <div class="master-card" data-master="li">
-                <img src="images/master1.jpg" alt="程良大师" class="master-img">
+                <img src="images/master1.jpg" alt="李文田大师" class="master-img">
                 <div class="master-info">
-                    <h3 class="master-name">程良</h3>
+                    <h3 class="master-name">李文田</h3>
                     <p class="master-title">国家级非遗传承人</p>
                     <p class="master-bio">从事端砚雕刻40余年，擅长传统题材创作，作品多次获国家级奖项</p>
                 </div>
@@ -706,7 +782,7 @@
 
     <!-- 侧边悬浮图标栏 -->
     <div class="floating-sidebar">
-        <div class="sidebar-main">📄</div>
+        <div class="sidebar-main">📑</div>
         <div class="sidebar-menu">
             <a href="community.html" class="sidebar-item">
                 <div class="sidebar-item-icon">💬</div>
@@ -735,11 +811,11 @@
     <div id="li-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2 class="modal-title">程良 - 国家级非遗传承人</h2>
+            <h2 class="modal-title">李文田 - 国家级非遗传承人</h2>
             <div class="modal-body">
-                <img src="images/master1.jpg" alt="程良大师" class="modal-img">
+                <img src="images/master1.jpg" alt="李文田大师" class="modal-img">
                 <div class="modal-text">
-                    <p><strong>大师简介：</strong>程良,1972年生于肇庆端州黄岗白石村的一个端砚世家，程氏第十四代制砚传人。</p>
+                    <p><strong>大师简介：</strong>李文田,1958年生于端砚之乡肇庆,从事端砚雕刻40余年,是端砚制作技艺国家级非物质文化遗产代表性传承人。</p>
                     <p><strong>艺术风格：</strong>擅长传统题材创作,特别是山水、花鸟、人物等传统图案。作品线条流畅,刀法细腻,既保持了端砚的传统韵味,又融入了个人独特的艺术理解。</p>
                     <p><strong>代表作品：</strong>《山水意境砚》《寒梅傲雪砚》《文房四宝套砚》等多次获国家级奖项,多件作品被国家级博物馆收藏。</p>
                     <p><strong>荣誉成就：</strong>2008年获"中国工艺美术大师"称号,2010年获"国家级非物质文化遗产传承人"称号,2015年获"广东省文化名人"称号。</p>
@@ -815,8 +891,17 @@
                     <p>特点：砚池开阔，磨墨顺畅，配有红木盒，适合收藏与使用</p>
                     <p>创作理念：传承文房四宝文化，体现传统文人审美</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth">
-                    🎥 文房四宝套砚360度全景展示
+                <div class="vr-viewer modal-fullwidth" data-model="duanyan.glb">
+                    <div class="canvas-container" id="vr-canvas-0"></div>
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">正在加载3D模型...</div>
+                    </div>
+                </div>
+                <div class="vr-controls modal-fullwidth">
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-0')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-0')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-0')">线框模式</button>
                 </div>
             </div>
         </div>
@@ -834,8 +919,17 @@
                     <p>特点：意境悠远，山水画卷，适合文人雅士</p>
                     <p>创作理念：融合自然山水意境，展现中国山水画魅力</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth">
-                    🎥 山水意境砚360度全景展示
+                <div class="vr-viewer modal-fullwidth" data-model="duanyan.glb">
+                    <div class="canvas-container" id="vr-canvas-1"></div>
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">正在加载3D模型...</div>
+                    </div>
+                </div>
+                <div class="vr-controls modal-fullwidth">
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-1')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-1')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-1')">线框模式</button>
                 </div>
             </div>
         </div>
@@ -853,8 +947,17 @@
                     <p>特点：气势磅礴，寓意吉祥，工艺精湛</p>
                     <p>创作理念：龙凤呈祥，象征吉祥如意、婚姻美满</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth">
-                    🎥 龙凤呈祥砚360度全景展示
+                <div class="vr-viewer modal-fullwidth" data-model="duanyan.glb">
+                    <div class="canvas-container" id="vr-canvas-2"></div>
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">正在加载3D模型...</div>
+                    </div>
+                </div>
+                <div class="vr-controls modal-fullwidth">
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-2')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-2')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-2')">线框模式</button>
                 </div>
             </div>
         </div>
@@ -872,8 +975,17 @@
                     <p>特点：冰清玉洁，梅花傲骨，适合文人墨客</p>
                     <p>创作理念：寒梅傲雪，象征坚韧不拔的精神品格</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth">
-                    🎥 寒梅傲雪砚360度全景展示
+                <div class="vr-viewer modal-fullwidth" data-model="duanyan.glb">
+                    <div class="canvas-container" id="vr-canvas-3"></div>
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">正在加载3D模型...</div>
+                    </div>
+                </div>
+                <div class="vr-controls modal-fullwidth">
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-3')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-3')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-3')">线框模式</button>
                 </div>
             </div>
         </div>
@@ -891,8 +1003,17 @@
                     <p>特点：清雅脱俗，兰花幽香，适合文人雅士</p>
                     <p>创作理念：兰花幽香，象征高洁典雅的品格</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth">
-                    🎥 兰花幽香砚360度全景展示
+                <div class="vr-viewer modal-fullwidth" data-model="duanyan.glb">
+                    <div class="canvas-container" id="vr-canvas-4"></div>
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">正在加载3D模型...</div>
+                    </div>
+                </div>
+                <div class="vr-controls modal-fullwidth">
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-4')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-4')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-4')">线框模式</button>
                 </div>
             </div>
         </div>
@@ -910,8 +1031,17 @@
                     <p>特点：君子之风，双清雅韵，适合文人收藏</p>
                     <p>创作理念：竹菊双清，象征君子的品格与节操</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth">
-                    🎥 竹菊双清砚360度全景展示
+                <div class="vr-viewer modal-fullwidth" data-model="duanyan.glb">
+                    <div class="canvas-container" id="vr-canvas-5"></div>
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">正在加载3D模型...</div>
+                    </div>
+                </div>
+                <div class="vr-controls modal-fullwidth">
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-5')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-5')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-5')">线框模式</button>
                 </div>
             </div>
         </div>
@@ -929,8 +1059,17 @@
                     <p>特点：文人雅趣，梅兰竹菊，适合文房收藏</p>
                     <p>创作理念：梅兰竹菊，象征传统文人四君子品格</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth">
-                    🎥 梅兰竹菊砚360度全景展示
+                <div class="vr-viewer modal-fullwidth" data-model="duanyan.glb">
+                    <div class="canvas-container" id="vr-canvas-6"></div>
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">正在加载3D模型...</div>
+                    </div>
+                </div>
+                <div class="vr-controls modal-fullwidth">
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-6')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-6')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-6')">线框模式</button>
                 </div>
             </div>
         </div>
@@ -946,8 +1085,17 @@
                     <p><strong>工艺特点：</strong>采用传统端砚雕刻工艺，线条流畅，层次分明。</p>
                     <p><strong>收藏价值：</strong>寓意吉祥，工艺精湛，是收藏与馈赠的佳品。</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth">
-                    🎥 龙凤呈祥砚360度全景展示
+                <div class="vr-viewer modal-fullwidth" data-model="duanyan.glb">
+                    <div class="canvas-container" id="vr-canvas-2"></div>
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">正在加载3D模型...</div>
+                    </div>
+                </div>
+                <div class="vr-controls modal-fullwidth">
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-2')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-2')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-2')">线框模式</button>
                 </div>
             </div>
         </div>
@@ -2789,8 +2937,17 @@
                     <p><strong>工艺特点：</strong>山水层次分明，采用浅浮雕与阴刻结合技法，意境悠远，充满文人气息。</p>
                     <p><strong>收藏价值：</strong>意境优美，文化内涵深厚，是文人雅士与山水爱好者的收藏优选。</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth">
-                    🎥 山水意境砚360度全景展示
+                <div class="vr-viewer modal-fullwidth" data-model="duanyan.glb">
+                    <div class="canvas-container" id="vr-canvas-1"></div>
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">正在加载3D模型...</div>
+                    </div>
+                </div>
+                <div class="vr-controls modal-fullwidth">
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-1')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-1')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-1')">线框模式</button>
                 </div>
             </div>
         </div>
@@ -2869,7 +3026,7 @@
 
     <!-- 其他模态框省略... -->
 
-    <script>
+    <script type="module">
         // 检查登录状态并更新导航栏
         window.addEventListener('DOMContentLoaded', function() {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -3175,11 +3332,228 @@
             renderProducts(currentPage);
             renderPageNumbers();
         });
+
+        // ==================== 3D端砚展示系统 ====================
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // 存储所有3D场景的配置
+        const vrViewers = {};
+        let currentModalViewer = null;
+
+        // 初始化3D查看器
+        function initVRViewer(canvasId, modelPath) {
+            if (vrViewers[canvasId]) {
+                return vrViewers[canvasId]; // 已初始化则返回
+            }
+
+            const container = document.getElementById(canvasId);
+            if (!container) return null;
+
+            // 创建场景
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x2c2c2c);
+
+            // 创建相机
+            const camera = new THREE.PerspectiveCamera(
+                45,
+                container.clientWidth / container.clientHeight,
+                0.1,
+                1000
+            );
+            camera.position.set(0, 2, 5);
+
+            // 创建渲染器
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            // 添加环境光
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            // 添加主光源
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            mainLight.position.set(5, 10, 5);
+            mainLight.castShadow = true;
+            scene.add(mainLight);
+
+            // 添加补光
+            const fillLight = new THREE.DirectionalLight(0x8b5a2b, 0.4);
+            fillLight.position.set(-5, 5, -5);
+            scene.add(fillLight);
+
+            // 添加地面
+            const groundGeometry = new THREE.CircleGeometry(3, 64);
+            const groundMaterial = new THREE.MeshStandardMaterial({
+                color: 0x1a1a1a,
+                roughness: 0.8,
+                metalness: 0.2
+            });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = -Math.PI / 2;
+            ground.position.y = -0.01;
+            ground.receiveShadow = true;
+            scene.add(ground);
+
+            // 添加控制器
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 2;
+            controls.maxDistance = 10;
+            controls.maxPolarAngle = Math.PI / 2;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 2;
+
+            // 加载模型
+            const loader = new GLTFLoader();
+            let model = null;
+
+            loader.load(
+                `./models/${modelPath}`,
+                function (gltf) {
+                    model = gltf.scene;
+
+                    // 调整模型大小和位置
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+
+                    // 居中模型
+                    model.position.sub(center);
+                    model.position.y = size.y / 2;
+
+                    // 缩放模型
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 2 / maxDim;
+                    model.scale.setScalar(scale);
+
+                    // 启用阴影
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                        }
+                    });
+
+                    scene.add(model);
+
+                    // 隐藏加载动画
+                    const overlay = container.parentElement.querySelector('.loading-overlay');
+                    if (overlay) {
+                        overlay.style.opacity = '0';
+                        overlay.style.pointerEvents = 'none';
+                    }
+                },
+                function (progress) {
+                    const percent = (progress.loaded / progress.total * 100).toFixed(0);
+                    const loadingText = container.parentElement.querySelector('.loading-text');
+                    if (loadingText) {
+                        loadingText.textContent = `加载中... ${percent}%`;
+                    }
+                },
+                function (error) {
+                    console.error('模型加载失败:', error);
+                    const loadingText = container.parentElement.querySelector('.loading-text');
+                    if (loadingText) {
+                        loadingText.textContent = '模型加载失败，请确保glb文件在models目录下';
+                    }
+                }
+            );
+
+            // 动画循环
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // 窗口大小变化
+            window.addEventListener('resize', () => {
+                const newContainer = document.getElementById(canvasId);
+                if (newContainer) {
+                    camera.aspect = newContainer.clientWidth / newContainer.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(newContainer.clientWidth, newContainer.clientHeight);
+                }
+            });
+
+            // 保存配置
+            vrViewers[canvasId] = {
+                scene,
+                camera,
+                renderer,
+                controls,
+                model,
+                canvasId
+            };
+
+            return vrViewers[canvasId];
+        }
+
+        // 暴露给全局的控制函数
+        window.resetCamera = function(canvasId) {
+            const viewer = vrViewers[canvasId];
+            if (viewer) {
+                viewer.camera.position.set(0, 2, 5);
+                viewer.controls.target.set(0, 0, 0);
+                viewer.controls.update();
+            }
+        };
+
+        window.toggleAutoRotate = function(canvasId) {
+            const viewer = vrViewers[canvasId];
+            if (viewer) {
+                viewer.controls.autoRotate = !viewer.controls.autoRotate;
+            }
+        };
+
+        window.toggleWireframe = function(canvasId) {
+            const viewer = vrViewers[canvasId];
+            if (viewer && viewer.model) {
+                viewer.model.traverse((child) => {
+                    if (child.isMesh && child.material) {
+                        if (Array.isArray(child.material)) {
+                            child.material.forEach(mat => {
+                                mat.wireframe = !mat.wireframe;
+                            });
+                        } else {
+                            child.material.wireframe = !child.material.wireframe;
+                        }
+                    }
+                });
+            }
+        };
+
+        // 监听模态框打开事件，自动加载3D模型
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.classList && node.classList.contains('modal')) {
+                        const canvas = node.querySelector('.vr-viewer .canvas-container');
+                        if (canvas) {
+                            const modelPath = canvas.parentElement.dataset.model;
+                            if (modelPath) {
+                                initVRViewer(canvas.id, modelPath);
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
     </script>
 </body>
 </html>
-
-
-
 
 
