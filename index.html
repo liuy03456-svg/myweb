@@ -4634,10 +4634,12 @@
             mutations.forEach((mutation) => {
                 mutation.addedNodes.forEach((node) => {
                     if (node.classList && node.classList.contains('modal')) {
-                        if (canvas) {
-                            const modelPath = canvas.parentElement.dataset.model;
+                        const canvasContainer = node.querySelector('.canvas-container');
+                        if (canvasContainer) {
+                            const vrViewer = canvasContainer.parentElement;
+                            const modelPath = vrViewer.dataset.model;
                             if (modelPath) {
-                                initVRViewer(canvas.id, modelPath);
+                                initVRViewer(canvasContainer.id, modelPath);
                             }
                         }
                     }
@@ -4652,6 +4654,7 @@
     </script>
 </body>
 </html>
+
 
 
 
