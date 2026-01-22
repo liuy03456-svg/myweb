@@ -4512,8 +4512,11 @@
             const loader = new GLTFLoader();
             let model = null;
 
+            // 自动修正路径：如果 HTML 里已经写了 ./models/ 就不加了，否则加上
+            const finalPath = modelPath.includes('/') ? modelPath : `./models/${modelPath}`;
+
             loader.load(
-                `./models/${modelPath}`,
+                finalPath,
                 function (gltf) {
                     model = gltf.scene;
 
@@ -4629,33 +4632,54 @@
             }
         };
 
-        // 监听模态框打开事件，自动加载3D模型
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.classList && node.classList.contains('modal')) {
-                        const canvasContainer = node.querySelector('.canvas-container');
-                        if (canvasContainer) {
-                            const vrViewer = canvasContainer.parentElement;
-                            const modelPath = vrViewer.dataset.model;
-                            if (modelPath) {
-                                initVRViewer(canvasContainer.id, modelPath);
-                            }
-                        }
+        // --- 定义一个通用的打开模态框并加载3D的函数 ---
+        function openAndLoadModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block'; // 显示窗口
+
+                // 查找该模态框里是否有 3D 容器
+                const viewerContainer = modal.querySelector('.vr-viewer');
+                if (viewerContainer) {
+                    const canvasDiv = viewerContainer.querySelector('.canvas-container');
+                    const modelPath = viewerContainer.dataset.model;
+                    
+                    // 只有当 ID 和 模型路径 都存在时才加载
+                    if (canvasDiv && canvasDiv.id && modelPath) {
+                        // 稍微延迟一点点加载，确保窗口已经显示，避免渲染尺寸错误
+                        setTimeout(() => {
+                            initVRViewer(canvasDiv.id, modelPath);
+                        }, 100);
                     }
-                });
-            });
+                }
+            }
+        }
+
+        // --- 修改 1：轮播图点击事件 ---
+        document.querySelector('.banner').addEventListener('click', (e) => {
+            let target = null;
+            if (e.target.classList.contains('banner-img')) {
+                target = e.target.dataset.target;
+            } else if (e.target.closest('.banner-img')) {
+                target = e.target.closest('.banner-img').dataset.target;
+            }
+            
+            if (target) {
+                openAndLoadModal(`${target}-modal`); // 使用新函数
+            }
         });
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
+        // --- 修改 2：产品列表点击事件 ---
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.product-card');
+            if (card) {
+                const product = card.dataset.product;
+                openAndLoadModal(`${product}-modal`); // 使用新函数
+            }
         });
     </script>
 </body>
 </html>
-
-
 
 
 
