@@ -8,8 +8,8 @@
     <script type="importmap">
         {
             "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
             }
         }
     </script>
@@ -950,7 +950,7 @@
                     <p>特点：气势磅礴，寓意吉祥，工艺精湛</p>
                     <p>创作理念：龙凤呈祥，象征吉祥如意、婚姻美满</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth" data-model="songkeng.glb">
+                <div class="vr-viewer modal-fullwidth" data-model="longfeng.glb">
                     <div class="canvas-container" id="vr-canvas-2"></div>
                     <div class="loading-overlay">
                         <div class="loading-spinner"></div>
@@ -978,7 +978,7 @@
                     <p>特点：冰清玉洁，梅花傲骨，适合文人墨客</p>
                     <p>创作理念：寒梅傲雪，象征坚韧不拔的精神品格</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth" data-model="hanmei.glb">
+                <div class="vr-viewer modal-fullwidth" data-model="https://duanyan-1398095163.cos.ap-guangzhou.myqcloud.com/hanmei.glb">
                     <div class="canvas-container" id="vr-canvas-3"></div>
                     <div class="loading-overlay">
                         <div class="loading-spinner"></div>
@@ -3441,7 +3441,7 @@
                     <p><strong>收藏价值：</strong>意境优美，文化内涵丰富，是文人雅士与砚台收藏者的优选。</p>
                 </div>
                 <div class="modal-fullwidth">
-                <div class="vr-viewer modal-fullwidth" data-model="hanmei.glb">
+                <div class="vr-viewer modal-fullwidth" data-model="https://duanyan-1398095163.cos.ap-guangzhou.myqcloud.com/hanmei.glb">
                     <div class="canvas-container" id="vr-canvas-89"></div>
                     <div class="loading-overlay">
                         <div class="loading-spinner"></div>
@@ -4436,6 +4436,9 @@
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+        // 创建加载管理器
+        const loadingManager = new THREE.LoadingManager();
+
         // 存储所有3D场景的配置
         const vrViewers = {};
         let currentModalViewer = null;
@@ -4509,11 +4512,21 @@
             controls.autoRotateSpeed = 2;
 
             // 加载模型
-            const loader = new GLTFLoader();
+            const loader = new GLTFLoader(loadingManager);
             let model = null;
 
-            // 自动修正路径：如果 HTML 里已经写了 ./models/ 就不加了，否则加上
-            const finalPath = modelPath.includes('/') ? modelPath : `./models/${modelPath}`;
+            // 自动修正路径：支持本地路径和外部 URL
+            let finalPath;
+            if (modelPath.startsWith('http://') || modelPath.startsWith('https://')) {
+                // 外部 URL（如 COS、CDN）
+                finalPath = modelPath;
+            } else if (modelPath.includes('/') && !modelPath.startsWith('./')) {
+                // 相对路径
+                finalPath = modelPath;
+            } else {
+                // 本地 models 目录
+                finalPath = `./models/${modelPath}`;
+            }
 
             loader.load(
                 finalPath,
@@ -4680,7 +4693,6 @@
     </script>
 </body>
 </html>
-
 
 
 
