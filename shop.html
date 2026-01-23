@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>网上商城 - 端砚文创与定制</title>
-    <!-- Three.js 库 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+            }
+        }
+    </script>
     <style>
         /* 全局样式重置 */
         * {
@@ -1159,7 +1164,7 @@
         ↑
     </button>
 
-    <script>
+    <script type="module">
         // 端砚产品数据库（与dingzhi.html同步）
         const products = [
             { id: 'wenfang-sibao', name: '文房四宝套砚', desc: '精选老坑石料，传统工艺雕刻，文房收藏佳品', image: './造型意境类/文房四宝套砚.PNG', stone: '老坑' },
@@ -1214,10 +1219,14 @@
             { id: 'hongloumeng', name: '红楼梦砚', desc: '宋坑石料，金陵十二钗图案，红楼一梦', image: './造型意境类/红楼梦砚.jpg', stone: '宋坑' }
         ];
 
-        // 3D场景相关变量
-        let scene3D, camera3D, renderer3D, model3D, controls3D, animationId3D;
-        let isAutoRotate3D = false;
+        // 导入Three.js模块
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // 3D场景配置
         const modelUrl3D = 'https://duanyan-1398095163.cos.ap-guangzhou.myqcloud.com/huguangshanse.glb';
+        let viewer3D = null;
 
         // 生成推荐方案功能
         function generateRecommendations() {
@@ -1384,28 +1393,305 @@
 
         // ==================== 3D模型展示功能 ====================
 
+        // 初始化3D查看器（参考index.html的实现）
+        function init3DScene() {
+            const container = document.getElementById('canvasContainer3D');
+            if (!container) return;
+
+            // 清理旧的场景
+            if (viewer3D) {
+                if (viewer3D.renderer) {
+                    viewer3D.renderer.dispose();
+                }
+                if (viewer3D.animationId) {
+                    cancelAnimationFrame(viewer3D.animationId);
+                }
+            }
+
+            // 获取容器尺寸，如果为0则设置默认值
+            let width = container.clientWidth || container.offsetWidth;
+            let height = container.clientHeight || container.offsetHeight;
+
+            if (width === 0 || height === 0) {
+                console.warn('容器尺寸为0，使用默认尺寸');
+                width = 688;
+                height = 387;
+                container.style.width = width + 'px';
+                container.style.height = height + 'px';
+            }
+
+            console.log('初始化3D场景:', { width, height });
+
+            // 创建场景
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x808080);
+
+            // 创建相机
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(0, 2, 5);
+
+            // 创建渲染器
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.shadowMap.enabled = true;
+
+            // 清除旧的canvas并添加新的
+            const oldCanvas = container.querySelector('canvas');
+            if (oldCanvas) {
+                oldCanvas.remove();
+            }
+            container.appendChild(renderer.domElement);
+
+            // 添加环境光
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+            scene.add(ambientLight);
+
+            // 添加主光源
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            mainLight.position.set(5, 10, 5);
+            mainLight.castShadow = true;
+            scene.add(mainLight);
+
+            // 添加补光
+            const fillLight = new THREE.DirectionalLight(0x8b5a2b, 0.4);
+            fillLight.position.set(-5, 5, -5);
+            scene.add(fillLight);
+
+            // 添加地面
+            const groundGeometry = new THREE.CircleGeometry(3, 64);
+            const groundMaterial = new THREE.MeshStandardMaterial({
+                color: 0x1a1a1a,
+                roughness: 0.8,
+                metalness: 0.2
+            });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = -Math.PI / 2;
+            ground.position.y = -0.01;
+            ground.receiveShadow = true;
+            scene.add(ground);
+
+            // 添加控制器
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 2;
+            controls.maxDistance = 10;
+            controls.maxPolarAngle = Math.PI / 2;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 2;
+
+            // 加载模型
+            const loader = new GLTFLoader();
+            let model = null;
+
+            loader.load(
+                modelUrl3D,
+                function(gltf) {
+                    console.log('3D模型加载成功');
+                    model = gltf.scene;
+
+                    // 调整模型大小和位置
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+
+                    // 居中模型
+                    model.position.sub(center);
+                    model.position.y = size.y / 2;
+
+                    // 缩放模型
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 2 / maxDim;
+                    model.scale.setScalar(scale);
+
+                    // 启用阴影
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+
+                            // 如果材质为空，添加默认材质
+                            if (!child.material || (Array.isArray(child.material) && child.material.length === 0)) {
+                                child.material = new THREE.MeshStandardMaterial({
+                                    color: 0x888888,
+                                    roughness: 0.7,
+                                    metalness: 0.3
+                                });
+                            }
+
+                            // 确保材质可以双面渲染
+                            if (child.material) {
+                                child.material.side = THREE.DoubleSide;
+                            }
+                        }
+                    });
+
+                    scene.add(model);
+
+                    // 隐藏加载提示
+                    const loadingOverlay = container.querySelector('.model-loading');
+                    if (loadingOverlay) {
+                        loadingOverlay.style.display = 'none';
+                    }
+
+                    // 强制渲染一帧
+                    renderer.render(scene, camera);
+                },
+                function(progress) {
+                    const percent = Math.round((progress.loaded / progress.total) * 100);
+                    console.log(`加载进度: ${percent}%`);
+                    const loadingText = document.getElementById('loadingText');
+                    if (loadingText) {
+                        loadingText.textContent = `正在按照您的要求制作端砚... ${percent}%`;
+                    }
+                },
+                function(error) {
+                    console.error('模型加载失败:', error);
+                    const loadingText = document.getElementById('loadingText');
+                    if (loadingText) {
+                        loadingText.textContent = '模型加载失败，请刷新页面重试';
+                        loadingText.style.color = '#e74c3c';
+                    }
+                }
+            );
+
+            // 动画循环
+            function animate() {
+                const animationId = requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+
+                // 保存animationId以便清理
+                if (viewer3D) {
+                    viewer3D.animationId = animationId;
+                }
+            }
+            animate();
+
+            // 窗口大小变化
+            window.addEventListener('resize', () => {
+                const newContainer = document.getElementById('canvasContainer3D');
+                if (newContainer && camera && renderer) {
+                    camera.aspect = newContainer.clientWidth / newContainer.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(newContainer.clientWidth, newContainer.clientHeight);
+                }
+            });
+
+            // 保存配置
+            viewer3D = {
+                scene,
+                camera,
+                renderer,
+                controls,
+                model
+            };
+        }
+
         // 打开3D展示模态框
         function openModal3D() {
             const modal = document.getElementById('modal3D');
             modal.classList.add('active');
-            init3DScene();
+
+            // 延迟初始化，确保DOM已渲染
+            setTimeout(() => {
+                let attempts = 0;
+                const maxAttempts = 10;
+
+                function tryInit() {
+                    attempts++;
+                    const container = document.getElementById('canvasContainer3D');
+                    const height = container ? (container.clientHeight || container.offsetHeight) : 0;
+                    const width = container ? (container.clientWidth || container.offsetWidth) : 0;
+
+                    console.log(`尝试初始化3D场景 (#${attempts}):`, { width, height });
+
+                    if (height > 0 && width > 0) {
+                        setTimeout(() => {
+                            init3DScene();
+                        }, 50);
+                    } else if (attempts < maxAttempts) {
+                        requestAnimationFrame(tryInit);
+                    } else {
+                        console.warn('容器尺寸检测超时，强制初始化3D场景');
+                        init3DScene();
+                    }
+                }
+
+                tryInit();
+            }, 100);
         }
 
         // 关闭3D展示模态框
         function closeModal3D() {
             const modal = document.getElementById('modal3D');
             modal.classList.remove('active');
-            if (animationId3D) {
-                cancelAnimationFrame(animationId3D);
-            }
-            if (renderer3D) {
-                renderer3D.dispose();
+
+            // 清理资源
+            if (viewer3D) {
+                if (viewer3D.animationId) {
+                    cancelAnimationFrame(viewer3D.animationId);
+                }
+                if (viewer3D.renderer) {
+                    viewer3D.renderer.dispose();
+                }
+                viewer3D = null;
             }
         }
 
-        // 初始化3D场景
-        function init3DScene() {
-            const container = document.getElementById('canvasContainer3D');
+        // 控制函数
+        window.resetCamera3D = function() {
+            if (viewer3D && viewer3D.camera && viewer3D.controls) {
+                viewer3D.camera.position.set(0, 2, 5);
+                viewer3D.controls.target.set(0, 0, 0);
+                viewer3D.controls.update();
+            }
+        };
+
+        window.toggleAutoRotate3D = function() {
+            if (viewer3D && viewer3D.controls) {
+                viewer3D.controls.autoRotate = !viewer3D.controls.autoRotate;
+            }
+        };
+
+        window.zoomIn3D = function() {
+            if (viewer3D && viewer3D.camera && viewer3D.controls) {
+                const direction = new THREE.Vector3();
+                viewer3D.camera.getWorldDirection(direction);
+                viewer3D.camera.position.add(direction.multiplyScalar(-0.5));
+                viewer3D.controls.update();
+            }
+        };
+
+        window.zoomOut3D = function() {
+            if (viewer3D && viewer3D.camera && viewer3D.controls) {
+                const direction = new THREE.Vector3();
+                viewer3D.camera.getWorldDirection(direction);
+                viewer3D.camera.position.add(direction.multiplyScalar(0.5));
+                viewer3D.controls.update();
+            }
+        };
+
+        // 更新控制按钮事件
+        document.querySelectorAll('.control-btn').forEach(btn => {
+            btn.onclick = null; // 清除旧的事件
+        });
+
+        document.querySelector('.control-btn[onclick="resetCamera()"]').onclick = resetCamera3D;
+        document.querySelector('.control-btn[onclick="toggleAutoRotate()"]').onclick = toggleAutoRotate3D;
+        document.querySelector('.control-btn[onclick="zoomIn()"]').onclick = zoomIn3D;
+        document.querySelector('.control-btn[onclick="zoomOut()"]').onclick = zoomOut3D;
+
+        // 将函数暴露到全局，以便HTML中的onclick可以调用
+        window.resetCamera = resetCamera3D;
+        window.toggleAutoRotate = toggleAutoRotate3D;
+        window.zoomIn = zoomIn3D;
+        window.zoomOut = zoomOut3D;
+        window.openModal3D = openModal3D;
+        window.closeModal3D = closeModal3D;
+
 
             // 清理旧的场景
             if (renderer3D) {
@@ -1522,78 +1808,6 @@
                     loadingText.style.color = '#e74c3c';
                 }
             );
-        }
-
-        // 3D动画循环
-        function animate3D() {
-            animationId3D = requestAnimationFrame(animate3D);
-
-            if (controls3D) {
-                controls3D.update();
-            }
-
-            if (isAutoRotate3D && model3D) {
-                model3D.rotation.y += 0.005;
-            }
-
-            if (renderer3D && scene3D && camera3D) {
-                renderer3D.render(scene3D, camera3D);
-            }
-        }
-
-        // 窗口大小变化处理
-        function onWindowResize3D() {
-            const container = document.getElementById('canvasContainer3D');
-            if (!container || !camera3D || !renderer3D) return;
-
-            camera3D.aspect = container.clientWidth / container.clientHeight;
-            camera3D.updateProjectionMatrix();
-            renderer3D.setSize(container.clientWidth, container.clientHeight);
-        }
-
-        // 重置相机视角
-        function resetCamera() {
-            if (!model3D || !camera3D) return;
-
-            const box = new THREE.Box3().setFromObject(model3D);
-            const size = box.getSize(new THREE.Vector3());
-            const maxDim = Math.max(size.x, size.y, size.z);
-
-            camera3D.position.set(0, maxDim * 0.5, maxDim * 1.5);
-            camera3D.lookAt(0, 0, 0);
-
-            if (controls3D) {
-                controls3D.target.set(0, 0, 0);
-                controls3D.update();
-            }
-        }
-
-        // 切换自动旋转
-        function toggleAutoRotate() {
-            isAutoRotate3D = !isAutoRotate3D;
-            if (controls3D) {
-                controls3D.autoRotate = isAutoRotate3D;
-            }
-        }
-
-        // 放大
-        function zoomIn() {
-            if (camera3D && controls3D) {
-                const direction = new THREE.Vector3();
-                camera3D.getWorldDirection(direction);
-                camera3D.position.add(direction.multiplyScalar(-0.5));
-                controls3D.update();
-            }
-        }
-
-        // 缩小
-        function zoomOut() {
-            if (camera3D && controls3D) {
-                const direction = new THREE.Vector3();
-                camera3D.getWorldDirection(direction);
-                camera3D.position.add(direction.multiplyScalar(0.5));
-                controls3D.update();
-            }
         }
     </script>
 </body>
