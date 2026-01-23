@@ -512,8 +512,12 @@
             margin: 1rem 0;
         }
 
+        .canvas-container {
             width: 100%;
             height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .vr-viewer .loading-overlay {
@@ -4452,6 +4456,21 @@
             const container = document.getElementById(canvasId);
             if (!container) return null;
 
+            // 获取容器尺寸，如果为0则设置默认值
+            let width = container.clientWidth || container.offsetWidth;
+            let height = container.clientHeight || container.offsetHeight;
+            
+            // 如果尺寸无效，使用默认值或从父容器推断
+            if (width === 0 || height === 0) {
+                console.warn(`容器 ${canvasId} 尺寸为 0，使用默认尺寸`);
+                width = 688; // 使用日志中观察到的宽度
+                height = 387; // 16:9 比例
+                container.style.width = width + 'px';
+                container.style.height = height + 'px';
+            }
+            
+            console.log(`初始化3D场景 ${canvasId}:`, { width, height });
+
             // 创建场景
             const scene = new THREE.Scene();
             scene.background = new THREE.Color(0x808080); // 改为中灰色，更容易看到黑色模型
@@ -4459,7 +4478,7 @@
             // 创建相机
             const camera = new THREE.PerspectiveCamera(
                 45,
-                container.clientWidth / container.clientHeight,
+                width / height,
                 0.1,
                 1000
             );
@@ -4467,7 +4486,7 @@
 
             // 创建渲染器
             const renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setSize(width, height);
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.outputColorSpace = THREE.SRGBColorSpace;
             renderer.shadowMap.enabled = true;
@@ -4706,10 +4725,35 @@
                     
                     // 只有当 ID 和 模型路径 都存在时才加载
                     if (canvasDiv && canvasDiv.id && modelPath) {
-                        // 稍微延迟一点点加载，确保窗口已经显示，避免渲染尺寸错误
-                        setTimeout(() => {
-                            initVRViewer(canvasDiv.id, modelPath);
-                        }, 100);
+                        // 使用 requestAnimationFrame 确保DOM渲染完成后再初始化
+                        let attempts = 0;
+                        const maxAttempts = 10;
+                        
+                        function tryInit() {
+                            attempts++;
+                            // 检查容器高度是否有效
+                            const height = canvasDiv.clientHeight || canvasDiv.offsetHeight;
+                            const width = canvasDiv.clientWidth || canvasDiv.offsetWidth;
+                            
+                            console.log(`尝试初始化3D场景 (#${attempts}):`, { width, height });
+                            
+                            if (height > 0 && width > 0) {
+                                // 容器尺寸有效，开始初始化
+                                setTimeout(() => {
+                                    initVRViewer(canvasDiv.id, modelPath);
+                                }, 50);
+                            } else if (attempts < maxAttempts) {
+                                // 容器尺寸无效，继续等待
+                                requestAnimationFrame(tryInit);
+                            } else {
+                                // 超过最大尝试次数，强制初始化
+                                console.warn('容器尺寸检测超时，强制初始化3D场景');
+                                initVRViewer(canvasDiv.id, modelPath);
+                            }
+                        }
+                        
+                        // 开始尝试
+                        requestAnimationFrame(tryInit);
                     }
                 }
             }
@@ -4740,5 +4784,20 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
