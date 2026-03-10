@@ -1,7 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-        <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7L7ENCVZV"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -9,6 +10,7 @@
   gtag('js', new Date());
 
   gtag('config', 'G-Q7L7ENCVZV');
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>端砚 - 中国四大名砚之首</title>
@@ -16,8 +18,8 @@
     <script type="importmap">
         {
             "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
             }
         }
     </script>
@@ -520,8 +522,12 @@
             margin: 1rem 0;
         }
 
+        .canvas-container {
             width: 100%;
             height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .vr-viewer .loading-overlay {
@@ -650,14 +656,14 @@
     <!-- 导航栏 -->
     <header>
         <div class="nav-container">
-            <div class="logo">砚韵智脉——非遗文化数字传承平台</div>
+            <div class="logo">砚韵智脉</div>
             <ul class="nav-links">
                 <li><a href="#home">首页</a></li>
                 <li><a href="#intro">端砚介绍</a></li>
                 <li><a href="#products">精品展示</a></li>
                 <li><a href="#masters">端砚大师</a></li>
-                <li><a href="assets/shop.html" target="_blank">网上商城</a></li>
-                <li><a href="assets/museum.html" target="_blank">云游博物馆</a></li>
+                <li><a href="shop.html" target="_blank">网上商城</a></li>
+                <li><a href="museum.html" target="_blank">云游博物馆</a></li>
                 <li id="loginLink"><a href="denglu.html">登录</a></li>
                 <li id="userInfo" style="display: none; color: #fff; font-size: 1.1rem;">
                     欢迎，<span id="username"></span>
@@ -675,27 +681,27 @@
     <!-- 轮播图区域 -->
     <div class="banner" id="home">
         <div class="banner-img active" data-target="laokeng">
-            <img src="./坑口类/老坑.png" alt="老坑端砚" style="width:100%;height:100%;object-fit:cover;">
+            <img src="./坑口类/1.png" alt="老坑端砚" style="width:100%;height:100%;object-fit:cover;">
             <div class="banner-caption">老坑 - 端砚之首，石质温润如玉</div>
         </div>
         <div class="banner-img" data-target="mazikeng">
-            <img src="./坑口类/麻子坑.jpg" alt="麻子坑端砚" style="width:100%;height:100%;object-fit:cover;">
+            <img src="./坑口类/麻子坑.png" alt="麻子坑端砚" style="width:100%;height:100%;object-fit:cover;">
             <div class="banner-caption">麻子坑 - 石质坚实，纹理丰富</div>
         </div>
         <div class="banner-img" data-target="kengzai">
             <img src="./坑口类/坑仔.png" alt="坑仔岩端砚" style="width:100%;height:100%;object-fit:cover;">
             <div class="banner-caption">坑仔岩 - 石眼圆正，高洁细腻</div>
         </div>
-        <div class="banner-img" data-target="songhua">
-            <img src="./坑口类/宋坑.jpg" alt="宋坑端砚" style="width:100%;height:100%;object-fit:cover;">
+        <div class="banner-img" data-target="songkeng">
+            <img src="./坑口类/3.jpg" alt="宋坑端砚" style="width:100%;height:100%;object-fit:cover;">
             <div class="banner-caption">宋坑 - 石色紫红，发墨如油</div>
         </div>
         <div class="banner-img" data-target="feicui">
-            <img src="./特殊类/翡翠.jpg" alt="翡翠端砚" style="width:100%;height:100%;object-fit:cover;">
+            <img src="./坑口类/5.png" alt="翡翠端砚" style="width:100%;height:100%;object-fit:cover;">
             <div class="banner-caption">翡翠端砚 - 色泽翠绿，质地细腻</div>
         </div>
         <div class="banner-img" data-target="hongshi">
-            <img src="./特殊类/红石.jpg" alt="红石端砚" style="width:100%;height:100%;object-fit:cover;">
+            <img src="./坑口类/4.png" alt="红石端砚" style="width:100%;height:100%;object-fit:cover;">
             <div class="banner-caption">红石端砚 - 色泽红润，古朴典雅</div>
         </div>
         <button class="banner-btn prev-btn">&lt;</button>
@@ -714,13 +720,17 @@
     <section class="intro" id="intro">
         <h2 class="section-title">端砚简介</h2>
         <div class="intro-content">
-            <img src="./坑口类/老坑2.png" alt="端砚细节图" class="intro-img">
+            <img src="./坑口类/老坑2.jpg" alt="端砚细节图" class="intro-img">
             <div class="intro-text">
-                <p>端砚，广东省肇庆市特产，中国国家地理标志产品，与甘肃洮砚、安徽歙砚、山西澄泥砚并称为中国四大名砚，且位列之首。</p>
+                <p>端砚：紫云凝韵，千年文脉的石上载体。</p>
                 <br>
-                <p>端砚始于唐、盛于宋，距今已有一千三百多年历史。其石质坚实、润滑、细腻、娇嫩，研墨不滞，发墨快，研出之墨汁细滑，书写流畅不损毫，字迹颜色经久不变，素有“群砚之首”“天下第一砚”的美誉。</p>
+                <p>端砚，广东省肇庆市（古称端州）独有瑰宝，中国国家地理标志产品，与甘肃洮砚、安徽歙砚、山西澄泥砚并尊“中国四大名砚”，且以“群砚之首”“天下第一砚”的至高美誉，跨越千年稳居文房珍品之巅。其得名于肇庆东郊西江羚羊峡南麓斧柯山端溪水畔的珍稀砚石，产区独特的地质条件，经亿万年绢云母泥质板岩自然淬炼，成就了无可复制的绝世品质。</p>
                 <br>
-                <p>端砚的制作过程十分复杂，从采石到成砚，要经过选料、维料、制璞、雕刻、打磨、配盒等数十道工序，每一步都凝聚着工匠的心血与智慧。</p>
+                <p>端砚历史可追溯至唐武德年间，距今已逾一千三百年。唐代李贺“端州石工巧如神，踏天磨刀割紫云”的诗句，生动勾勒出采石制砚的奇景，《国史补》中“端州紫石砚，天下无贵贱通用之”的记载，印证了其当时的风靡盛况。宋代为端砚发展巅峰，成为帝王贡品与文人挚爱，苏轼、米芾等文人纷纷为其著书立说，米芾盛赞其“发墨不乏，呵气即泽”。元明清三代工艺持续精进，明代形成“规矩方直”风格，清代集多种雕刻技法于一体，“千金猴王砚”等成为传世瑰宝。2006年端砚制作技艺入选国家级非物质文化遗产，2004年肇庆获评“中国砚都”，让这一古老工艺在当代焕发新生。
+
+端砚的核心魅力源于天生丽质的石质与自然奇珍的石品。斧柯山砚石经西江泉水浸润，质地坚实温润、细腻娇嫩，触感如婴孩肌肤，兼具“体重而轻，质刚而柔”的特性。实用性能堪称极致：研墨不滞、发墨如油，墨汁细滑醇厚，书写不损毫锋，字迹历久弥新，更有“贮水不耗”“呵气可研”的传奇特质。石品花纹更是天工造物，鱼脑冻洁白温润、蕉叶白娇嫩欲滴、青花星点沉浮、天青澄澈如洗，石眼灵动有神，尤以翠绿晕重的活眼最为珍贵，每方砚石的花纹皆独一无二。
+
+一块端砚的诞生，是匠人精神与自然灵性的交融。从采石到成砚，需历经采石、选料、维料、制璞、雕刻、打磨等数十道工序。采石曾极为艰险，匠人攀崖凿石；选料考验慧眼，去粗取精；雕刻则“因石造型，因材施艺”，融合多种技法，将题材与石形石纹巧妙结合。千百年来，端砚早已超越文房用具，成为承载中华文脉的文化符号，既是帝王将相的御用珍品、文人墨客的精神寄托，更是中华文明绵延不绝的鲜活见证，值得永久珍视与传承。</p>
             </div>
         </div>
     </section>
@@ -748,9 +758,9 @@
         <h2 class="section-title">端砚大师</h2>
         <div class="master-grid">
             <div class="master-card" data-master="li">
-                <img src="images/master1.jpg" alt="李文田大师" class="master-img">
+                <img src="大师/程良.jpg" alt="程大师" class="master-img">
                 <div class="master-info">
-                    <h3 class="master-name">李文田</h3>
+                    <h3 class="master-name">程振良</h3>
                     <p class="master-title">国家级非遗传承人</p>
                     <p class="master-bio">从事端砚雕刻40余年，擅长传统题材创作，作品多次获国家级奖项</p>
                 </div>
@@ -764,9 +774,9 @@
                 </div>
             </div>
             <div class="master-card" data-master="zhang">
-                <img src="images/master3.jpg" alt="张三峰大师" class="master-img">
+                <img src="./大师/梁建权.jpg" alt="梁建权大师" class="master-img">
                 <div class="master-info">
-                    <h3 class="master-name">张三峰</h3>
+                    <h3 class="master-name">梁建权</h3>
                     <p class="master-title">端砚雕刻艺术大师</p>
                     <p class="master-bio">专注于山水题材雕刻，作品意境深远，被多家博物馆收藏</p>
                 </div>
@@ -791,19 +801,19 @@
     <div class="floating-sidebar">
         <div class="sidebar-main">📌</div>
         <div class="sidebar-menu">
-            <a href="assets/community.html" class="sidebar-item">
+            <a href="community.html" class="sidebar-item">
                 <div class="sidebar-item-icon">💬</div>
                 <span class="sidebar-item-text">用户社群</span>
             </a>
-            <a href="assets/contact.html" class="sidebar-item">
+            <a href="contact.html" class="sidebar-item">
                 <div class="sidebar-item-icon">📞</div>
                 <span class="sidebar-item-text">联系我们</span>
             </a>
-            <a href="assets/service.html" class="sidebar-item">
+            <a href="service.html" class="sidebar-item">
                 <div class="sidebar-item-icon">💁</div>
                 <span class="sidebar-item-text">在线客服</span>
             </a>
-            <a href="assets/museum.html" class="sidebar-item">
+            <a href="museum.html" class="sidebar-item">
                 <div class="sidebar-item-icon">🏛️</div>
                 <span class="sidebar-item-text">云游端砚博物馆</span>
             </a>
@@ -818,15 +828,15 @@
     <div id="li-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2 class="modal-title">李文田 - 国家级非遗传承人</h2>
+            <h2 class="modal-title">程振良 - 国家级非遗传承人</h2>
             <div class="modal-body">
-                <img src="images/master1.jpg" alt="李文田大师" class="modal-img">
+                <img src="大师/程良.jpg" alt="程良砚大师" class="modal-img">
                 <div class="modal-text">
-                    <p><strong>大师简介：</strong>李文田,1958年生于端砚之乡肇庆,从事端砚雕刻40余年,是端砚制作技艺国家级非物质文化遗产代表性传承人。</p>
-                    <p><strong>艺术风格：</strong>擅长传统题材创作,特别是山水、花鸟、人物等传统图案。作品线条流畅,刀法细腻,既保持了端砚的传统韵味,又融入了个人独特的艺术理解。</p>
-                    <p><strong>代表作品：</strong>《山水意境砚》《寒梅傲雪砚》《文房四宝套砚》等多次获国家级奖项,多件作品被国家级博物馆收藏。</p>
-                    <p><strong>荣誉成就：</strong>2008年获"中国工艺美术大师"称号,2010年获"国家级非物质文化遗产传承人"称号,2015年获"广东省文化名人"称号。</p>
-                    <p><strong>艺术理念：</strong>坚持"以石为本,因材施艺"的创作理念,每一块砚台都力求展现端石的自然之美与人文内涵。</p>
+                    <p><strong>大师简介：</strong>程振良,1972年生于肇庆端砚世家，程氏第十四代制砚传人。13岁随父祖学砚，师承国家级非遗传承人程文，后进修于清华高级艺术研修班、毕业于长江大学艺术设计专业。</p>
+                    <p><strong>艺术风格：</strong>以传统技艺为根基，坚持“因材施艺”，融入新风格与题材，在保留传统韵味的同时兼具当代审美。</p>
+                    <p><strong>代表作品：</strong>《圆之梦·水之韵》《浴鹅砚》《粤博藏珍石渠砚》被广东省博物馆收藏；《一鹭朝阳》《天然兰亭砚》被肇庆博物馆收藏。</p>
+                    <p><strong>荣誉成就：</strong>获中国制砚艺术大师、“大国工匠”等称号，享受国务院特殊津贴；任中国文房四宝协会副会长等职；培养50余名技术骨干，作品获70余项专业奖项。</p>
+                    <p><strong>艺术理念：</strong>秉持“传承不守旧，创新不忘本”，既守护端砚非遗技艺，又推动其与当代文化融合，并通过“程良砚行”传播端砚文化。</p>
                 </div>
                 <div class="modal-fullwidth">
                     <h3 style="color: #8b5a2b; margin-top: 1.5rem; margin-bottom: 1rem;">大师作品展示</h3>
@@ -855,11 +865,11 @@
     <div id="zhang-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2 class="modal-title">张三峰 - 端砚雕刻艺术大师</h2>
+            <h2 class="modal-title">梁建权 - 端砚雕刻艺术大师</h2>
             <div class="modal-body">
-                <img src="images/master3.jpg" alt="张三峰大师" class="modal-img">
+                <img src="./大师/梁建权.jpg" alt="梁建权大师" class="modal-img">
                 <div class="modal-text">
-                    <p><strong>大师简介：</strong>张三峰,1970年生于肇庆,师从李文田大师学习端砚雕刻,是李文田的得意门生。从事端砚创作30余年。</p>
+                    <p><strong>大师简介：</strong>梁建权,1970年生于肇庆。从事端砚创作30余年。</p>
                     <p><strong>艺术风格：</strong>专注于山水题材雕刻,擅长运用端砚的天然纹理与石品,营造出"砚中有画,画中有诗"的深远意境。作品既有北方的雄浑大气,又有南方的秀丽婉约。</p>
                     <p><strong>代表作品：</strong>《泰山日出砚》《黄河砚》《长江三峡砚》《华山险峻砚》等,多件作品被国内外知名美术馆收藏。</p>
                     <p><strong>荣誉成就：</strong>2015年获"端砚雕刻艺术大师"称号,2017年获"广东省工艺美术大师"称号,2020年获"中国文房四宝艺术大师"称号。</p>
@@ -890,7 +900,7 @@
             <span class="close-modal">&times;</span>
             <h2 class="modal-title">文房四宝套砚</h2>
             <div class="modal-body">
-                <img src="./造型意境类/文房四宝套砚.png" alt="文房四宝套砚" class="modal-img">
+                <img src="./image/文房四宝套砚.png" alt="文房四宝套砚" class="modal-img">
                 <div class="modal-text">
                     <p>材质：老坑端石</p>
                     <p>尺寸：20×15×3cm</p>
@@ -918,7 +928,7 @@
             <span class="close-modal">&times;</span>
             <h2 class="modal-title">山水意境砚</h2>
             <div class="modal-body">
-                <img src="./造型意境类/山水意境砚.png" alt="山水意境砚" class="modal-img">
+                <img src="./坑口类/山水意境砚.jpg" alt="山水意境砚" class="modal-img">
                 <div class="modal-text">
                     <p>材质：麻子坑端石</p>
                     <p>尺寸：18×12×2.5cm</p>
@@ -982,7 +992,7 @@
                     <p>特点：冰清玉洁，梅花傲骨，适合文人墨客</p>
                     <p>创作理念：寒梅傲雪，象征坚韧不拔的精神品格</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth" data-model="hanmei.glb">
+                <div class="vr-viewer modal-fullwidth" data-model="https://duanyan-1398095163.cos.ap-guangzhou.myqcloud.com/hanmei.glb">
                     <div class="canvas-container" id="vr-canvas-3"></div>
                     <div class="loading-overlay">
                         <div class="loading-spinner"></div>
@@ -1030,7 +1040,7 @@
             <span class="close-modal">&times;</span>
             <h2 class="modal-title">竹菊双清砚</h2>
             <div class="modal-body">
-                <img src="./造型意境类/竹菊双清砚.jpg" alt="竹菊双清砚" class="modal-img">
+                <img src="./坑口类/竹菊双清砚.jpg" alt="竹菊双清砚" class="modal-img">
                 <div class="modal-text">
                     <p>材质：坑仔岩端石</p>
                     <p>尺寸：20×15×3.2cm</p>
@@ -1822,9 +1832,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -1880,9 +1890,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -1938,9 +1948,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -1996,9 +2006,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2054,9 +2064,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2112,9 +2122,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2170,9 +2180,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2228,9 +2238,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2286,9 +2296,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2344,9 +2354,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2358,7 +2368,7 @@
             <span class="close-modal">&times;</span>
             <h2 class="modal-title">老坑端砚石</h2>
             <div class="modal-body">
-                <img src="./坑口类/老坑.png" alt="老坑端砚石" class="modal-img">
+                <img src="./坑口类/1.png" alt="老坑端砚石" class="modal-img">
                 <div class="modal-text">
                     <p><strong>产地：</strong>肇庆市羚羊峡南岸斧柯山端溪水东侧</p>
                     <p><strong>石质特点：</strong>老坑砚石质地温润、细腻、致密、坚实，色泽青紫带蓝。</p>
@@ -2403,9 +2413,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2416,7 +2426,7 @@
             <span class="close-modal">&times;</span>
             <h2 class="modal-title">麻子坑端砚石</h2>
             <div class="modal-body">
-                <img src="./坑口类/麻子坑.JPG" alt="麻子坑端砚石" class="modal-img">
+                <img src="./坑口类/麻子坑.png" alt="麻子坑端砚石" class="modal-img">
                 <div class="modal-text">
                     <p><strong>产地：</strong>肇庆市斧柯山羚羊峡东南侧，与老坑、坑仔坑鼎足而立</p>
                     <p><strong>石质特点：</strong>质地细腻温润，坚实致密，色泽青紫或青灰色，石质洁净。</p>
@@ -2445,7 +2455,7 @@
             <span class="close-modal">&times;</span>
             <h2 class="modal-title">宋坑端砚石</h2>
             <div class="modal-body">
-                <img src="./坑口类/宋坑.JPG" alt="宋坑端砚石" class="modal-img">
+                <img src="./坑口类/3.jpg" alt="宋坑端砚石" class="modal-img">
                 <div class="modal-text">
                     <p><strong>产地：</strong>肇庆市鼎湖区沙浦镇苏坑村一带，因宋代大规模开采得名</p>
                     <p><strong>石质特点：</strong>质地坚实致密，略显粗糙，色泽以猪肝色、紫赤色为主，部分带浅青。</p>
@@ -2453,7 +2463,7 @@
                     <p><strong>价值：</strong>储量丰富，开采历史悠久，价格亲民，是端砚中最具性价比的实用品类。</p>
                     <p><strong>特点：</strong>发墨快，墨汁浓稠，适合初学者与日常书写，耐磨耐用，性价比极高。</p>
                 </div>
-                <div class="vr-viewer modal-fullwidth" data-model="songkeng.glb">
+                <div class="vr-viewer modal-fullwidth" data-model="https://duanyan-1398095163.cos.ap-guangzhou.myqcloud.com/songkeng.glb">
                     <div class="canvas-container" id="vr-canvas-54"></div>
                     <div class="loading-overlay">
                         <div class="loading-spinner"></div>
@@ -2461,9 +2471,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2492,9 +2502,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-71')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-71')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-71')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-55')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-55')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-55')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2505,7 +2515,7 @@
             <span class="close-modal">&times;</span>
             <h2 class="modal-title">红石端砚石</h2>
             <div class="modal-body">
-                <img src="./特殊类/红石.jpg" alt="红石端砚石" class="modal-img">
+                <img src="./坑口类/4.png" alt="红石端砚石" class="modal-img">
                 <div class="modal-text">
                     <p><strong>产地：</strong>肇庆市端州区黄岗镇一带，是端砚的小众品类</p>
                     <p><strong>石质特点：</strong>质地坚实厚重，色泽呈朱红色或暗红色，石质略粗但密度高，手感沉稳。</p>
@@ -2521,9 +2531,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2581,9 +2591,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2637,9 +2647,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2693,9 +2703,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2749,9 +2759,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2805,9 +2815,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2863,9 +2873,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2919,9 +2929,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -2975,9 +2985,9 @@
                     </div>
                 </div>
                 <div class="vr-controls modal-fullwidth">
-                    <button class="vr-btn" onclick="resetCamera('vr-canvas-70')">重置视角</button>
-                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-70')">自动旋转</button>
-                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-70')">线框模式</button>
+                    <button class="vr-btn" onclick="resetCamera('vr-canvas-54')">重置视角</button>
+                    <button class="vr-btn" onclick="toggleAutoRotate('vr-canvas-54')">自动旋转</button>
+                    <button class="vr-btn secondary" onclick="toggleWireframe('vr-canvas-54')">线框模式</button>
                 </div>
                 </div>
             </div>
@@ -3445,7 +3455,7 @@
                     <p><strong>收藏价值：</strong>意境优美，文化内涵丰富，是文人雅士与砚台收藏者的优选。</p>
                 </div>
                 <div class="modal-fullwidth">
-                <div class="vr-viewer modal-fullwidth" data-model="hanmei.glb">
+                <div class="vr-viewer modal-fullwidth" data-model="https://duanyan-1398095163.cos.ap-guangzhou.myqcloud.com/hanmei.glb">
                     <div class="canvas-container" id="vr-canvas-89"></div>
                     <div class="loading-overlay">
                         <div class="loading-spinner"></div>
@@ -3494,7 +3504,7 @@
             <span class="close-modal">&times;</span>
             <h2 class="modal-title">竹菊双清砚</h2>
             <div class="modal-body">
-                <img src="./造型意境类/竹菊双清砚.jpg" alt="竹菊双清砚" class="modal-img">
+                <img src="./坑口类/竹菊双清砚.jpg" alt="竹菊双清砚" class="modal-img">
                 <div class="modal-text">
                     <p><strong>造型意境：</strong>以翠竹与秋菊为题材，寓意坚韧不拔、清雅高洁，尽显"双清"的君子之风。</p>
                     <p><strong>工艺特点：</strong>竹与菊雕刻细腻逼真，布局清雅，线条流畅，整体风格清新脱俗。</p>
@@ -4263,11 +4273,11 @@
                         const COS_BASE_URL = 'https://duanyan-1398095163.cos.ap-guangzhou.myqcloud.com/';
                         const products = [
                 { id: 'wenfang-sibao', name: '文房四宝套砚', desc: '精选老坑石料，传统工艺雕刻，文房收藏佳品', image: './造型意境类/文房四宝套砚.png', modelUrl: COS_BASE_URL + 'lao_keng.glb' },
-                { id: 'shanshui-yijing', name: '山水意境砚', desc: '麻子坑石料，浮雕山水图案，意境悠远', image: './造型意境类/山水意境砚.png', modelUrl: COS_BASE_URL + 'shan_shui_yi_jing_yan.glb' },
+                { id: 'shanshui-yijing', name: '山水意境砚', desc: '麻子坑石料，浮雕山水图案，意境悠远', image: './造型意境类/山水意境砚.jpg', modelUrl: COS_BASE_URL + 'shan_shui_yi_jing_yan.glb' },
                 { id: 'longfeng-chengxiang', name: '龙凤呈祥砚', desc: '老坑石料，高浮雕龙纹，气势磅礴', image: './造型意境类/龙凤呈祥砚.jpg', modelUrl: COS_BASE_URL + 'long_feng_cheng_xiang_yan.glb' },
                 { id: 'hanmei-aoxue', name: '寒梅傲雪砚', desc: '老坑石料，浮雕梅花图案，冰清玉洁', image: './造型意境类/寒梅傲雪砚.jpg', modelUrl: COS_BASE_URL + 'lao_keng.glb' },
                 { id: 'lanhua-youxiang', name: '兰花幽香砚', desc: '麻子坑石料，线刻兰花图案，清雅脱俗', image: './造型意境类/兰花幽香砚.jpg', modelUrl: COS_BASE_URL + 'lan_hua_you_xiang_yan.glb' },
-                { id: 'zhuju-shuangqing', name: '竹菊双清砚', desc: '坑仔岩石料，浮雕竹菊图案，君子之风', image: './造型意境类/竹菊双清砚.jpg', modelUrl: COS_BASE_URL + 'zhu_ju_shuang_qing_yan.glb' },
+                { id: 'zhuju-shuangqing', name: '竹菊双清砚', desc: '坑仔岩石料，浮雕竹菊图案，君子之风', image: './坑口类/竹菊双清砚.jpg', modelUrl: COS_BASE_URL + 'zhu_ju_shuang_qing_yan.glb' },
                 { id: 'meilanzhuju', name: '梅兰竹菊砚', desc: '宋坑石料，四君子图案，文人雅趣', image: './造型意境类/梅兰竹菊砚.jpg', modelUrl: COS_BASE_URL + 'mei_lan_zhu_ju_yan.glb' },
                 { id: 'longfeng-chengxiang', name: '龙凤呈祥砚', desc: '老坑石料，龙凤浮雕图案，吉祥如意', image: './造型意境类/龙凤呈祥砚.jpg', modelUrl: COS_BASE_URL + 'long_feng_cheng_xiang_yan.glb' },
                 { id: 'shuanglong-xizhu', name: '双龙戏珠砚', desc: '麻子坑石料，双龙浮雕图案，气势非凡', image: './造型意境类/双龙戏珠砚.jpg', modelUrl: COS_BASE_URL + 'shuang_long_xi_zhu_yan.glb' },
@@ -4441,6 +4451,9 @@
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+        // 创建加载管理器
+        const loadingManager = new THREE.LoadingManager();
+
         // 存储所有3D场景的配置
         const vrViewers = {};
         let currentModalViewer = null;
@@ -4454,14 +4467,29 @@
             const container = document.getElementById(canvasId);
             if (!container) return null;
 
+            // 获取容器尺寸，如果为0则设置默认值
+            let width = container.clientWidth || container.offsetWidth;
+            let height = container.clientHeight || container.offsetHeight;
+            
+            // 如果尺寸无效，使用默认值或从父容器推断
+            if (width === 0 || height === 0) {
+                console.warn(`容器 ${canvasId} 尺寸为 0，使用默认尺寸`);
+                width = 688; // 使用日志中观察到的宽度
+                height = 387; // 16:9 比例
+                container.style.width = width + 'px';
+                container.style.height = height + 'px';
+            }
+            
+            console.log(`初始化3D场景 ${canvasId}:`, { width, height });
+
             // 创建场景
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x2c2c2c);
+            scene.background = new THREE.Color(0x808080); // 改为中灰色，更容易看到黑色模型
 
             // 创建相机
             const camera = new THREE.PerspectiveCamera(
                 45,
-                container.clientWidth / container.clientHeight,
+                width / height,
                 0.1,
                 1000
             );
@@ -4469,14 +4497,14 @@
 
             // 创建渲染器
             const renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setSize(width, height);
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.outputColorSpace = THREE.SRGBColorSpace;
             renderer.shadowMap.enabled = true;
             container.appendChild(renderer.domElement);
 
             // 添加环境光
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.5); // 增加到 1.5
             scene.add(ambientLight);
 
             // 添加主光源
@@ -4514,16 +4542,45 @@
             controls.autoRotateSpeed = 2;
 
             // 加载模型
-            const loader = new GLTFLoader();
+            const loader = new GLTFLoader(loadingManager);
             let model = null;
 
-            // 判断模型路径：如果是URL直接使用，否则使用本地路径
-            const modelUrl = modelPath.startsWith('http') ? modelPath : `./models/${modelPath}`;
+            // 自动修正路径：支持本地路径和外部 URL
+            let finalPath;
+            if (modelPath.startsWith('http://') || modelPath.startsWith('https://')) {
+                // 外部 URL（如 COS、CDN）
+                finalPath = modelPath;
+            } else if (modelPath.includes('/') && !modelPath.startsWith('./')) {
+                // 相对路径
+                finalPath = modelPath;
+            } else {
+                // 本地 models 目录
+                finalPath = `./models/${modelPath}`;
+            }
 
             loader.load(
-                modelUrl,
+                finalPath,
                 function (gltf) {
+                    console.log('=== 3D 模型加载成功 ===');
+                    console.log('GLTF 对象:', gltf);
+                    console.log('场景:', gltf.scene);
+                    console.log('场景子节点数量:', gltf.scene.children.length);
+                    console.log('摄像机:', camera.position);
+                    console.log('渲染器尺寸:', container.clientWidth, 'x', container.clientHeight);
+                    
                     model = gltf.scene;
+
+                    // 调试：检查模型的 mesh 和材质
+                    let meshCount = 0;
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            meshCount++;
+                            console.log('找到 Mesh #' + meshCount + ':', child.name || '未命名');
+                            console.log('  - 材质:', child.material);
+                            console.log('  - 几何体顶点数:', child.geometry?.attributes?.position?.count);
+                        }
+                    });
+                    console.log('总 Mesh 数量:', meshCount);
 
                     // 调整模型大小和位置
                     const box = new THREE.Box3().setFromObject(model);
@@ -4544,10 +4601,35 @@
                         if (child.isMesh) {
                             child.castShadow = true;
                             child.receiveShadow = true;
+                            
+                            // 如果材质为空或有问题，添加默认材质
+                            if (!child.material || (Array.isArray(child.material) && child.material.length === 0)) {
+                                console.warn('Mesh 没有材质，添加默认材质:', child.name);
+                                child.material = new THREE.MeshStandardMaterial({
+                                    color: 0x888888,
+                                    roughness: 0.7,
+                                    metalness: 0.3
+                                });
+                            }
+                            
+                            // 确保材质可以双面渲染
+                            if (child.material) {
+                                child.material.side = THREE.DoubleSide;
+                            }
                         }
                     });
 
                     scene.add(model);
+                    
+                    console.log('=== 模型已添加到场景 ===');
+                    console.log('模型位置:', model.position);
+                    console.log('模型缩放:', model.scale);
+                    console.log('场景对象数量:', scene.children.length);
+                    console.log('自动旋转:', controls.autoRotate);
+                    
+                    // 强制渲染一帧
+                    renderer.render(scene, camera);
+                    console.log('已渲染一帧');
 
                     // 隐藏加载动画
                     const overlay = container.parentElement.querySelector('.loading-overlay');
@@ -4558,16 +4640,19 @@
                 },
                 function (progress) {
                     const percent = (progress.loaded / progress.total * 100).toFixed(0);
+                    console.log(`加载进度: ${percent}%`);
                     const loadingText = container.parentElement.querySelector('.loading-text');
                     if (loadingText) {
                         loadingText.textContent = `加载中... ${percent}%`;
                     }
                 },
                 function (error) {
-                    console.error('模型加载失败:', error);
+                    console.error('=== 模型加载失败 ===');
+                    console.error('错误信息:', error);
+                    console.error('错误堆栈:', error.stack);
                     const loadingText = container.parentElement.querySelector('.loading-text');
                     if (loadingText) {
-                        loadingText.textContent = '模型加载失败，请确保glb文件在models目录下';
+                        loadingText.textContent = '模型加载失败: ' + error.message;
                     }
                 }
             );
@@ -4637,29 +4722,99 @@
             }
         };
 
-        // 监听模态框打开事件，自动加载3D模型
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.classList && node.classList.contains('modal')) {
-                        if (canvas) {
-                            const modelPath = canvas.parentElement.dataset.model;
-                            if (modelPath) {
-                                initVRViewer(canvas.id, modelPath);
+        // --- 定义一个通用的打开模态框并加载3D的函数 ---
+        function openAndLoadModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block'; // 显示窗口
+
+                // 查找该模态框里是否有 3D 容器
+                const viewerContainer = modal.querySelector('.vr-viewer');
+                if (viewerContainer) {
+                    const canvasDiv = viewerContainer.querySelector('.canvas-container');
+                    const modelPath = viewerContainer.dataset.model;
+                    
+                    // 只有当 ID 和 模型路径 都存在时才加载
+                    if (canvasDiv && canvasDiv.id && modelPath) {
+                        // 使用 requestAnimationFrame 确保DOM渲染完成后再初始化
+                        let attempts = 0;
+                        const maxAttempts = 10;
+                        
+                        function tryInit() {
+                            attempts++;
+                            // 检查容器高度是否有效
+                            const height = canvasDiv.clientHeight || canvasDiv.offsetHeight;
+                            const width = canvasDiv.clientWidth || canvasDiv.offsetWidth;
+                            
+                            console.log(`尝试初始化3D场景 (#${attempts}):`, { width, height });
+                            
+                            if (height > 0 && width > 0) {
+                                // 容器尺寸有效，开始初始化
+                                setTimeout(() => {
+                                    initVRViewer(canvasDiv.id, modelPath);
+                                }, 50);
+                            } else if (attempts < maxAttempts) {
+                                // 容器尺寸无效，继续等待
+                                requestAnimationFrame(tryInit);
+                            } else {
+                                // 超过最大尝试次数，强制初始化
+                                console.warn('容器尺寸检测超时，强制初始化3D场景');
+                                initVRViewer(canvasDiv.id, modelPath);
                             }
                         }
+                        
+                        // 开始尝试
+                        requestAnimationFrame(tryInit);
                     }
-                });
-            });
+                }
+            }
+        }
+
+        // --- 修改 1：轮播图点击事件 ---
+        document.querySelector('.banner').addEventListener('click', (e) => {
+            let target = null;
+            if (e.target.classList.contains('banner-img')) {
+                target = e.target.dataset.target;
+            } else if (e.target.closest('.banner-img')) {
+                target = e.target.closest('.banner-img').dataset.target;
+            }
+            
+            if (target) {
+                openAndLoadModal(`${target}-modal`); // 使用新函数
+            }
         });
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
+        // --- 修改 2：产品列表点击事件 ---
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.product-card');
+            if (card) {
+                const product = card.dataset.product;
+                openAndLoadModal(`${product}-modal`); // 使用新函数
+            }
         });
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
