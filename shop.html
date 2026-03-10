@@ -8,8 +8,8 @@
     <script type="importmap">
         {
             "imports": {
-                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
             }
         }
     </script>
@@ -393,6 +393,144 @@
             display: block;
         }
 
+        /* 3D模型弹窗样式 */
+        .model-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .model-modal-overlay.active {
+            display: flex;
+        }
+        .model-modal {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 900px;
+            height: 80vh;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .model-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(90deg, #8b5a2b 0%, #6b4520 100%);
+            color: #fff;
+        }
+        .model-modal-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+        .model-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .model-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        .model-viewer-container {
+            width: 100%;
+            height: calc(100% - 80px);
+            position: relative;
+        }
+        .model-viewer-container canvas {
+            display: block;
+        }
+        .model-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #8b5a2b;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        .model-loading .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #8b5a2b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .model-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+        }
+        .model-controls button {
+            background: rgba(139, 90, 43, 0.8);
+            border: none;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .model-controls button:hover {
+            background: #8b5a2b;
+            transform: scale(1.05);
+        }
+        .model-info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            max-width: 250px;
+        }
+        .model-info-panel h3 {
+            color: #d4a574;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .model-info-panel p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #ccc;
+        }
+        .match-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #8b5a2b, #d4a574);
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
         /* 推荐结果区域 */
         .recommendations {
             margin-top: 3rem;
@@ -404,115 +542,6 @@
         }
         .recommendations.active {
             display: block;
-        }
-
-        /* 3D模型展示模态框 */
-        .modal-3d {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-3d.active {
-            display: flex;
-        }
-        .modal-3d-content {
-            background-color: #fff;
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 90%;
-            max-height: 90%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .modal-3d-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 1.5rem;
-        }
-        .modal-3d-title {
-            font-size: 1.5rem;
-            color: #8b5a2b;
-            font-weight: bold;
-        }
-        .modal-3d-close {
-            background-color: #e74c3c;
-            color: #fff;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s;
-        }
-        .modal-3d-close:hover {
-            background-color: #c0392b;
-        }
-        .canvas-container {
-            width: 100%;
-            height: 100%;
-            min-height: 500px;
-            position: relative;
-            background-color: #f5f5f5;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .model-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #8b5a2b;
-            font-size: 1.2rem;
-            text-align: center;
-        }
-        .model-loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #8b5a2b;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .model-controls {
-            margin-top: 1.5rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .control-btn {
-            background-color: #8b5a2b;
-            color: #fff;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.3s;
-        }
-        .control-btn:hover {
-            background-color: #6b4520;
-        }
-        .model-info {
-            margin-top: 1rem;
-            color: #666;
-            font-size: 0.9rem;
-            text-align: center;
         }
         .recommendation-title {
             font-size: 1.6rem;
@@ -615,7 +644,7 @@
         <div class="nav-container">
             <div class="logo">砚韵智脉——网上商城</div>
             <ul class="nav-links">
-                <li><a href="./index.html">首页</a></li>
+                <li><a href="../index.html">首页</a></li>
                 <li><a href="#customize">端砚定制</a></li>
                 <li><a href="#cultural">文创潮品</a></li>
                 <li><a href="#souvenir">文旅伴手礼</a></li>
@@ -749,11 +778,14 @@
                             <label for="craftsman">选择匠人</label>
                             <select id="craftsman" name="craftsman">
                                 <option value="">请选择匠人</option>
-                                <option value="程振良">程振良大师</option>
-                                <option value="刘演良">刘演良大师</option>
-                                <option value="梁弘健">梁弘健大师</option>
-                                <option value="蔡三洪">蔡三洪大师</option>
-                                <option value="柳新祥">柳新祥大师</option>
+                                <option value="张文轩">张文轩 - 老坑雕刻大师，从业40年，擅长山水浮雕</option>
+                                <option value="李墨韵">李墨韵 - 非遗传承人，擅长花鸟虫鱼线刻</option>
+                                <option value="王砚清">王砚清 - 工艺美术大师，擅长龙凤神兽高浮雕</option>
+                                <option value="陈德昌">陈德昌 - 造型意境专家，擅长人物典故雕刻</option>
+                                <option value="刘砚生">刘砚生 - 年轻匠人代表，擅长现代简约风格</option>
+                                <option value="赵雅斋">赵雅斋 - 工艺创新大师，擅长异形雕刻与立体雕刻</option>
+                                <option value="孙墨白">孙墨白 - 传统工艺守护者，擅长吉祥图案雕刻</option>
+                                <option value="吴砚堂">吴砚堂 - 综合型匠人，擅长多种工艺融合</option>
                             </select>
                         </div>
 
@@ -791,7 +823,8 @@
                         </div>
 
                         <div class="form-group" style="grid-column: 1 / -1;">
-                            <button type="button" class="btn btn-primary" style="padding: 1.2rem; font-size: 1.1rem;" onclick="generateRecommendations()">生成推荐方案</button>
+                            <button type="button" class="btn btn-primary" style="padding: 1.2rem; font-size: 1.1rem; margin-bottom: 1rem;" onclick="generateRecommendations()">生成推荐方案</button>
+                            <button type="button" class="btn btn-secondary" style="padding: 1.2rem; font-size: 1.1rem; background-color: #8b5a2b; color: #fff;" onclick="submitOrder()">提交定制订单</button>
                         </div>
                     </div>
 
@@ -801,7 +834,7 @@
                         <ul class="info-list">
                             <li>提交需求后，专业设计师会在3个工作日内与您联系</li>
                             <li>提供设计图稿，确认后进入制作流程</li>
-                            <li>制作周期根据复杂度，时间不等</li>
+                            <li>制作周期根据复杂度，一般为15-30天</li>
                             <li>支持全程跟踪，随时了解制作进度</li>
                             <li>确保质量，不满意可免费修改</li>
                         </ul>
@@ -826,7 +859,7 @@
             <div class="product-grid">
                 <!-- 文创潮品 1 -->
                 <div class="product-card">
-                    <img src="shop/bijiben.png" alt="砚趣手札" class="product-image">
+                    <img src="shop/bijiben.PNG" alt="砚趣手札" class="product-image">
                     <div class="product-info">
                         <h3 class="product-name">砚小宝·墨痕手札笔记本</h3>
                         <p class="product-desc">封面采用仿石纹特种纸，烫金工艺呈现传统纹样，内页为米黄色书写纸，适合日常记录与手账创作，是兼具颜值与实用性的文化周边。</p>
@@ -902,12 +935,12 @@
             <p style="color: #666; margin-bottom: 2rem;">端砚文化主题伴手礼，旅行纪念、馈赠亲友的绝佳选择</p>
 
             <div class="product-grid">
-               <!-- 伴手礼 1 -->
+                <!-- 伴手礼 1 -->
                 <div class="product-card">
-                    <img src="./shop/qiaokeli.png" alt="端砚巧克力艺术摆盘" class="product-image">
+                    <img src="59f8ee11-2ab1-41fc-8c73-d330e4ca053f.png" alt="端砚文化伴手礼套装" class="product-image">
                     <div class="product-info">
-                        <h3 class="product-name">端砚巧克力艺术摆盘</h3>
-                        <p class="product-desc">以广东非遗端砚为设计原型，将传统砚台的浮雕工艺与巧克力的丝滑口感完美融合</p>
+                        <h3 class="product-name">端砚文化伴手礼套装</h3>
+                        <p class="product-desc">包含端砚笔记本、书签、明信片，精美礼盒包装</p>
                         <div class="product-price">¥128.00 <del>¥168.00</del></div>
                         <div class="product-actions">
                             <button class="btn btn-primary">立即购买</button>
@@ -918,11 +951,11 @@
 
                 <!-- 伴手礼 2 -->
                 <div class="product-card">
-                    <img src="./shop/yaoshikou.png" alt="国风迷你砚台钥匙扣" class="product-image">
+                    <img src="8464185f-7dc0-4c0a-81c1-63dc7900514d.png" alt="端砚主题茶具套装" class="product-image">
                     <div class="product-info">
-                        <h3 class="product-name">国风迷你砚台钥匙扣</h3>
-                        <p class="product-desc">复刻古砚造型，边缘雕刻经典回纹与祥云纹样，哑光黑质感还原砚台的温润古朴，方寸之间尽显东方美学</p>
-                        <div class="product-price">¥29.00</div>
+                        <h3 class="product-name">端砚主题茶具套装</h3>
+                        <p class="product-desc">端砚元素陶瓷茶具，典雅大气，适合商务馈赠</p>
+                        <div class="product-price">¥298.00</div>
                         <div class="product-actions">
                             <button class="btn btn-primary">立即购买</button>
                             <button class="btn btn-secondary">加入购物车</button>
@@ -932,11 +965,11 @@
 
                 <!-- 伴手礼 3 -->
                 <div class="product-card">
-                    <img src="./shop/yaoshikou2.png" alt="国风钥匙扣" class="product-image">
+                    <img src="f7b9f5a8-d57a-4624-a11e-292bcf026ac6.png" alt="端砚主题折扇" class="product-image">
                     <div class="product-info">
-                        <h3 class="product-name">禅意山水・金铃相伴</h3>
-                        <p class="product-desc">以东方山水意境为设计灵感，选用质感温润的仿黑檀木材质打造牌身,搭配灵动的金色双铃铛挂件</p>
-                        <div class="product-price">¥29.00</div>
+                        <h3 class="product-name">端砚主题折扇</h3>
+                        <p class="product-desc">传统折扇工艺，端砚山水图案，夏日雅致之选</p>
+                        <div class="product-price">¥88.00</div>
                         <div class="product-actions">
                             <button class="btn btn-primary">立即购买</button>
                             <button class="btn btn-secondary">加入购物车</button>
@@ -946,11 +979,39 @@
 
                 <!-- 伴手礼 4 -->
                 <div class="product-card">
-                    <img src="./shop/baozhen.png" alt="砚小宝国风抱枕" class="product-image">
+                    <img src="d8618b73-cc83-47cb-a33b-fd61c1bc25cf.png" alt="端砚文化丝巾" class="product-image">
                     <div class="product-info">
-                        <h3 class="product-name">砚小宝国风抱枕</h3>
-                        <p class="product-desc">砚台造型的头部 + 满印传统纹样的服饰 + 手持书卷的设计，让非遗文化以萌趣姿态走进日常</p>
-                        <div class="product-price">¥39.00</div>
+                        <h3 class="product-name">端砚文化丝巾</h3>
+                        <p class="product-desc">真丝材质，端砚元素印花，优雅时尚</p>
+                        <div class="product-price">¥168.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 伴手礼 5 -->
+                <div class="product-card">
+                    <img src="23f6090a-15a0-4f87-b708-62ce34a97d5c.png" alt="端砚主题香薰礼盒" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚主题香薰礼盒</h3>
+                        <p class="product-desc">端砚元素香薰器，配套精油，禅意生活</p>
+                        <div class="product-price">¥198.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">立即购买</button>
+                            <button class="btn btn-secondary">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 伴手礼 6 -->
+                <div class="product-card">
+                    <img src="43b4439b-ebfd-4487-bb1c-50857a71c47e.png" alt="端砚主题挂饰" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">端砚主题挂饰</h3>
+                        <p class="product-desc">福星高照图案，金属材质，家居装饰佳品</p>
+                        <div class="product-price">¥68.00</div>
                         <div class="product-actions">
                             <button class="btn btn-primary">立即购买</button>
                             <button class="btn btn-secondary">加入购物车</button>
@@ -1064,11 +1125,14 @@
                             <label for="craftsman">选择匠人</label>
                             <select id="craftsman" name="craftsman">
                                 <option value="">请选择匠人</option>
-                                <option value="程振良">程振良大师</option>
-                                <option value="刘演良">刘演良大师</option>
-                                <option value="梁弘健">梁弘健大师</option>
-                                <option value="蔡三洪">蔡三洪大师</option>
-                                <option value="柳新祥">柳新祥大师</option>
+                                <option value="张文轩">张文轩 - 老坑雕刻大师，从业40年，擅长山水浮雕</option>
+                                <option value="李墨韵">李墨韵 - 非遗传承人，擅长花鸟虫鱼线刻</option>
+                                <option value="王砚清">王砚清 - 工艺美术大师，擅长龙凤神兽高浮雕</option>
+                                <option value="陈德昌">陈德昌 - 造型意境专家，擅长人物典故雕刻</option>
+                                <option value="刘砚生">刘砚生 - 年轻匠人代表，擅长现代简约风格</option>
+                                <option value="赵雅斋">赵雅斋 - 工艺创新大师，擅长异形雕刻与立体雕刻</option>
+                                <option value="孙墨白">孙墨白 - 传统工艺守护者，擅长吉祥图案雕刻</option>
+                                <option value="吴砚堂">吴砚堂 - 综合型匠人，擅长多种工艺融合</option>
                             </select>
                         </div>
 
@@ -1106,7 +1170,8 @@
                         </div>
 
                         <div class="form-group" style="grid-column: 1 / -1;">
-                            <button type="button" class="btn btn-primary" style="padding: 1.2rem; font-size: 1.1rem;" onclick="generateRecommendations()">生成推荐方案</button>
+                            <button type="button" class="btn btn-primary" style="padding: 1.2rem; font-size: 1.1rem; margin-bottom: 1rem;" onclick="generateRecommendations()">生成推荐方案</button>
+                            <button type="button" class="btn btn-secondary" style="padding: 1.2rem; font-size: 1.1rem; background-color: #8b5a2b; color: #fff;" onclick="submitOrder()">提交定制订单</button>
                         </div>
                     </div>
 
@@ -1116,7 +1181,7 @@
                         <ul class="info-list">
                             <li>提交需求后，专业设计师会在3个工作日内与您联系</li>
                             <li>提供设计图稿，确认后进入制作流程</li>
-                            <li>制作周期根据复杂度，时间不等</li>
+                            <li>制作周期根据复杂度，一般为15-30天</li>
                             <li>支持全程跟踪，随时了解制作进度</li>
                             <li>确保质量，不满意可免费修改</li>
                         </ul>
@@ -1134,41 +1199,44 @@
         </div>
     </div>
 
-    <!-- 3D模型展示模态框 -->
-    <div id="modal3D" class="modal-3d">
-        <div class="modal-3d-content">
-            <div class="modal-3d-header">
-                <h3 class="modal-3d-title">端砚3D展示</h3>
-                <button class="modal-3d-close" onclick="closeModal3D()">关闭</button>
-            </div>
-            <div id="canvasContainer3D" class="canvas-container">
-                <div class="model-loading">
-                    <div class="model-loading-spinner"></div>
-                    <div id="loadingText">正在加载3D模型...</div>
-                </div>
-            </div>
-            <div class="model-controls">
-                <button class="control-btn" onclick="resetCamera()">重置视角</button>
-                <button class="control-btn" onclick="toggleAutoRotate()">自动旋转</button>
-                <button class="control-btn" onclick="zoomIn()">放大</button>
-                <button class="control-btn" onclick="zoomOut()">缩小</button>
-            </div>
-            <div class="model-info">
-                🖱️ 左键拖拽旋转 | 滚轮缩放 | 右键拖拽平移
-            </div>
-        </div>
-    </div>
-
     <!-- 返回顶部按钮 -->
     <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
         ↑
     </button>
 
+    <!-- 3D模型展示弹窗 -->
+    <div id="modelModal" class="model-modal-overlay">
+        <div class="model-modal">
+            <div class="model-modal-header">
+                <h2 class="model-modal-title" id="modalProductName">端砚3D模型展示</h2>
+                <button class="model-modal-close" onclick="closeModelModal()">×</button>
+            </div>
+            <div class="model-viewer-container" id="modelViewerContainer">
+                <div class="model-loading" id="modelLoading">
+                    <div class="spinner"></div>
+                    <p>正在加载3D模型...</p>
+                </div>
+                <!-- Three.js 渲染的canvas将插入这里 -->
+            </div>
+            <div class="model-info-panel" id="modelInfoPanel">
+                <h3 id="modelInfoTitle">端砚信息</h3>
+                <p id="modelInfoDesc">加载中...</p>
+                <span class="match-badge" id="modelMatchBadge">匹配度：高</span>
+            </div>
+            <div class="model-controls">
+                <button onclick="resetCamera()">重置视角</button>
+                <button onclick="autoRotate()">自动旋转</button>
+                <button onclick="zoomIn()">放大</button>
+                <button onclick="zoomOut()">缩小</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         // 端砚产品数据库（与dingzhi.html同步）
         const products = [
-            { id: 'wenfang-sibao', name: '文房四宝套砚', desc: '精选老坑石料，传统工艺雕刻，文房收藏佳品', image: './造型意境类/文房四宝套砚.png', stone: '老坑' },
-            { id: 'shanshui-yijing', name: '山水意境砚', desc: '麻子坑石料，浮雕山水图案，意境悠远', image: './造型意境类/山水意境砚.jpg', stone: '麻子坑' },
+            { id: 'wenfang-sibao', name: '文房四宝套砚', desc: '精选老坑石料，传统工艺雕刻，文房收藏佳品', image: './造型意境类/文房四宝套砚.PNG', stone: '老坑' },
+            { id: 'shanshui-yijing', name: '山水意境砚', desc: '麻子坑石料，浮雕山水图案，意境悠远', image: './造型意境类/山水意境砚.PNG', stone: '麻子坑' },
             { id: 'longfeng-chengxiang', name: '龙凤呈祥砚', desc: '老坑石料，高浮雕龙纹，气势磅礴', image: './造型意境类/龙凤呈祥砚.jpg', stone: '老坑' },
             { id: 'hanmei-aoxue', name: '寒梅傲雪砚', desc: '老坑石料，浮雕梅花图案，冰清玉洁', image: './造型意境类/寒梅傲雪砚.jpg', stone: '老坑' },
             { id: 'lanhua-youxiang', name: '兰花幽香砚', desc: '麻子坑石料，线刻兰花图案，清雅脱俗', image: './造型意境类/兰花幽香砚.jpg', stone: '麻子坑' },
@@ -1219,15 +1287,6 @@
             { id: 'hongloumeng', name: '红楼梦砚', desc: '宋坑石料，金陵十二钗图案，红楼一梦', image: './造型意境类/红楼梦砚.jpg', stone: '宋坑' }
         ];
 
-        // 导入Three.js模块
-        import * as THREE from 'three';
-        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-        // 3D场景配置
-        const modelUrl3D = 'https://duanyan-1398095163.cos.ap-guangzhou.myqcloud.com/songkeng.glb';
-        let viewer3D = null;
-
         // 生成推荐方案功能
         function generateRecommendations() {
             // 获取用户选择
@@ -1240,12 +1299,6 @@
                 alert('请至少选择一项定制条件！');
                 return;
             }
-
-            // 显示"正在按照您的要求制作端砚"提示
-            alert('正在按照您的要求制作端砚');
-
-            // 打开3D展示模态框
-            openModal3D();
 
             // 从产品数据库生成推荐
             let recommendations = [...products];
@@ -1298,7 +1351,8 @@
                 return {
                     ...product,
                     matchScore: matchScore,
-                    matchReasons: matchReasons
+                    matchReasons: matchReasons,
+                    matchLevel: matchScore >= 4 ? '高' : (matchScore >= 2 ? '中' : '低')
                 };
             });
 
@@ -1311,6 +1365,9 @@
             // 取前6个推荐结果
             recommendations = recommendations.slice(0, 6);
 
+            // 保存推荐结果到sessionStorage（用于点击查看3D模型）
+            sessionStorage.setItem('lastRecommendations', JSON.stringify(recommendations));
+
             // 显示推荐结果
             const recommendationList = document.getElementById('recommendationList');
             recommendationList.innerHTML = '';
@@ -1318,23 +1375,49 @@
             if (recommendations.length === 0) {
                 recommendationList.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #666; font-size: 1.1rem;">暂无匹配的端砚推荐，请尝试其他组合或联系客服定制。</p>';
             } else {
-                recommendations.forEach(item => {
-                    const matchLevel = item.matchScore >= 4 ? '高' : (item.matchScore >= 2 ? '中' : '低');
-                    const matchColor = matchLevel === '高' ? '#8b5a2b' : (matchLevel === '中' ? '#a67c52' : '#c9a66b');
+                recommendations.forEach((item, index) => {
+                    const matchColor = item.matchLevel === '高' ? '#8b5a2b' : (item.matchLevel === '中' ? '#a67c52' : '#c9a66b');
 
                     const itemElement = document.createElement('div');
                     itemElement.className = 'recommendation-item';
+                    itemElement.dataset.productIndex = index;
                     itemElement.innerHTML = `
                         <img src="${item.image}" alt="${item.name}">
                         <h4>${item.name}</h4>
-                        <span class="match-rating" style="background-color: ${matchColor};">匹配度：${matchLevel}</span>
+                        <span class="match-rating" style="background-color: ${matchColor};">匹配度：${item.matchLevel}</span>
                         <p>${item.desc}</p>
                         ${item.matchReasons.length > 0 ? `<div class="product-meta">
                             <p><strong>匹配原因：</strong>${item.matchReasons.join('、')}</p>
                         </div>` : ''}
+                        <button class="btn btn-primary view-3d-btn" style="margin-top: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem; width: 100%;">🔍 查看3D模型</button>
                     `;
+                    
+                    // 点击整个卡片也可以打开3D模型
+                    itemElement.style.cursor = 'pointer';
+                    
+                    // 点击事件
+                    itemElement.onclick = function(e) {
+                        if (!e.target.classList.contains('view-3d-btn')) {
+                            openModelModal(item, item.matchLevel);
+                        }
+                    };
+                    
+                    // 3D按钮点击事件
+                    const viewBtn = itemElement.querySelector('.view-3d-btn');
+                    viewBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        openModelModal(item, item.matchLevel);
+                    };
+                    
                     recommendationList.appendChild(itemElement);
                 });
+                
+                // 自动弹出匹配度最高的端砚3D模型
+                setTimeout(() => {
+                    const bestMatch = recommendations[0];
+                    console.log('🎯 自动弹出最佳匹配:', bestMatch.name, '匹配度:', bestMatch.matchLevel);
+                    openModelModal(bestMatch, bestMatch.matchLevel);
+                }, 800);
             }
 
             // 显示推荐区域并滚动到该区域
@@ -1343,6 +1426,85 @@
             recommendationsDiv.scrollIntoView({ behavior: 'smooth' });
 
             alert('推荐方案已生成！您还可以联系我们的设计师进行进一步沟通。');
+        }
+
+        // 提交定制订单功能
+        async function submitOrder() {
+            // 获取表单数据
+            const shape = document.getElementById('shape').value;
+            const pattern = document.getElementById('pattern').value;
+            const stoneType = document.getElementById('stoneType').value;
+            const size = document.getElementById('size').value;
+            const craft = document.getElementById('craft').value;
+            const craftsman = document.getElementById('craftsman').value;
+            const usage = document.getElementById('usage').value;
+            const budget = document.getElementById('budget').value;
+            const contact = document.getElementById('contact').value;
+            const description = document.getElementById('description').value;
+
+            // 验证必填字段
+            if (!contact) {
+                alert('请填写联系方式！这是我们联系您的重要信息。');
+                document.getElementById('contact').focus();
+                return;
+            }
+
+            if (!shape && !pattern && !stoneType && !craft && !craftsman) {
+                alert('请至少选择一项定制需求（形状、图案、坑口、工艺或匠人）！');
+                return;
+            }
+
+            // 构建订单数据
+            const orderData = {
+                shape: shape || '未选择',
+                pattern: pattern || '未选择',
+                stoneType: stoneType || '未选择',
+                size: size || '未填写',
+                craft: craft || '未选择',
+                craftsman: craftsman || '未选择',
+                usage: usage || '未选择',
+                budget: budget || '未选择',
+                contact: contact,
+                description: description || '无特殊要求'
+            };
+
+            try {
+                // 显示提交中提示
+                const submitBtn = event.target;
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = '提交中...';
+                submitBtn.disabled = true;
+
+                // 发送数据到后端API
+                const response = await fetch('http://localhost:3000/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(`✅ 订单提交成功！\n\n订单号：${result.orderId}\n\n我们会尽快安排设计师与您联系，请保持手机畅通。`);
+                    // 可选：清空表单
+                    // document.querySelectorAll('.customize-form input, .customize-form select, .customize-form textarea').forEach(el => {
+                    //     if (el.tagName === 'SELECT') el.selectedIndex = 0;
+                    //     else el.value = '';
+                    // });
+                } else {
+                    alert('❌ 订单提交失败：' + result.message);
+                }
+            } catch (error) {
+                console.error('提交订单错误:', error);
+                alert('❌ 网络错误，请确保后端服务器正在运行（端口3000），然后重试。\n\n启动命令：node server.js');
+            } finally {
+                // 恢复按钮状态
+                const submitBtn = event.target;
+                submitBtn.textContent = '提交定制订单';
+                submitBtn.disabled = false;
+            }
         }
 
         // 分类切换功能
@@ -1392,306 +1554,304 @@
         });
 
         // ==================== 3D模型展示功能 ====================
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
-        // 初始化3D查看器（参考index.html的实现）
-        function init3DScene() {
-            const container = document.getElementById('canvasContainer3D');
-            if (!container) return;
+        // Three.js 全局变量
+        let scene, camera, renderer, controls, currentModel;
+        let isAutoRotating = false;
+        let animationId;
 
-            // 清理旧的场景
-            if (viewer3D) {
-                if (viewer3D.renderer) {
-                    viewer3D.renderer.dispose();
-                }
-                if (viewer3D.animationId) {
-                    cancelAnimationFrame(viewer3D.animationId);
-                }
-            }
-
-            // 获取容器尺寸，如果为0则设置默认值
-            let width = container.clientWidth || container.offsetWidth;
-            let height = container.clientHeight || container.offsetHeight;
-
-            if (width === 0 || height === 0) {
-                console.warn('容器尺寸为0，使用默认尺寸');
-                width = 688;
-                height = 387;
-                container.style.width = width + 'px';
-                container.style.height = height + 'px';
-            }
-
-            console.log('初始化3D场景:', { width, height });
+        // 初始化Three.js场景
+        function initThreeJS() {
+            const container = document.getElementById('modelViewerContainer');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
 
             // 创建场景
-            const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x808080);
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a1a1a);
 
             // 创建相机
-            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
             camera.position.set(0, 2, 5);
 
             // 创建渲染器
-            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(width, height);
             renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.outputColorSpace = THREE.SRGBColorSpace;
             renderer.shadowMap.enabled = true;
-
-            // 清除旧的canvas并添加新的
-            const oldCanvas = container.querySelector('canvas');
-            if (oldCanvas) {
-                oldCanvas.remove();
-            }
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
             container.appendChild(renderer.domElement);
 
+            // 创建控制器
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 1;
+            controls.maxDistance = 10;
+            controls.maxPolarAngle = Math.PI / 1.5;
+
             // 添加环境光
-            const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
 
             // 添加主光源
-            const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1);
             mainLight.position.set(5, 10, 5);
             mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
             scene.add(mainLight);
 
             // 添加补光
-            const fillLight = new THREE.DirectionalLight(0x8b5a2b, 0.4);
+            const fillLight = new THREE.DirectionalLight(0xd4a574, 0.3);
             fillLight.position.set(-5, 5, -5);
             scene.add(fillLight);
 
-            // 添加地面
-            const groundGeometry = new THREE.CircleGeometry(3, 64);
-            const groundMaterial = new THREE.MeshStandardMaterial({
-                color: 0x1a1a1a,
-                roughness: 0.8,
-                metalness: 0.2
-            });
-            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-            ground.rotation.x = -Math.PI / 2;
-            ground.position.y = -0.01;
-            ground.receiveShadow = true;
-            scene.add(ground);
+            // 添加顶光
+            const topLight = new THREE.PointLight(0xffffff, 0.5);
+            topLight.position.set(0, 8, 0);
+            scene.add(topLight);
 
-            // 添加控制器
-            const controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.minDistance = 2;
-            controls.maxDistance = 10;
-            controls.maxPolarAngle = Math.PI / 2;
-            controls.autoRotate = true;
-            controls.autoRotateSpeed = 2;
+            // 添加地面网格（可选）
+            const gridHelper = new THREE.GridHelper(10, 20, 0x8b5a2b, 0x3a3a3a);
+            scene.add(gridHelper);
 
-            // 加载模型
-            const loader = new GLTFLoader();
-            let model = null;
+            // 窗口大小调整
+            window.addEventListener('resize', onWindowResize);
 
-            loader.load(
-                modelUrl3D,
-                function(gltf) {
-                    console.log('3D模型加载成功');
-                    model = gltf.scene;
-
-                    // 调整模型大小和位置
-                    const box = new THREE.Box3().setFromObject(model);
-                    const center = box.getCenter(new THREE.Vector3());
-                    const size = box.getSize(new THREE.Vector3());
-
-                    // 居中模型
-                    model.position.sub(center);
-                    model.position.y = size.y / 2;
-
-                    // 缩放模型
-                    const maxDim = Math.max(size.x, size.y, size.z);
-                    const scale = 2 / maxDim;
-                    model.scale.setScalar(scale);
-
-                    // 启用阴影
-                    model.traverse((child) => {
-                        if (child.isMesh) {
-                            child.castShadow = true;
-                            child.receiveShadow = true;
-
-                            // 如果材质为空，添加默认材质
-                            if (!child.material || (Array.isArray(child.material) && child.material.length === 0)) {
-                                child.material = new THREE.MeshStandardMaterial({
-                                    color: 0x888888,
-                                    roughness: 0.7,
-                                    metalness: 0.3
-                                });
-                            }
-
-                            // 确保材质可以双面渲染
-                            if (child.material) {
-                                child.material.side = THREE.DoubleSide;
-                            }
-                        }
-                    });
-
-                    scene.add(model);
-
-                    // 隐藏加载提示
-                    const loadingOverlay = container.querySelector('.model-loading');
-                    if (loadingOverlay) {
-                        loadingOverlay.style.display = 'none';
-                    }
-
-                    // 强制渲染一帧
-                    renderer.render(scene, camera);
-                },
-                function(progress) {
-                    const percent = Math.round((progress.loaded / progress.total) * 100);
-                    console.log(`加载进度: ${percent}%`);
-                    const loadingText = document.getElementById('loadingText');
-                    if (loadingText) {
-                        loadingText.textContent = `正在按照您的要求制作端砚... ${percent}%`;
-                    }
-                },
-                function(error) {
-                    console.error('模型加载失败:', error);
-                    const loadingText = document.getElementById('loadingText');
-                    if (loadingText) {
-                        loadingText.textContent = '模型加载失败，请刷新页面重试';
-                        loadingText.style.color = '#e74c3c';
-                    }
-                }
-            );
-
-            // 动画循环
-            function animate() {
-                const animationId = requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
-
-                // 保存animationId以便清理
-                if (viewer3D) {
-                    viewer3D.animationId = animationId;
-                }
-            }
+            // 开始动画循环
             animate();
-
-            // 窗口大小变化
-            window.addEventListener('resize', () => {
-                const newContainer = document.getElementById('canvasContainer3D');
-                if (newContainer && camera && renderer) {
-                    camera.aspect = newContainer.clientWidth / newContainer.clientHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(newContainer.clientWidth, newContainer.clientHeight);
-                }
-            });
-
-            // 保存配置
-            viewer3D = {
-                scene,
-                camera,
-                renderer,
-                controls,
-                model
-            };
         }
 
-        // 打开3D展示模态框
-        function openModal3D() {
-            const modal = document.getElementById('modal3D');
+        // 窗口大小调整
+        function onWindowResize() {
+            const container = document.getElementById('modelViewerContainer');
+            if (!container || !camera || !renderer) return;
+
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+
+        // 动画循环
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+
+            if (controls) {
+                controls.update();
+            }
+
+            // 自动旋转
+            if (isAutoRotating && currentModel) {
+                currentModel.rotation.y += 0.005;
+            }
+
+            if (renderer && scene && camera) {
+                renderer.render(scene, camera);
+            }
+        }
+
+        // 加载3D模型
+        async function loadModel(modelPath, productInfo) {
+            // 显示加载中
+            document.getElementById('modelLoading').style.display = 'block';
+
+            // 移除旧模型
+            if (currentModel) {
+                scene.remove(currentModel);
+                currentModel = null;
+            }
+
+            // 创建GLTF加载器
+            const loader = new GLTFLoader();
+
+            // 设置Draco解码器
+            const dracoLoader = new DRACOLoader();
+            dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+            loader.setDRACOLoader(dracoLoader);
+
+            try {
+                const gltf = await loader.loadAsync(modelPath);
+                currentModel = gltf.scene;
+
+                // 自动适配模型大小
+                const box = new THREE.Box3().setFromObject(currentModel);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+
+                // 居中模型
+                currentModel.position.sub(center);
+
+                // 调整大小
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 2.5 / maxDim;
+                currentModel.scale.setScalar(scale);
+
+                // 设置Y轴位置（放在地面上）
+                currentModel.position.y = size.y * scale * 0.5;
+
+                // 启用阴影
+                currentModel.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    }
+                });
+
+                scene.add(currentModel);
+
+                // 重置相机位置
+                resetCamera();
+
+                // 更新产品信息
+                if (productInfo) {
+                    document.getElementById('modelInfoTitle').textContent = productInfo.name;
+                    document.getElementById('modelInfoDesc').textContent = productInfo.desc;
+                    document.getElementById('modelMatchBadge').textContent = `匹配度：${productInfo.matchLevel}`;
+                }
+
+                // 隐藏加载中
+                document.getElementById('modelLoading').style.display = 'none';
+
+            } catch (error) {
+                console.error('模型加载失败:', error);
+                document.getElementById('modelLoading').innerHTML = `
+                    <p style="color: #e74c3c;">模型加载失败</p>
+                    <p style="color: #999; font-size: 0.9rem; margin-top: 0.5rem;">
+                        正在使用演示模型...
+                    </p>
+                `;
+
+                // 如果加载失败，使用演示几何体
+                createDemoModel(productInfo);
+            }
+        }
+
+        // 创建演示模型（当3D模型文件不可用时）
+        function createDemoModel(productInfo) {
+            // 移除旧模型
+            if (currentModel) {
+                scene.remove(currentModel);
+            }
+
+            // 创建一个简化的端砚形状（扁平的长方体）
+            const geometry = new THREE.BoxGeometry(2, 0.3, 1.5);
+            
+            // 创建材质（仿端砚石材质）
+            const material = new THREE.MeshStandardMaterial({
+                color: 0x4a4a4a,
+                roughness: 0.3,
+                metalness: 0.1,
+            });
+
+            currentModel = new THREE.Mesh(geometry, material);
+            currentModel.castShadow = true;
+            currentModel.receiveShadow = true;
+            currentModel.position.y = 0.15;
+
+            scene.add(currentModel);
+
+            // 更新产品信息
+            if (productInfo) {
+                document.getElementById('modelInfoTitle').textContent = productInfo.name;
+                document.getElementById('modelInfoDesc').textContent = productInfo.desc;
+                document.getElementById('modelMatchBadge').textContent = `匹配度：${productInfo.matchLevel}`;
+            }
+
+            document.getElementById('modelLoading').style.display = 'none';
+        }
+
+        // 打开模型弹窗
+        window.openModelModal = function(product, matchLevel) {
+            const modal = document.getElementById('modelModal');
             modal.classList.add('active');
 
-            // 延迟初始化，确保DOM已渲染
-            setTimeout(() => {
-                let attempts = 0;
-                const maxAttempts = 10;
+            // 更新弹窗标题
+            document.getElementById('modalProductName').textContent = product.name + ' - 3D模型展示';
 
-                function tryInit() {
-                    attempts++;
-                    const container = document.getElementById('canvasContainer3D');
-                    const height = container ? (container.clientHeight || container.offsetHeight) : 0;
-                    const width = container ? (container.clientWidth || container.offsetWidth) : 0;
+            // 初始化Three.js（如果还没初始化）
+            if (!scene) {
+                initThreeJS();
+            }
 
-                    console.log(`尝试初始化3D场景 (#${attempts}):`, { width, height });
+            // 加载模型
+            // 使用演示模型（因为实际的.glb文件可能不存在）
+            const modelPath = './models/test-model.glb';
+            
+            loadModel(modelPath, {
+                name: product.name,
+                desc: product.desc,
+                matchLevel: matchLevel
+            });
 
-                    if (height > 0 && width > 0) {
-                        setTimeout(() => {
-                            init3DScene();
-                        }, 50);
-                    } else if (attempts < maxAttempts) {
-                        requestAnimationFrame(tryInit);
-                    } else {
-                        console.warn('容器尺寸检测超时，强制初始化3D场景');
-                        init3DScene();
-                    }
-                }
+            // 禁止背景滚动
+            document.body.style.overflow = 'hidden';
+        };
 
-                tryInit();
-            }, 100);
-        }
-
-        // 关闭3D展示模态框
-        function closeModal3D() {
-            const modal = document.getElementById('modal3D');
+        // 关闭模型弹窗
+        window.closeModelModal = function() {
+            const modal = document.getElementById('modelModal');
             modal.classList.remove('active');
 
-            // 清理资源
-            if (viewer3D) {
-                if (viewer3D.animationId) {
-                    cancelAnimationFrame(viewer3D.animationId);
-                }
-                if (viewer3D.renderer) {
-                    viewer3D.renderer.dispose();
-                }
-                viewer3D = null;
-            }
-        }
+            // 恢复背景滚动
+            document.body.style.overflow = '';
 
-        // 控制函数
-        window.resetCamera3D = function() {
-            if (viewer3D && viewer3D.camera && viewer3D.controls) {
-                viewer3D.camera.position.set(0, 2, 5);
-                viewer3D.controls.target.set(0, 0, 0);
-                viewer3D.controls.update();
+            // 停止自动旋转
+            isAutoRotating = false;
+        };
+
+        // 重置相机
+        window.resetCamera = function() {
+            if (camera && controls) {
+                camera.position.set(0, 2, 5);
+                controls.reset();
             }
         };
 
-        window.toggleAutoRotate3D = function() {
-            if (viewer3D && viewer3D.controls) {
-                viewer3D.controls.autoRotate = !viewer3D.controls.autoRotate;
+        // 自动旋转
+        window.autoRotate = function() {
+            isAutoRotating = !isAutoRotating;
+            const btn = event.target;
+            btn.textContent = isAutoRotating ? '停止旋转' : '自动旋转';
+        };
+
+        // 放大
+        window.zoomIn = function() {
+            if (camera) {
+                camera.position.multiplyScalar(0.9);
             }
         };
 
-        window.zoomIn3D = function() {
-            if (viewer3D && viewer3D.camera && viewer3D.controls) {
-                const direction = new THREE.Vector3();
-                viewer3D.camera.getWorldDirection(direction);
-                viewer3D.camera.position.add(direction.multiplyScalar(-0.5));
-                viewer3D.controls.update();
+        // 缩小
+        window.zoomOut = function() {
+            if (camera) {
+                camera.position.multiplyScalar(1.1);
             }
         };
 
-        window.zoomOut3D = function() {
-            if (viewer3D && viewer3D.camera && viewer3D.controls) {
-                const direction = new THREE.Vector3();
-                viewer3D.camera.getWorldDirection(direction);
-                viewer3D.camera.position.add(direction.multiplyScalar(0.5));
-                viewer3D.controls.update();
+        // 点击弹窗背景关闭
+        document.getElementById('modelModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModelModal();
             }
-        };
-
-        // 更新控制按钮事件
-        document.querySelectorAll('.control-btn').forEach(btn => {
-            btn.onclick = null; // 清除旧的事件
         });
 
-        document.querySelector('.control-btn[onclick="resetCamera()"]').onclick = resetCamera3D;
-        document.querySelector('.control-btn[onclick="toggleAutoRotate()"]').onclick = toggleAutoRotate3D;
-        document.querySelector('.control-btn[onclick="zoomIn()"]').onclick = zoomIn3D;
-        document.querySelector('.control-btn[onclick="zoomOut()"]').onclick = zoomOut3D;
+        // ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModelModal();
+            }
+        });
 
-        // 将函数暴露到全局，以便HTML中的onclick可以调用
-        window.resetCamera = resetCamera3D;
-        window.toggleAutoRotate = toggleAutoRotate3D;
-        window.zoomIn = zoomIn3D;
-        window.zoomOut = zoomOut3D;
-        window.openModal3D = openModal3D;
-        window.closeModal3D = closeModal3D;
-        window.generateRecommendations = generateRecommendations;
     </script>
 </body>
 </html>
